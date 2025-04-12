@@ -14,7 +14,7 @@ class Window(QtWidgets.QMainWindow):
 
     def showError(self, text):
         msg = QMessageBox()
-        msg.setIcon(QMessageBox.Critical) 
+        msg.setIcon(QMessageBox.Critical)
         msg.setWindowTitle("Error") 
         msg.setText(text) 
         msg.exec_()
