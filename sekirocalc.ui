@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>441</width>
+    <height>379</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QComboBox" name="timeComboBox">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>110</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Some areas only use morning (used as default), night, and night + demon bell. Eg. Silvergrass Field</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>Morning/Default</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Noon</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Evening</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Night</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QCheckBox" name="clCheckButton">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>80</y>
+     <width>70</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Charmless</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="dbCheckButton">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>110</y>
+     <width>70</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Demon Bell</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="ngComboBox">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>80</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>NG</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NG+</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NG+2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NG+3</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NG+4</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NG+5</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NG+6</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>NG+7</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLineEdit" name="enemyIdLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>50</y>
+     <width>211</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="placeholderText">
+    <string>*Optional</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="EnemyComboBox">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>20</y>
+     <width>341</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <property name="editable">
+    <bool>true</bool>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>Tutorial Genichiro</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lady Butterfly</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lady Butterfly Phase 2</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Gyoubu</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Genichiro Ashina</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Genichiro Way of Tomoe (Castle)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Guardian Ape</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Headless Ape</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Brown Ape</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Corrupted Monk</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Emma</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Isshin Ashina</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Great Shinobi Owl</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>True Monk</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Divine Dragon</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Owl (Father)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Demon of Hatred</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Genichiro Way of Tomoe (Silvergrass Field)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Isshin the Sword Saint</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shigenori Yamauchi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Naomori Kawarada</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Chained Ogre</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Tenzen Yamauchi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Ako Headless</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shinobi Hunter Enshin</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Juzou</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Blazing Bull</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Armoured Warrior</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Long Arm Centipede Sen-Un</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lone Shadow Longswordsman</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>General Kuranosuke Matsumoto</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Seven Ashina Spears - Shikibu Toshikatsu Yamauchi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Ungo Headless</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lone Shadow Masanaga the Spear-bearer</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Ashina Elite - Jinsuke Saze</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shichimen Warrior (Dungeon)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Gokan Headless</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Snake Eyes Shirafuji</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Gachiin Headless</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Tokujiro </string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mist Noble</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>O'Rin of the Water</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Snake Eyes Shirahagi</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Chained Ogre (Castle)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lone Shadow Vilehand</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Long-arm Centipede Giraffe</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shichimen Warrior (Ashina Depths)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shigekichi of the Red Guard</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Chained Ogre (Outskirts)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Sakura Bull of the Palace</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lone Shadow Masanaga the Spear-bearer (Hirata 2)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Juzou (Hirata 2)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Seven Ashina Spears - Shume Masaji Oniwa</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Ashina Elite - Ujinari Mizuo</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Okami Leader Shizu</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shichimen Warrior (Fountainhead)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Yashariku Headless</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Yashariku Headless Phantom</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Great Colored Carp</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="EnemyLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>List of common bosses and minibosses</string>
+   </property>
+   <property name="text">
+    <string>Enemy:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="EntityIDLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Optional override for enemies not listed above</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Entity ID:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="NGLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>NG+ Scaling for calculations</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>NG Cycle:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="TimeLabel">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>110</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Game Time</string>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="text">
+    <string>Time:</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>176</x>
+     <y>80</y>
+     <width>16</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>130</y>
+     <width>391</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_3">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>50</y>
+     <width>20</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="APLabel">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>80</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Player Attack Power</string>
+   </property>
+   <property name="text">
+    <string>Attack Power:</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="APspinBox">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>80</y>
+     <width>42</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>110</y>
+     <width>111</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>ID of the player attack used when calculating how many attacks a kill would take</string>
+   </property>
+   <property name="placeholderText">
+    <string>Attack ID *Optional</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="GameModeComboBox">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>50</y>
+     <width>111</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Current Game Mode</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>Normal</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Reflections</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mortal Journey</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QTabWidget" name="DataTabs">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>150</y>
+     <width>401</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <property name="toolTipDuration">
+    <number>-1</number>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Stats</string>
+    </attribute>
+    <widget class="QScrollArea" name="StatsScrollArea">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>401</width>
+       <height>191</height>
+      </rect>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>399</width>
+        <height>189</height>
+       </rect>
+      </property>
+      <widget class="QListWidget" name="StatsListWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>401</width>
+         <height>191</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>HP - </string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Posture - </string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Posture Regen - </string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>This enemy would take _ hits to kill at AP_</string>
+        </property>
+        <property name="flags">
+         <set>ItemIsEnabled</set>
+        </property>
+       </item>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Drops</string>
+    </attribute>
+    <widget class="QScrollArea" name="DropsScrollArea">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>401</width>
+       <height>191</height>
+      </rect>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>399</width>
+        <height>189</height>
+       </rect>
+      </property>
+      <widget class="QListWidget" name="DropsListWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>401</width>
+         <height>191</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Sen - </string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>EXP - </string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
