@@ -2,11 +2,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 #Sekiro Data and functions
-import Multipliers
-import EnemyRef
-import EnemyBaseStats
-import Lots
-import Utils
+from res import Multipliers
+from res import EnemyRef
+from res import EnemyBaseStats
+from res import Lots
+from res import Utils
 #Other
 import copy
 
