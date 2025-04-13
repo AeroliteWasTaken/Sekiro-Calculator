@@ -59,7 +59,7 @@ Clearcount_HP = { # for hp, posture, posture regen scaling
 
 Clearcount_Dmg = { # for physical and attribute damage scaling
                         False: { # charmed
-                                0: None, # ng
+                                0: 1, # ng
                                 1: 1, # ng+1
                                 2: 1, # ng+2
                                 3: 1.05, # ng+3
@@ -68,7 +68,7 @@ Clearcount_Dmg = { # for physical and attribute damage scaling
                                 6: 1.05, # ng+6
                                 7: 1.1}, # ng+7
                         True: { # charmless
-                                0: None, # ng
+                                0: 1, # ng
                                 1: 1.25, # ng+1
                                 2: 1.275, # ng+2
                                 3: 1.4, # ng+3

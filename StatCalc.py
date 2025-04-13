@@ -50,6 +50,8 @@ class Window(QtWidgets.QMainWindow):
 
         try:
             enemyRef = EnemyRef.EnemyRef[enemy]  # Get multipliers
+            enemyAttackRate = 1
+
         except:
             self.showError("Please select a valid enemy")
             return
@@ -71,15 +73,21 @@ class Window(QtWidgets.QMainWindow):
             try:
                 timeOffset = Multipliers.Time_Offset[DB][Time]  # find offset for time + demon bell 
                 enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.Clearcount_HP[CL][NG])  # scale ng
+                enemyAttackRate *= Multipliers.Clearcount_Dmg[CL][NG]  # scale ng for attack
 
                 if CL and NG == 0:
                     timeOffset += 700  # account for new game CL scaling
                 if NG > 0:
                     enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.NGCycle_HP[enemyRef[0] + timeOffset])  # correct for ng+ scaling
+                    enemyAttackRate *= Multipliers.NGCycle_Attack[enemyRef[0] + timeOffset]  # correct for ng+ scaling (attack multiplier)
                 if CL:
                     enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.Charmless_Muliplier_By_Type[enemyRef[2]])  # increase stats based off of enemy type
+
                 enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.AreaScale_HP[enemyRef[1] + timeOffset])  # multiply area scaling
-            except:
+                enemyAttackRate *= Multipliers.AreaScale_Attack[enemyRef[1] + timeOffset]  # multiply area scaling (attack multiplier)
+
+            except Exception as e:
+                print(e)
                 # Selected Game Time is invalid for this enemy
                 return
 
@@ -119,10 +127,7 @@ class Window(QtWidgets.QMainWindow):
         output.append(enemyStat[2])
         attacksNeeded = Utils.findAttacksNeeded(enemyStat[0], Utils.getPlayerDmg(AP=AP, attack=attack))
 
-        self.output = output
-        self.attacksNeeded = attacksNeeded
-        self.attackPower = AP
-        return True
+        return output, AP, round(enemyAttackRate, 2), attacksNeeded
     
     def getRates(self, enemy, NG=0, CL=False):
         enemyRef = EnemyRef.EnemyRef[enemy] # Get multipliers
@@ -181,11 +186,12 @@ class Window(QtWidgets.QMainWindow):
         self.StatsListWidget.clear()
         self.DropsListWidget.clear()
         
-        if self.getStat(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap, attack=attack):
-            self.StatsListWidget.addItem(f"HP - {self.output[0]}")
-            self.StatsListWidget.addItem(f"Posture - {self.output[1]}")
-            self.StatsListWidget.addItem(f"Posture Regen - {self.output[2]}")
-            self.StatsListWidget.addItem(f"At AP{self.attackPower}, it would take {self.attacksNeeded} attacks to kill this enemy!")
+        output, attackPower, attackRate, attacksNeeded = self.getStat(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap, attack=attack)
+        self.StatsListWidget.addItem(f"HP - {output[0]}")
+        self.StatsListWidget.addItem(f"Posture - {output[1]}")
+        self.StatsListWidget.addItem(f"Damage Multiplier - x{attackRate}")
+        self.StatsListWidget.addItem(f"Posture Regen - {output[2]}")
+        self.StatsListWidget.addItem(f"At AP{attackPower}, it would take {attacksNeeded} attacks to kill this enemy!")
     
     def setupUi(self, Form):
         self.enemiesList = ["Tutorial Genichiro",
