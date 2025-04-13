@@ -19,7 +19,7 @@
  - Resource items are listed below, if the enemy has them. This includes quantity and drop chance of items such as emblems and resurrective power
 
 ### Every main boss and miniboss is listed in the dropdown menu, but it also supports all other enemies in the game via an override for you to input NpcParamIds
-### The attack override can be used to change which attack is used when calculating how many average hits a kill may take. There are currently no plans to add all attack names. For example, a jump kick would be 901. This feature is kinda useless but it's there I guess
+### The attack override can be used to change which attack is used when calculating how many average hits a kill may take. There are currently no plans to transcribe all the attack names; you will need to get them yourself. For example, a jump kick would be ID 901. This feature is kinda useless but it's there I guess
 
 # Credits:
  - Holm - Helped a LOT with testing and comparing data, thanks!
