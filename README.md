@@ -11,7 +11,7 @@
  - Posture - The enemy's starting posture
  - Damage Multiplier - The value used to multiply each attack's damage
  - Posture Regen - Not quite sure how this works but I included it anyway
- - A very loose estimate of how many attacks it would take to kill the enemy, just to help you get an idea of their HP
+ - A very loose estimate of how many attacks it would take to deplete the enemy's health, just to help you get an idea of their HP (NOTE: You will almost ALWAYS kill an enemy sooner than this due to posture)
 
 ## Drops:
  - Sen - How much sen would this enemy drop
