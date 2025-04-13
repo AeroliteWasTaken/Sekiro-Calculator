@@ -1,4 +1,4 @@
-import PlayerStats
+from res import PlayerStats
 
 def mult(multiplier, val):
     return [[x * multiplier for x in item] if isinstance(item, list) else item * multiplier for item in val]
