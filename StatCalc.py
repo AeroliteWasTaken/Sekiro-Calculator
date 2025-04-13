@@ -82,12 +82,11 @@ class Window(QtWidgets.QMainWindow):
                     enemyAttackRate *= Multipliers.NGCycle_Attack[enemyRef[0] + timeOffset]  # correct for ng+ scaling (attack multiplier)
                 if CL:
                     enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.Charmless_Muliplier_By_Type[enemyRef[2]])  # increase stats based off of enemy type
-
+                    
                 enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.AreaScale_HP[enemyRef[1] + timeOffset])  # multiply area scaling
                 enemyAttackRate *= Multipliers.AreaScale_Attack[enemyRef[1] + timeOffset]  # multiply area scaling (attack multiplier)
 
-            except Exception as e:
-                print(e)
+            except:
                 # Selected Game Time is invalid for this enemy
                 return
 
