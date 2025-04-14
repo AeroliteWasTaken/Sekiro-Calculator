@@ -125,7 +125,8 @@ class Window(QtWidgets.QMainWindow):
 
         output.append(enemyStat[2])
         attacksNeeded = Utils.findAttacksNeeded(enemyStat[0], Utils.getPlayerDmg(AP=AP, attack=attack))
-
+        
+        print(output, AP, round(enemyAttackRate, 2), attacksNeeded)
         return output, AP, round(enemyAttackRate, 2), attacksNeeded
     
     def getRates(self, enemy, NG=0, CL=False):
@@ -185,7 +186,12 @@ class Window(QtWidgets.QMainWindow):
         self.StatsListWidget.clear()
         self.DropsListWidget.clear()
         
-        output, attackPower, attackRate, attacksNeeded = self.getStat(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap, attack=attack)
+        result = self.getStat(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap, attack=attack)
+
+        if result is None:
+            return # skip adding values if there is an error in calculation (this is usually due to an incorrect time input)
+        output, attackPower, attackRate, attacksNeeded = result
+
         self.StatsListWidget.addItem(f"HP - {output[0]}")
         self.StatsListWidget.addItem(f"Posture - {output[1]}")
         self.StatsListWidget.addItem(f"Damage Multiplier - x{attackRate}")
