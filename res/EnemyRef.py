@@ -1331,7 +1331,7 @@ ReflectionOverride = {
 
 }
 
-MortalJourneyOverride = { # TO BE UPDATED
+MortalJourneyOverride = {
 0: { # default
     (False, False): [7950, 7958], # default
     (True, False): [7952, 7958], # cl
