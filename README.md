@@ -14,8 +14,8 @@
  - A very loose estimate of how many attacks it would take to deplete the enemy's health, just to help you get an idea of their HP (NOTE: You will almost ALWAYS kill an enemy sooner than this due to posture)
 
 ## Drops:
- - Sen - How much sen would this enemy drop
- - EXP - How much EXP would this enemy drop
+ - Sen
+ - EXP
  - Resource items are listed below, if the enemy has them. This includes quantity and drop chance of items such as emblems and resurrective power
 
 ### Every main boss and miniboss is listed in the dropdown menu, but it also supports all other enemies in the game via an override for you to input NpcParamIds
