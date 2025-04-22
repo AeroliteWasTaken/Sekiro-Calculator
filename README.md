@@ -19,11 +19,8 @@
  - Resource Items - If the enemy has them, this shows quantity and drop chances of items such as emblems and resurrective power.
 
 ## Usage:
-
  - Enemy List - Every major boss and miniboss is listed in the dropdown menu.
-
  - Enemy Override - You can input NpcParamIds to view statistics for other enemies that aren't listed.
-
  - Attack Override - Select which attack is used for calculating the average number of hits to kill. I currently have no plans to transcribe all of the attack IDs. As such, you'll need to find the ID for each attack yourself (e.g., jump kick is 901). This feature is only really there for fun though.
 
 ## Installation:
