@@ -27,7 +27,7 @@
  - Attack Override - Select which attack is used for calculating the average number of hits to kill. I currently have no plans to transcribe all of the attack IDs. As such, you'll need to find the ID for each attack yourself (e.g., jump kick is 901). This feature is only really there for fun though.
 
 ## Installation:
-# Simply click the shiny green button and download the source code as a zip, then extract it wherever you want.
+### Simply click the shiny green button and download the source code as a zip, then extract it wherever you want.
 
 # Credits:
  - Holm - Helped a LOT with testing and comparing data, thanks!
