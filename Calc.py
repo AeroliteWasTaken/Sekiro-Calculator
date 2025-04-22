@@ -137,8 +137,7 @@ class Window(QtWidgets.QMainWindow):
 
         output.append(enemyStat[2])
         attacksNeeded = Utils.findAttacksNeeded(enemyStat[0], Utils.getPlayerDmg(AP=AP, attack=attack))
-        
-        print(output, AP, round(enemyAttackRate, 2), attacksNeeded)
+
         return output, AP, round(enemyAttackRate, 2), attacksNeeded
     
     def getRates(self, enemy, NG=0, CL=False):
@@ -211,66 +210,7 @@ class Window(QtWidgets.QMainWindow):
         self.StatsListWidget.addItem(f"At AP{attackPower}, it would take {attacksNeeded} attacks to kill this enemy!")
     
     def setupUi(self, Form):
-        self.enemiesList = ["Tutorial Genichiro",
-                        "Lady Butterfly",
-                        "Gyoubu",
-                        "Genichiro Ashina",
-                        "Guardian Ape",
-                        "Headless Ape",
-                        "Brown Ape",
-                        "Corrupted Monk",
-                        "Emma",
-                        "Isshin Ashina",
-                        "Great Shinobi Owl",
-                        "True Monk",
-                        "Divine Dragon",
-                        "Owl (Father)",
-                        "Demon of Hatred",
-                        "Genichiro Way of Tomoe (Silvergrass Field)",
-                        "Isshin the Sword Saint",
-                        "Inner Genichiro",
-                        "Inner Father",
-                        "Inner Isshin",
-                        "Shigenori Yamauchi",
-                        "Naomori Kawarada",
-                        "Chained Ogre",
-                        "Tenzen Yamauchi",
-                        "Ako Headless",
-                        "Shinobi Hunter Enshin",
-                        "Juzou",
-                        "Blazing Bull",
-                        "Armoured Warrior",
-                        "Long Arm Centipede Sen-Un",
-                        "Lone Shadow Longswordsman",
-                        "General Kuranosuke Matsumoto",
-                        "Seven Ashina Spears - Shikibu Toshikatsu Yamauchi",
-                        "Ungo Headless",
-                        "Lone Shadow Masanaga the Spear-bearer",
-                        "Ashina Elite - Jinsuke Saze",
-                        "Shichimen Warrior (Dungeon)",
-                        "Gokan Headless",
-                        "Snake Eyes Shirafuji",
-                        "Gachiin Headless",
-                        "Tokujiro ",
-                        "Mist Noble",
-                        "O'Rin of the Water",
-                        "Snake Eyes Shirahagi",
-                        "Chained Ogre (Castle)",
-                        "Lone Shadow Vilehand",
-                        "Long-arm Centipede Giraffe",
-                        "Shichimen Warrior (Ashina Depths)",
-                        "Shigekichi of the Red Guard",
-                        "Chained Ogre (Outskirts)",
-                        "Sakura Bull of the Palace",
-                        "Lone Shadow Masanaga the Spear-bearer (Hirata 2)",
-                        "Juzou (Hirata 2)",
-                        "Seven Ashina Spears - Shume Masaji Oniwa",
-                        "Ashina Elite - Ujinari Mizuo",
-                        "Okami Leader Shizu",
-                        "Shichimen Warrior (Fountainhead)",
-                        "Yashariku Headless",
-                        "Yashariku Headless Phantom"]
-
+        self.enemiesList = EnemyRef.EnemyNames # get list of enemy names
         Form.setObjectName("Form")
         Form.resize(441, 379)
         Form.setFixedSize(441, 379)
