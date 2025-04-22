@@ -1,6 +1,7 @@
 #GUI Reqs
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import Qt
 #Sekiro Data and functions
 from res import Multipliers
 from res import EnemyRef
@@ -9,8 +10,17 @@ from res import Lots
 from res import Utils
 #Other
 import copy
+from os import path
 
 class Window(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+    
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.WindowStateChange:
+            # Prevent fullscreening
+            if self.windowState() & Qt.WindowFullScreen:
+                self.setWindowState(Qt.WindowNoState)
 
     def showError(self, text):
         msg = QMessageBox()
@@ -41,10 +51,12 @@ class Window(QtWidgets.QMainWindow):
         if Mode == 0 and enemy not in [1, 2, 3]:
             self.showRates(enemy, NG, CL) # update rates if enemy isnt an inner fight or in a gauntlet/reflection
 
+        if Mode == 0 and enemy in [1, 2, 3]:
+            Mode = 1 # inner fights cant have a "Normal" mode, so default to Reflection
+
         changeEnemyForInner = None
 
         if enemy in [1, 2, 3]: # inner fights
-            Mode = 1
             changeEnemyForInner = enemy
             enemy = innerEnemyRef[enemy]
 
@@ -261,6 +273,7 @@ class Window(QtWidgets.QMainWindow):
 
         Form.setObjectName("Form")
         Form.resize(441, 379)
+        Form.setFixedSize(441, 379)
         self.timeComboBox = QtWidgets.QComboBox(Form)
         self.timeComboBox.setGeometry(QtCore.QRect(70, 110, 101, 22))
         self.timeComboBox.setObjectName("timeComboBox")
@@ -406,7 +419,7 @@ class Window(QtWidgets.QMainWindow):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Sekiro Stat Calculator"))
+        Form.setWindowTitle(_translate("Form", "Sekiro Calculator"))
         self.timeComboBox.setToolTip(_translate("Form", "Some areas only use morning (used as default) and night + demon bell. Eg. Silvergrass Field"))
         self.timeComboBox.setItemText(0, _translate("Form", "Morning/Default"))
         self.timeComboBox.setItemText(1, _translate("Form", "Noon"))
@@ -455,6 +468,7 @@ class Window(QtWidgets.QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "res/calc.ico"))) # remove 'res/' and move ico to root when freezing
     Form = QtWidgets.QWidget()
     ui = Window()
     ui.setupUi(Form)
