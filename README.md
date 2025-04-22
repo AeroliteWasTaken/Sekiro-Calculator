@@ -10,7 +10,7 @@
  - HP - The enemy's health pool. For multiple phases with different values, they are separated by a comma.
  - Posture - The enemy's starting posture value.
  - Damage Multiplier - The value used to multiply each attack's damage.
- - Posture Regen - Not quite sure how this works but I included it anyway.
+ - Posture Regen - This value changes a lot depending on events and animations during fights. Dont rely on it. (Check StaminaControlParam)
  - Average hits to kill - A very loose estimate of how many attacks it would take to deplete the enemy's health, just to help you get an idea of their HP.
 
 ## Drops:
