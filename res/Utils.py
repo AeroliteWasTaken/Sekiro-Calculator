@@ -51,3 +51,9 @@ def findAttacksNeeded(hp, dmg):
             out.append(str(ceil(i/dmg)))
         return ', '.join(out)
     return str(ceil(hp/dmg))
+
+def parseIChance(chance):
+    return int(chance/10)
+
+def parseRChance(chance):
+    return 100 if chance > 100 else chance

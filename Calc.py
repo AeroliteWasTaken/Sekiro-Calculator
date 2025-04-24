@@ -30,16 +30,28 @@ class Window(QtWidgets.QMainWindow):
         msg.exec_()
 
     def showRates(self, enemy, ng, cl):
-        exp, sen, Rdrops, Idrops = self.getRates(enemy=enemy, NG=ng, CL=cl)
-        self.DropsListWidget.addItem(f"------------------------------------------------")
+        exp, sen, Rdrops, Idrops, Ndrops = self.getRates(enemy=enemy, NG=ng, CL=cl)
+        self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
         self.DropsListWidget.addItem(f"Sen - {sen}")
         self.DropsListWidget.addItem(f"EXP - {exp}")
-        self.DropsListWidget.addItem(f"------------------------------------------------")
+        self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
+
+        for lot in Ndrops:
+            for item in lot:
+                if item[2] != 0:
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} on deathblow")
+
         for lot in Rdrops:
             for item in lot:
                 if item[2] != 0:
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} - {item[1]}% chance")
-        self.DropsListWidget.addItem(f"------------------------------------------------")
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} - {Utils.parseRChance(item[1])}% chance")  
+
+        for lot in Idrops:
+            for item in lot:
+                if item[2] != 0:
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ItemRef[item[0]]} - {Utils.parseIChance(item[1])}% chance")  
+
+        self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
     def getStat(self, enemy, AP=1, NG=0, CL=False, DB=False, Time=1, Mode=0, attack=5000010):
 
@@ -160,9 +172,12 @@ class Window(QtWidgets.QMainWindow):
         RdropList = [Lots.Resource_Item_Lots[i] for i in resourceDrops if i]
 
         itemDrops = EnemyBaseStats.Enemy_ItemLot_Drops[enemy]
-        IdropList = [Lots.TR_Item_Lots[i] for i in itemDrops if i]
+        IdropList = [Lots.Item_Lots[i] for i in itemDrops if i]
+
+        ninsatuDrops = EnemyBaseStats.Enemy_NinsatuLot_Drops[enemy]
+        NdropList = [Lots.Resource_Item_Lots[i] for i in ninsatuDrops if i]
         
-        return round(baseExp), round(baseSen), RdropList, IdropList
+        return round(baseExp), round(baseSen), RdropList, IdropList, NdropList
         
     def update(self):
         enemy = self.enemyIdLineEdit.text()
@@ -414,3 +429,5 @@ if __name__ == "__main__":
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+
+# pyinstaller calc.py --noconsole --icon=calc.ico --add-data "calc.ico;."
