@@ -16,7 +16,9 @@
 ## Drops:
  - Sen - Amount of Sen dropped by the enemy.
  - EXP - Experience points dropped by the enemy.
+ - Drops on deathblow - Used for giving resurrection fragments after getting a deathblow on a enemy.
  - Resource Items - If the enemy has them, this shows quantity and drop chances of items such as emblems and resurrective power.
+ - Item Drops - Shows possible item drops from this enemy. Item Discovery buffs are not taken into account.
 
 ## Usage:
  - Enemy List - Every major boss and miniboss is listed in the dropdown menu.
@@ -25,9 +27,9 @@
 
 ## Notes:
  - If nothing is displayed, it most likely means your time scaling is invalid. Some areas in the game only use Morning (in this case acting as "Default"), and Bell Evening (Night + Demon Bell). This usually applies to Endgame enemies.
- - Itemlot drops are not listed, this is due to a bug with smithbox that prevents us from getting accurate data. Will probably be fixed in the next update.
+ - Itemlot drops are now listed, but due to the feature being new, I haven't been able to test it extensively. Please DM me on discord (worstsniper11) if you find any issues.
 
 # Credits:
  - Holm - Helped a LOT with testing and comparing data, thanks!
  - Savio - For the original idea, inspiration, and moral support :)
- - Maid - Explained some intricacies with the scaling
+ - Maid - Explained some intricacies with params (and saved me from hours of pain)
