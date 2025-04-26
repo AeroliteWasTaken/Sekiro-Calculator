@@ -1,62 +1,64 @@
-EnemyNames = ["Tutorial Genichiro",
-            "Lady Butterfly",
-            "Gyoubu",
-            "Genichiro Ashina",
-            "Guardian Ape",
-            "Headless Ape",
-            "Brown Ape",
-            "Corrupted Monk",
-            "Emma",
-            "Isshin Ashina",
-            "Great Shinobi Owl",
-            "True Monk",
-            "Divine Dragon",
-            "Owl (Father)",
-            "Demon of Hatred",
-            "Genichiro Way of Tomoe (Silvergrass Field)",
-            "Isshin the Sword Saint",
-            "Inner Genichiro",
-            "Inner Father",
-            "Inner Isshin",
-            "Shigenori Yamauchi",
-            "Naomori Kawarada",
-            "Chained Ogre",
-            "Tenzen Yamauchi",
-            "Ako Headless",
-            "Shinobi Hunter Enshin",
-            "Juzou",
-            "Blazing Bull",
-            "Armoured Warrior",
-            "Long Arm Centipede Sen-Un",
-            "Lone Shadow Longswordsman",
-            "General Kuranosuke Matsumoto",
-            "Seven Ashina Spears - Shikibu Toshikatsu Yamauchi",
-            "Ungo Headless",
-            "Lone Shadow Masanaga the Spear-bearer",
-            "Ashina Elite - Jinsuke Saze",
-            "Shichimen Warrior (Dungeon)",
-            "Gokan Headless",
-            "Snake Eyes Shirafuji",
-            "Gachiin Headless",
-            "Tokujiro ",
-            "Mist Noble",
-            "O'Rin of the Water",
-            "Snake Eyes Shirahagi",
-            "Chained Ogre (Castle)",
-            "Lone Shadow Vilehand",
-            "Long-arm Centipede Giraffe",
-            "Shichimen Warrior (Ashina Depths)",
-            "Shigekichi of the Red Guard",
-            "Chained Ogre (Outskirts)",
-            "Sakura Bull of the Palace",
-            "Lone Shadow Masanaga the Spear-bearer (Hirata 2)",
-            "Juzou (Hirata 2)",
-            "Seven Ashina Spears - Shume Masaji Oniwa",
-            "Ashina Elite - Ujinari Mizuo",
-            "Okami Leader Shizu",
-            "Shichimen Warrior (Fountainhead)",
-            "Yashariku Headless",
-            "Yashariku Headless Phantom"]
+EnemyNameRef = {
+    'Tutorial Genichiro': 71000000,
+    'Lady Butterfly': 50900000,
+    'Gyoubu': 50800000,
+    'Genichiro Ashina': 71001000,
+    'Guardian Ape': 51000000,
+    'Headless Ape': 51000100,
+    'Brown Ape': 51000010,
+    'Corrupted Monk': 50001000,
+    'Emma': 74000010,
+    'Isshin Ashina': 54300000,
+    'Great Shinobi Owl': 50600000,
+    'True Monk': 50000000,
+    'Divine Dragon': 52000000,
+    'Owl (Father)': 50601010,
+    'Demon of Hatred': 70200000,
+    'Genichiro Way of Tomoe (Silvergrass Field)': 71101000,
+    'Isshin the Sword Saint': 54000000,
+    'Inner Genichiro': 1,
+    'Inner Father': 2,
+    'Inner Isshin': 3,
+    'Shigenori Yamauchi': 10201000,
+    'Naomori Kawarada': 10200000,
+    'Chained Ogre': 50202000,
+    'Tenzen Yamauchi': 10200010,
+    'Headless - Ako': 13500000,
+    'Shinobi Hunter Enshin': 10500001,
+    'Juzou': 10700000,
+    'Blazing Bull': 13700000,
+    'Armoured Warrior': 11300000,
+    'Long Arm Centipede Sen-Un': 10400000,
+    'Lone Shadow Longswordsman': 14704000,
+    'General Kuranosuke Matsumoto': 10202000,
+    'Seven Ashina Spears - Shikibu Toshikatsu Yamauchi': 10210000,
+    'Headless - Ungo': 13400000,
+    'Lone Shadow Masanaga the Spear-bearer': 14701006,
+    'Ashina Elite - Jinsuke Saze': 14000200,
+    'Shichimen Warrior (Dungeon)': 10800000,
+    'Headless - Gokan': 13501000,
+    'Snake Eyes Shirafuji': 11910000,
+    'Headless - Gachiin': 13502000,
+    'Tokujiro ': 10703000,
+    'Mist Noble': 13001000,
+    "O'Rin of the Water": 70000000,
+    'Snake Eyes Shirahagi': 11911000,
+    'Chained Ogre (Castle)': 50200010,
+    'Lone Shadow Vilehand': 14701005,
+    'Long-arm Centipede Giraffe': 10401000,
+    'Shichimen Warrior (Ashina Depths)': 10802000,
+    'Shigekichi of the Red Guard': 10701000,
+    'Chained Ogre (Outskirts)': 50205000,
+    'Sakura Bull of the Palace': 13800000,
+    'Lone Shadow Masanaga the Spear-bearer (Hirata 2)': 14703002,
+    'Juzou (Hirata 2)': 10704000,
+    'Seven Ashina Spears - Shume Masaji Oniwa': 10211000,
+    'Ashina Elite - Ujinari Mizuo': 14004200,
+    'Okami Leader Shizu': 13100310,
+    'Shichimen Warrior (Fountainhead)': 10801000,
+    'Headless - Yashariku': 13401000,
+    'Headless - Yashariku Phantom': 13401001
+}
 
 EnemyRef = { # {NPC ID}: [{NG+ Scaling ID}, {Area Scaling ID}, {Charmless Scaling ID}]
 0: [None, None, None],
@@ -1340,6 +1342,11 @@ EnemyRef = { # {NPC ID}: [{NG+ Scaling ID}, {Area Scaling ID}, {Charmless Scalin
 99999999: [None, None, None]
 }
 
+InnerEnemyRef = {
+    1: 71001000,
+    2: 50601010,
+    3: 54000000}
+
 ReflectionOverride = {
 0: { # default
     (False, False): [7950, 7954], # default 
@@ -1439,66 +1446,4 @@ MortalJourneyOverride = {
     (True, False): [7988, 7996], # cl
     (False, True): [7989, 7997], # db
     (True, True): [7987, 7995]}, # cldb
-}
-
-EntityIdRef = {
-    0: 71000000, #tut geni
-    1: 50900000, #lb p1
-    2: 50800000, #gyoubu
-    3: 71001000, #geni castle
-    4: 51000000, #gape
-    5: 51000100, #hape
-    6: 51000010, #bape
-    7: 50001000, #cmonk
-    8: 74000010, #emma
-    9: 54300000, #IA
-    10: 50600000, #gso
-    11: 50000000, #tmonk
-    12: 52000000, #fowl
-    13: 50601010, #dd
-    14: 70200000, #doh
-    15: 71101000, #geni field
-    16: 54000000, #ssi
-    17: 1, #inner genichiro
-    18: 2, #inner father
-    19: 3, #inner isshin
-    20: 10201000, #shigenori
-    21: 10200000, #naomori
-    22: 50202000, #ogre 1
-    23: 10200010, #tenzen
-    24: 13500000, #ako hl
-    25: 10500001, #enshin
-    26: 10700000, #juzou
-    27: 13700000, #bull
-    28: 11300000, #roberto
-    29: 10400000, #senun
-    30: 14704000, #ls longswordsman
-    31: 10202000, #kuranosuke
-    32: 10210000, #7spears 1
-    33: 13400000, #ungo hl
-    34: 14701006, #masanaga 1
-    35: 14000200, #jinsuke
-    36: 10800000, #shichimen 1
-    37: 13501000, #gokan hl
-    38: 11910000, #shirafuji
-    39: 13502000, #gachiin hl
-    40: 10703000, #tokujiro
-    41: 13001000, #mist noble
-    42: 70000000, #orin
-    43: 11911000, #shirahagi
-    44: 50200010, #ogre 2
-    45: 14701005, #vilehand
-    46: 10401000, #giraffe
-    47: 10802000, #shichimen 2
-    48: 10701000, #shigekichi
-    49: 50205000, #ogre 3
-    50: 13800000, #sakura bull
-    51: 14703002, #masanaga 2
-    52: 10704000, #juzou 2
-    53: 10211000, #7spears 2
-    54: 14004200, #mizuo
-    55: 13100310, #shizu
-    56: 10801000, #shichimen 3
-    57: 13401000, #yash hl
-    58: 13401001, #yash hl phantom
 }

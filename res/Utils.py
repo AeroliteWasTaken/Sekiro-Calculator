@@ -1,5 +1,6 @@
 from res import PlayerStats
 from res import Multipliers
+
 def mult(multiplier, val):
     return [[x * multiplier for x in item] if isinstance(item, list) else item * multiplier for item in val]
 
@@ -36,7 +37,7 @@ def getPlayerDmg(AP=1, attack=5000010):
         return 1
     else:
         baseDmg = 40 # base for most attacks and CAs
-    baseDmg *= PlayerStats.Player_Attack_Power[AP] # multiply by AP
+    baseDmg *= PlayerStats.Player_Attack_Power.get(AP, 1) # multiply by AP
     atkCorrect = PlayerStats.Player_Attacks[attack][2] # get atkPhysCorrection
 
     if atkCorrect > 0:
