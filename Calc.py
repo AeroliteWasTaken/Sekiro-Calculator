@@ -2,6 +2,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLineEdit, QCheckBox, QLabel, QDialogButtonBox
 #Sekiro Data and functions
 from res import Multipliers
 from res import EnemyRef
@@ -12,9 +13,79 @@ from res import Utils
 import copy
 from os import path
 
+class ExtrasWindow(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Extra Options")
+        layout = QVBoxLayout()
+
+        self.wealthballoon = QCheckBox("Wealth Balloon", self)
+        self.possesstionballoon = QCheckBox("Possession Balloon", self)
+        self.spiritballoon = QCheckBox("Spirit Balloon", self)
+        self.soulballoon = QCheckBox("Soul Balloon", self)
+        self.pilgrimageballoon = QCheckBox("Pilgrimage Balloon", self)
+        self.virtuousdeed = QCheckBox("Virtuous Deed", self)
+        self.mostvirtuousdeed = QCheckBox("Most Virtuous Deed", self)
+
+        layout.addWidget(self.wealthballoon)
+        layout.addWidget(self.possesstionballoon)
+        layout.addWidget(self.spiritballoon)
+        layout.addWidget(self.soulballoon)
+        layout.addWidget(self.pilgrimageballoon)
+        layout.addWidget(self.virtuousdeed)
+        layout.addWidget(self.mostvirtuousdeed)
+
+        self.wealthballoon.setChecked(ui.wealthBalloon)
+        self.possesstionballoon.setChecked(ui.possessionBalloon)
+        self.spiritballoon.setChecked(ui.spiritBalloon)
+        self.soulballoon.setChecked(ui.soulBalloon)
+        self.pilgrimageballoon.setChecked(ui.pilgrimageBalloon)
+        self.virtuousdeed.setChecked(ui.virtuousDeed)
+        self.mostvirtuousdeed.setChecked(ui.mostVirtuousDeed)
+
+        buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+
+        layout.addWidget(buttons)
+        self.setLayout(layout)
+
+    def get_data(self):
+        return {
+            "Wealth": self.wealthballoon.isChecked(),
+            "Possession": self.possesstionballoon.isChecked(),
+            "Spirit": self.spiritballoon.isChecked(),
+            "Soul": self.soulballoon.isChecked(),
+            "Pilgrimage": self.pilgrimageballoon.isChecked(),
+            "VirtuousDeed": self.virtuousdeed.isChecked(),
+            "MostVirtuousDeed": self.mostvirtuousdeed.isChecked(),
+        }
+
 class Window(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
+        self.virtuousDeed = False
+        self.mostVirtuousDeed = False
+        self.wealthBalloon = False
+        self.possessionBalloon = False
+        self.spiritBalloon = False
+        self.soulBalloon = False
+        self.pilgrimageBalloon = False
+
+    def showExtras(self):
+        dialog = ExtrasWindow(self)
+        if dialog.exec_():  # ok is pressed
+            data = dialog.get_data()
+            self.wealthBalloon = data['Wealth']
+            self.possessionBalloon = data['Possession']
+            self.spiritBalloon = data['Spirit']
+            self.soulBalloon = data['Soul']
+            self.pilgrimageBalloon = data['Pilgrimage']
+            self.virtuousDeed = data['VirtuousDeed']
+            self.mostVirtuousDeed = data['MostVirtuousDeed']
+            self.update()
+        else:
+            return # cancel is pressed
     
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.WindowStateChange:
@@ -29,12 +100,21 @@ class Window(QtWidgets.QMainWindow):
         msg.setText(text) 
         msg.exec_()
 
-    def showRates(self, enemy, ng, cl):
-        exp, sen, Rdrops, Idrops, Ndrops = self.getRates(enemy=enemy, NG=ng, CL=cl)
+    def showRates(self, enemy, ng, cl, db, time):
+        exp, sen, Rdrops, Idrops, Ndrops = self.getRates(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time)
         self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
         self.DropsListWidget.addItem(f"Sen - {sen}")
         self.DropsListWidget.addItem(f"EXP - {exp}")
         self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
+
+        opts = {
+            'possessionBalloon': self.possessionBalloon,
+            'spiritBalloon': self.spiritBalloon,
+            'soulBalloon': self.soulBalloon,
+            'pilgrimageBalloon': self.pilgrimageBalloon,
+            'virtuousDeed': self.virtuousDeed,
+            'mostVirtuousDeed': self.mostVirtuousDeed
+            } 
 
         for lot in Ndrops:
             for item in lot:
@@ -44,12 +124,14 @@ class Window(QtWidgets.QMainWindow):
         for lot in Rdrops:
             for item in lot:
                 if item[2] != 0:
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} - {Utils.parseRChance(item[1])}% chance")  
+                    chance = Utils.parseRChance(item[1], item[0], **opts)
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} - {chance}% chance")  
 
         for lot in Idrops:
             for item in lot:
-                if item[2] != 0:
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ItemRef[item[0]]} - {Utils.parseIChance(item[1])}% chance")  
+                if item[2] != 0:                  
+                    chance = Utils.parseIChance(item[1], **opts)
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ItemRef[item[0]]} - {chance}% chance")  
 
         self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
@@ -61,7 +143,7 @@ class Window(QtWidgets.QMainWindow):
             3: 54000000}
         
         if Mode == 0 and enemy not in [1, 2, 3]:
-            self.showRates(enemy, NG, CL) # update rates if enemy isnt an inner fight or in a gauntlet/reflection
+            self.showRates(enemy, NG, CL, DB, Time) # update rates if enemy isnt an inner fight or in a gauntlet/reflection
 
         if Mode == 0 and enemy in [1, 2, 3]:
             Mode = 1 # inner fights cant have a "Normal" mode, so default to Reflection
@@ -152,10 +234,16 @@ class Window(QtWidgets.QMainWindow):
 
         return output, AP, round(enemyAttackRate, 2), attacksNeeded
     
-    def getRates(self, enemy, NG=0, CL=False):
+    def getRates(self, enemy, NG, CL, DB, Time):
+        RdropList = []
+        NdropList = []
+        IdropList = []
         enemyRef = EnemyRef.EnemyRef[enemy] # Get multipliers
 
-        baseExp = EnemyBaseStats.Enemy_Exp_Rates[enemy] # fetch base drop rate for exp
+        if enemy in EnemyBaseStats.Boss_Exp_Rates.keys():
+            baseExp = EnemyBaseStats.Boss_Exp_Rates[enemy] # fetch base drop rate for exp
+        else:
+            baseExp = EnemyBaseStats.Enemy_Exp_Rates[enemy] # fetch base drop rate for exp
         baseExp *= Multipliers.Clearcount_SenXP_Droprate[NG][1] # scale ng+ for exp
         baseExp *= Multipliers.Charmless_SenXP_Multiplier[CL] # scale for charmless for exp
 
@@ -166,18 +254,35 @@ class Window(QtWidgets.QMainWindow):
         if NG > 0:
             baseExp *= Multipliers.NGCycle_Exp_Droprate[enemyRef[0]] # scale ng+ for exp
             baseSen *= Multipliers.NGCycle_Sen_Droprate[enemyRef[0]] # scale ng+ for sen
-            baseSen *= 1.25 # no idea why but sen requires a permanent multiplier in ng+
 
-        resourceDrops = EnemyBaseStats.Enemy_ResourceLot_Drops[enemy]
-        RdropList = [Lots.Resource_Item_Lots[i] for i in resourceDrops if i]
+        if self.wealthBalloon:
+            baseSen *= 1.5 # account for Mibu Balloon of Wealth
 
-        itemDrops = EnemyBaseStats.Enemy_ItemLot_Drops[enemy]
+        if self.pilgrimageBalloon:
+            baseSen *= 1.5 # account for Mibu Pilgrimage Balloon
+
+        if self.mostVirtuousDeed:
+            baseSen *= 1.25 
+
+        elif self.virtuousDeed:
+            baseSen *= 1.125 # is ignored if Most Virtuous Deed is active too since it replaces the buff
+
+        resourceDrops = copy.deepcopy(EnemyBaseStats.Enemy_ResourceLot_Drops[enemy])
+        if resourceDrops[0] is not None:
+            if self.soulBalloon or self.pilgrimageBalloon and resourceDrops[1] in Lots.Resource_Item_Lots.keys():
+                resourceDrops.append(resourceDrops[1]+1) # add the next resourceitemlot which contains drops for isAddLottery, triggered on stateinfo 345
+            RdropList = [Lots.Resource_Item_Lots[i] for i in resourceDrops if i]
+
+        itemDrops = copy.deepcopy(EnemyBaseStats.Enemy_ItemLot_Drops[enemy])
+        if itemDrops[0] is not None: # if none mandatory itemlot drop exists
+            itemDrops.append(itemDrops[0] + Lots.ItemLot_Time_Offset[DB][Time]) # add extra itemlot for time of day (separate from default, which is always on)
         IdropList = [Lots.Item_Lots[i] for i in itemDrops if i]
 
         ninsatuDrops = EnemyBaseStats.Enemy_NinsatuLot_Drops[enemy]
-        NdropList = [Lots.Resource_Item_Lots[i] for i in ninsatuDrops if i]
+        if ninsatuDrops[0] is not None:
+            NdropList = [Lots.Resource_Item_Lots[i] for i in ninsatuDrops if i]
         
-        return round(baseExp), round(baseSen), RdropList, IdropList, NdropList
+        return Utils.ceil(baseExp), Utils.ceil(baseSen), RdropList, IdropList, NdropList
         
     def update(self):
         enemy = self.enemyIdLineEdit.text()
@@ -191,16 +296,6 @@ class Window(QtWidgets.QMainWindow):
         except:
             self.showError("Please select a valid enemy")
             return
-        
-        attack = self.AttacklineEdit.text()
-        if not attack:
-            attack = 5000010
-        else:
-            try:
-                attack = int(attack)
-            except:
-                self.showError("Please select a valid attack")
-                return
 
         ng = self.ngComboBox.currentIndex()
         time = self.timeComboBox.currentIndex() + 1
@@ -212,7 +307,7 @@ class Window(QtWidgets.QMainWindow):
         self.StatsListWidget.clear()
         self.DropsListWidget.clear()
         
-        result = self.getStat(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap, attack=attack)
+        result = self.getStat(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap)
 
         if result is None:
             return # skip adding values if there is an error in calculation (this is usually due to an incorrect time input)
@@ -310,10 +405,10 @@ class Window(QtWidgets.QMainWindow):
         self.APspinBox.setMinimum(1)
         self.APspinBox.setObjectName("APspinBox")
         self.APspinBox.valueChanged.connect(self.update)
-        self.AttacklineEdit = QtWidgets.QLineEdit(Form)
-        self.AttacklineEdit.setGeometry(QtCore.QRect(300, 110, 111, 20))
-        self.AttacklineEdit.setObjectName("AttacklineEdit")
-        self.AttacklineEdit.returnPressed.connect(self.update)
+        self.ExtrasButton = QtWidgets.QPushButton(Form)
+        self.ExtrasButton.setGeometry(QtCore.QRect(300, 110, 111, 20))
+        self.ExtrasButton.setObjectName("ExtrasButton")
+        self.ExtrasButton.clicked.connect(self.showExtras)
         self.GameModeComboBox = QtWidgets.QComboBox(Form)
         self.GameModeComboBox.setGeometry(QtCore.QRect(300, 50, 111, 22))
         self.GameModeComboBox.setObjectName("GameModeComboBox")
@@ -375,7 +470,12 @@ class Window(QtWidgets.QMainWindow):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Sekiro Calculator"))
-        self.timeComboBox.setToolTip(_translate("Form", "Some areas only use morning (used as default) and night + demon bell. Eg. Silvergrass Field"))
+        self.EnemyComboBox.setToolTip(_translate("Form", "List of common bosses and minibosses"))
+        self.timeComboBox.setToolTip(_translate("Form", "Some areas only use morning (as a \"default\") and night + demon bell. Eg. Silvergrass Field\n" \
+        "Morning - After tutorial\n" \
+        "Noon - After killing one of the following: Geni, Ape, Cmonk, FSMs\n" \
+        "Evening - After beating 3 of the above bosses\n" \
+        "Night - After visiting Fountainhead Palace for the first time"))
         self.timeComboBox.setItemText(0, _translate("Form", "Morning/Default"))
         self.timeComboBox.setItemText(1, _translate("Form", "Noon"))
         self.timeComboBox.setItemText(2, _translate("Form", "Evening"))
@@ -391,22 +491,19 @@ class Window(QtWidgets.QMainWindow):
         self.ngComboBox.setItemText(6, _translate("Form", "NG+6"))
         self.ngComboBox.setItemText(7, _translate("Form", "NG+7"))
         self.enemyIdLineEdit.setPlaceholderText(_translate("Form", "*Optional"))
+        self.enemyIdLineEdit.setToolTip(_translate("Form", "Optional override for enemies not listed above\n" \
+        "Use NpcParamIDs"))
 
         for index, i in enumerate(self.enemiesList):
             self.EnemyComboBox.setItemText(index, _translate("Form", f"{i}")) # add all enemies to the combobox
 
-        self.EnemyLabel.setToolTip(_translate("Form", "List of common bosses and minibosses"))
         self.EnemyLabel.setText(_translate("Form", "Enemy:"))
-        self.EntityIDLabel.setToolTip(_translate("Form", "Optional override for enemies not listed above"))
         self.EntityIDLabel.setText(_translate("Form", "Entity ID:"))
-        self.NGLabel.setToolTip(_translate("Form", "NG+ Scaling for calculations"))
         self.NGLabel.setText(_translate("Form", "NG Cycle:"))
-        self.TimeLabel.setToolTip(_translate("Form", "Game Time"))
         self.TimeLabel.setText(_translate("Form", "Time:"))
-        self.APLabel.setToolTip(_translate("Form", "Player Attack Power"))
         self.APLabel.setText(_translate("Form", "Attack Power:"))
-        self.AttacklineEdit.setToolTip(_translate("Form", "ID of the player attack used when calculating how many attacks a kill would take"))
-        self.AttacklineEdit.setPlaceholderText(_translate("Form", "Attack ID *Optional"))
+        self.ExtrasButton.setToolTip(_translate("Form", "Extra options, mostly for drop calculations"))
+        self.ExtrasButton.setText(_translate("Form", "Extra Options"))
         self.GameModeComboBox.setToolTip(_translate("Form", "Current Game Mode"))
         self.GameModeComboBox.setItemText(0, _translate("Form", "Normal"))
         self.GameModeComboBox.setItemText(1, _translate("Form", "Reflections"))

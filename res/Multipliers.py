@@ -23,16 +23,16 @@ Phase_Posture_Multipliers = {
 }
 
 Time_Offset = { # offsets area scaling based on time and whether demon bell is active or not
-                False: 
-                        {1: 0, # dawn/default
-                        2: 1, # noon
-                        3: 2, # evening
-                        4: 3}, # night/end game
-                True: 
-                        {1: 1, # dawn/default
-                        2: 2, # noon
-                        3: 3, # evening
-                        4: 4} # night/end game
+        False: 
+                {1: 0, # dawn/default
+                2: 1, # noon
+                3: 2, # evening
+                4: 3}, # night/end game
+        True: 
+                {1: 1, # dawn/default
+                2: 2, # noon
+                3: 3, # evening
+                4: 4} # night/end game
                         
 }
 
@@ -827,5 +827,12 @@ AreaScale_Attack = {  # for enemy HP multipliers in game areas
         7988: 4.05,
         7989: 3.75,
         7998: 3.0
+}
+
+Item_Discovery_Buffs = {
+        'possessionBalloon': 0.5,
+        'pilgrimageBalloon': 0.5,
+        'virtuousDeed': 0.5,
+        'mostVirtuousDeed': 0.75
 }
 

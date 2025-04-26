@@ -1,5 +1,5 @@
 from res import PlayerStats
-
+from res import Multipliers
 def mult(multiplier, val):
     return [[x * multiplier for x in item] if isinstance(item, list) else item * multiplier for item in val]
 
@@ -52,8 +52,30 @@ def findAttacksNeeded(hp, dmg):
         return ', '.join(out)
     return str(ceil(hp/dmg))
 
-def parseIChance(chance):
-    return int(chance/10)
+def parseIChance(weight, **args):
+    buffs = Multipliers.Item_Discovery_Buffs
+    buff = 1
 
-def parseRChance(chance):
+    for key in ['possessionBalloon', 'pilgrimageBalloon']:
+        if args.get(key):
+            buff += buffs[key]
+
+    if args.get('mostVirtuousDeed'):
+        buff += buffs['mostVirtuousDeed']
+    elif args.get('virtuousDeed'):
+        buff += buffs['virtuousDeed']
+
+    chance = round(100 * (weight * buff) / ((weight * buff) + (1000 - weight)))
+    return 100 if chance > 100 else chance
+
+def parseRChance(chance, resource, **args):
+    buff = 1
+
+    if resource == 1: # spirit emblems
+        if args.get('spiritBalloon'):
+            buff += 0.5
+        if args.get('pilgrimageBalloon'):
+            buff += 0.5 # both spirit emblem increasing effects are +50
+
+    chance = round(1000 * (chance * buff) / ((chance * buff) + (1000 - chance)))
     return 100 if chance > 100 else chance
