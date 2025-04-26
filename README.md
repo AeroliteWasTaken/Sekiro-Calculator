@@ -5,6 +5,9 @@
  - Area/Time Scaling
  - Charmless and Demon Bell Scalings
  - Attack Power Multipliers
+ - Sort enemy list
+ - Copy output to clipboard
+ - Export output to .txt
 
 ## Key Stats:
  - HP - The enemy's health pool. For multiple phases with different values, they are separated by a comma.
