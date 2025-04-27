@@ -355,12 +355,6 @@ class Window(QtWidgets.QMainWindow):
     def copyTxt(self, mode):
         all_data = self.getTxt(mode)
         pyperclip.copy('\n'.join(all_data))
-    
-    def changeEvent(self, event):
-        if event.type() == QtCore.QEvent.WindowStateChange:
-            # Prevent fullscreening
-            if self.windowState() & Qt.WindowFullScreen:
-                self.setWindowState(Qt.WindowNoState)
 
     def showError(self, text):
         msg = QMessageBox()
