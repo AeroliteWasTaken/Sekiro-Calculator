@@ -269,11 +269,51 @@ class Window(QtWidgets.QMainWindow):
         self.soulBalloon = False
         self.pilgrimageBalloon = False
 
+    def createMenus(self):
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu("File")
+        copyMenu = fileMenu.addMenu("Copy")
+        exportMenu = fileMenu.addMenu("Export") 
+        sortingMenu = fileMenu.addMenu("Sorting")
+
+        def createAction(name, func):
+            action = QtWidgets.QAction(name, self)
+            action.triggered.connect(func)
+            return action
+
+        copyMenu.addAction(createAction("Stats", partial(self.copyTxt, "Stats")))
+        copyMenu.addAction(createAction("Drops", partial(self.copyTxt, "Drops")))
+        copyMenu.addAction(createAction("All", partial(self.copyTxt, "All")))  
+        exportMenu.addAction(createAction("Stats", partial(self.exportTxt, "Stats", "txt")))
+        exportMenu.addAction(createAction("Drops", partial(self.exportTxt, "Drops", "txt")))
+        exportMenu.addAction(createAction("All", partial(self.exportTxt, "All", "txt")))  
+        sortingMenu.addAction(createAction("Progression", partial(self.updateSorting, 'Progression')))
+        sortingMenu.addAction(createAction("Alphabetical (A-Z)", partial(self.updateSorting, 'Alphabetical (A-Z)')))
+        sortingMenu.addAction(createAction("Alphabetical (Z-A)", partial(self.updateSorting, 'Alphabetical (Z-A)')))
+        sortingMenu.addAction(createAction("By ID", partial(self.updateSorting, 'ID')))
+
     def initDropdown(self):
         for index, i in enumerate(self.enemiesList):
             self.EnemyComboBox.addItem("") # add enough blank entries for all enemies
             self.EnemyComboBox.setItemText(index, QtCore.QCoreApplication.translate("Form", f"{i}")) # add all enemies to the combobox
         self.EnemyComboBox.setCurrentIndex(-1)
+
+    def updateSorting(self, mode):
+        if mode == "Alphabetical (A-Z)":
+            self.enemiesList = sorted(self.enemiesList)
+            self.initDropdown()
+        
+        elif mode == "Alphabetical (Z-A)":
+            self.enemiesList = sorted(self.enemiesList, reverse=True)
+            self.initDropdown()
+
+        elif mode == "Progression":
+            self.enemiesList = EnemyRef.EnemyNameRef.keys()
+            self.initDropdown()
+
+        elif mode == "ID":
+            self.enemiesList = sorted(EnemyRef.EnemyNameRef.keys(), key=lambda k: EnemyRef.EnemyNameRef[k])
+            self.initDropdown()
 
     def getTxt(self, mode):
         stats_output = []
@@ -315,47 +355,20 @@ class Window(QtWidgets.QMainWindow):
     def copyTxt(self, mode):
         all_data = self.getTxt(mode)
         pyperclip.copy('\n'.join(all_data))
+    
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.WindowStateChange:
+            # Prevent fullscreening
+            if self.windowState() & Qt.WindowFullScreen:
+                self.setWindowState(Qt.WindowNoState)
 
-    def updateSorting(self, mode):
-        if mode == "Alphabetical (A-Z)":
-            self.enemiesList = sorted(self.enemiesList)
-            self.initDropdown()
-        
-        elif mode == "Alphabetical (Z-A)":
-            self.enemiesList = sorted(self.enemiesList, reverse=True)
-            self.initDropdown()
-
-        elif mode == "Progression":
-            self.enemiesList = EnemyRef.EnemyNameRef.keys()
-            self.initDropdown()
-
-        elif mode == "ID":
-            self.enemiesList = sorted(EnemyRef.EnemyNameRef.keys(), key=lambda k: EnemyRef.EnemyNameRef[k])
-            self.initDropdown()
-
-    def createMenus(self):
-        menubar = self.menuBar()
-        fileMenu = menubar.addMenu("File")
-        copyMenu = fileMenu.addMenu("Copy")
-        exportMenu = fileMenu.addMenu("Export") 
-        sortingMenu = fileMenu.addMenu("Sorting")
-
-        def createAction(name, func):
-            action = QtWidgets.QAction(name, self)
-            action.triggered.connect(func)
-            return action
-
-        copyMenu.addAction(createAction("Stats", partial(self.copyTxt, "Stats")))
-        copyMenu.addAction(createAction("Drops", partial(self.copyTxt, "Drops")))
-        copyMenu.addAction(createAction("All", partial(self.copyTxt, "All")))  
-        exportMenu.addAction(createAction("Stats", partial(self.exportTxt, "Stats", "txt")))
-        exportMenu.addAction(createAction("Drops", partial(self.exportTxt, "Drops", "txt")))
-        exportMenu.addAction(createAction("All", partial(self.exportTxt, "All", "txt")))  
-        sortingMenu.addAction(createAction("Progression", partial(self.updateSorting, 'Progression')))
-        sortingMenu.addAction(createAction("Alphabetical (A-Z)", partial(self.updateSorting, 'Alphabetical (A-Z)')))
-        sortingMenu.addAction(createAction("Alphabetical (Z-A)", partial(self.updateSorting, 'Alphabetical (Z-A)')))
-        sortingMenu.addAction(createAction("By ID", partial(self.updateSorting, 'ID')))
-
+    def showError(self, text):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+        msg.setWindowTitle("Error") 
+        msg.setText(text) 
+        msg.exec_() 
+    
     def parseEnemy(self):
         enemy = self.enemyIdLineEdit.text()
         if not enemy: # if override field is empty
@@ -395,20 +408,7 @@ class Window(QtWidgets.QMainWindow):
             self.update()
         else:
             return # cancel is pressed
-    
-    def changeEvent(self, event):
-        if event.type() == QtCore.QEvent.WindowStateChange:
-            # Prevent fullscreening
-            if self.windowState() & Qt.WindowFullScreen:
-                self.setWindowState(Qt.WindowNoState)
 
-    def showError(self, text):
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Critical)
-        msg.setWindowTitle("Error") 
-        msg.setText(text) 
-        msg.exec_() 
-    
     def parseDrops(self, enemy, NG, CL, DB, Time):
         Sen, Exp = self.Functions.getExpSen(enemy=enemy, NG=NG, CL=CL)
         result = self.Functions.getDropLists(enemy=enemy, DB=DB, Time=Time)
