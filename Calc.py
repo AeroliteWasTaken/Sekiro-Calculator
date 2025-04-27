@@ -181,6 +181,7 @@ class Functions():
         self.UI.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
     def addRates(self, opts, sen, exp, Ndrops, Rdrops, Idrops):
+        self.UI.DropsListWidget.clear()
         self.UI.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
         self.UI.DropsListWidget.addItem(f"Sen - {sen}")
         self.UI.DropsListWidget.addItem(f"EXP - {exp}")
@@ -404,6 +405,18 @@ class Window(QtWidgets.QMainWindow):
             return False
         return enemy
 
+    def parseStats(self, enemy, ng, cl, db, time, mode, ap):
+        result = self.Functions.getStats(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap)
+
+        if result is not None:
+            output, attackPower, attackRate, attacksNeeded = result
+        else:
+            self.StatsListWidget.addItem("Selected time is not used by this enemy for stats.")
+            self.StatsListWidget.addItem("Please try using Default, or Night if Demon Bell is active.")
+            return
+        
+        self.Functions.addStats(output, attackPower, attackRate, attacksNeeded)
+
     def parseDrops(self, enemy, NG, CL, DB, Time):
         Sen, Exp = self.Functions.getExpSen(enemy=enemy, NG=NG, CL=CL)
         result = self.Functions.getDropLists(enemy=enemy, DB=DB, Time=Time)
@@ -411,6 +424,8 @@ class Window(QtWidgets.QMainWindow):
         if result is not None:
             NdropList, RdropList, IdropList = result
         else: 
+            self.DropsListWidget.addItem("Selected time is not used by this enemy for drops.")
+            self.DropsListWidget.addItem("Please try using Default or Night instead.")
             return
 
         opts = self.getOpts()
@@ -421,11 +436,11 @@ class Window(QtWidgets.QMainWindow):
         if not enemy:
             return
         ng = self.ngComboBox.currentIndex()
-        time = self.timeComboBox.currentIndex() + 1 # time is 1-4 and indexes are 0-3
         mode = self.GameModeComboBox.currentIndex()
         ap = self.APspinBox.value()
         cl = self.clCheckButton.isChecked()
         db = self.dbCheckButton.isChecked()
+        time = self.timeComboBox.currentIndex()+1
 
         self.StatsListWidget.clear()
         self.DropsListWidget.clear()
@@ -433,13 +448,7 @@ class Window(QtWidgets.QMainWindow):
         if mode == 0 and enemy not in [1, 2, 3]:
             self.parseDrops(enemy, ng, cl, db, time) # update rates if enemy isnt an inner fight or in a gauntlet/reflection
 
-        result = self.Functions.getStats(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap)
-
-        if result is None:
-            return # skip adding values if there is an error in calculation (this is usually due to an incorrect time input)
-        output, attackPower, attackRate, attacksNeeded = result
-
-        self.Functions.addStats(output, attackPower, attackRate, attacksNeeded)
+        self.parseStats(enemy, ng, cl, db, time, mode, ap)
     
     def setupUi(self, Form):
         self.enemiesList = EnemyRef.EnemyNameRef.keys() # get list of enemy names
@@ -575,7 +584,7 @@ class Window(QtWidgets.QMainWindow):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Sekiro Calculator"))
         self.EnemyComboBox.setToolTip(_translate("Form", "List of common bosses and minibosses"))
-        self.timeComboBox.setToolTip(_translate("Form", "Some areas only use \"default\", night and/or night + demon bell.\n" \
+        self.timeComboBox.setToolTip(_translate("Form", "Some areas only use \"default\" and night + demon bell.\n" \
         "Morning - After tutorial\n" \
         "Noon - After killing one of the following: Geni, Ape, Cmonk, FSMs\n" \
         "Evening - After beating 3 of the above bosses\n" \
@@ -620,7 +629,7 @@ class Window(QtWidgets.QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "res/calc.ico"))) # remove 'res/' and move ico to root when freezing
+    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "calc.ico"))) # remove 'res/' and move ico to root when freezing
     ui = Window()
     ui.show()
     sys.exit(app.exec_())

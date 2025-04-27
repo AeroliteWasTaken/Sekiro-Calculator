@@ -32,8 +32,7 @@ Time_Offset = { # offsets area scaling based on time and whether demon bell is a
                 {1: 1, # dawn/default
                 2: 2, # noon
                 3: 3, # evening
-                4: 4} # night/end game
-                        
+                4: 4} # night/end game             
 }
 
 Clearcount_HP = { # for hp, posture, posture regen scaling
@@ -681,7 +680,7 @@ AreaScale_HP = {  # for enemy HP multipliers in game areas
         7998: 2.75
 }
 
-AreaScale_Attack = {  # for enemy HP multipliers in game areas
+AreaScale_Attack = {  # for enemy attack multipliers in game areas
         7000: 1.0,
         7010: 1.0,
         7011: 1.25,
