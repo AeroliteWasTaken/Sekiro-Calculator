@@ -292,6 +292,13 @@ class Window(QtWidgets.QMainWindow):
         sortingMenu.addAction(createAction("Alphabetical (Z-A)", partial(self.updateSorting, 'Alphabetical (Z-A)')))
         sortingMenu.addAction(createAction("By ID", partial(self.updateSorting, 'ID')))
 
+    def showError(self, text):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Critical)
+        msg.setWindowTitle("Error") 
+        msg.setText(text) 
+        msg.exec_() 
+   
     def initDropdown(self):
         for index, i in enumerate(self.enemiesList):
             self.EnemyComboBox.addItem("") # add enough blank entries for all enemies
@@ -299,6 +306,7 @@ class Window(QtWidgets.QMainWindow):
         self.EnemyComboBox.setCurrentIndex(-1)
 
     def updateSorting(self, mode):
+        self.EnemyComboBox.clear()
         if mode == "Alphabetical (A-Z)":
             self.enemiesList = sorted(self.enemiesList)
             self.initDropdown()
@@ -356,29 +364,6 @@ class Window(QtWidgets.QMainWindow):
         all_data = self.getTxt(mode)
         pyperclip.copy('\n'.join(all_data))
 
-    def showError(self, text):
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Critical)
-        msg.setWindowTitle("Error") 
-        msg.setText(text) 
-        msg.exec_() 
-    
-    def parseEnemy(self):
-        enemy = self.enemyIdLineEdit.text()
-        if not enemy: # if override field is empty
-            try:
-                enemy = EnemyRef.EnemyNameRef[self.EnemyComboBox.currentText()] # fetch from dropdown
-            except:
-                return False
-        try:
-            enemy = int(enemy)
-            if enemy not in EnemyBaseStats.EnemyStats:
-                raise Exception
-        except:
-            self.showError("Please select a valid enemy")
-            return False
-        return enemy
-
     def getOpts(self):
        return {
             'possessionBalloon': self.possessionBalloon,
@@ -402,6 +387,22 @@ class Window(QtWidgets.QMainWindow):
             self.update()
         else:
             return # cancel is pressed
+ 
+    def parseEnemy(self):
+        enemy = self.enemyIdLineEdit.text()
+        if not enemy: # if override field is empty
+            try:
+                enemy = EnemyRef.EnemyNameRef[self.EnemyComboBox.currentText()] # fetch from dropdown
+            except:
+                return False
+        try:
+            enemy = int(enemy)
+            if enemy not in EnemyBaseStats.EnemyStats:
+                raise Exception
+        except:
+            self.showError("Please select a valid enemy")
+            return False
+        return enemy
 
     def parseDrops(self, enemy, NG, CL, DB, Time):
         Sen, Exp = self.Functions.getExpSen(enemy=enemy, NG=NG, CL=CL)
