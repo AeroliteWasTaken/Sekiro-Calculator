@@ -397,4 +397,4 @@ if __name__ == "__main__":
     ui.show()
     sys.exit(app.exec_())
 
-# pyinstaller calc.py --noconsole --icon=calc.ico --add-data "calc.ico;."
+# pyinstaller Calculator.py --noconsole --icon=calc.ico --add-data "calc.ico;."
