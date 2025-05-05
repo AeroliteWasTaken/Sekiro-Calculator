@@ -35,5 +35,5 @@
 
 # Credits:
  - Holm - Helped a LOT with testing and comparing data, thanks!
- - Savio - For the original idea, inspiration, and moral support :)
- - Maid - Explained some intricacies with params and taught me a lot about the scalings (and saved me from hours of pain)
+ - Savio - For the original idea, inspiration, and moral support. Also did the majority of the testing for the GUI :)
+ - Maid - Explained some intricacies with params and taught me a lot about the scalings (thanks for saving me from hours of pain)
