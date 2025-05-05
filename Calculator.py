@@ -47,7 +47,7 @@ class ExtrasWindow(QDialog):
         layout.addWidget(buttons)
         self.setLayout(layout)
 
-    def get_data(self):
+    def getData(self):
         return {
             "Wealth": self.wealthballoon.isChecked(),
             "Possession": self.possesstionballoon.isChecked(),
@@ -140,7 +140,7 @@ class Window(QtWidgets.QMainWindow):
     def showExtras(self):
         dialog = ExtrasWindow(self)
         if dialog.exec_():  # ok is pressed
-            data = dialog.get_data()
+            data = dialog.getData()
             self.wealthBalloon = data['Wealth']
             self.possessionBalloon = data['Possession']
             self.spiritBalloon = data['Spirit']
