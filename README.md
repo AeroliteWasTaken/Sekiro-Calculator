@@ -1,4 +1,8 @@
 # A simple GUI application for getting basic statistics on Sekiro enemies.
+### Requirements:
+ - PyQt5
+ - pyperclip
+ - functools
 
 ## Features:
  - NG+ Scaling
