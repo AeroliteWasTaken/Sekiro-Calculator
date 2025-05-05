@@ -1,10 +1,10 @@
-from math import floor, ceil
 try:
     from Sekiro import Player, Multipliers, Enemy, Lots, Ref
 except ModuleNotFoundError:
     import Player, Multipliers, Enemy, Lots, Ref
 import copy
 import pyperclip
+from math import floor, ceil
 from PyQt5 import QtWidgets
 
 class CalcFunctions():
