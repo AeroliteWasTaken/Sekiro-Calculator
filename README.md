@@ -2,7 +2,6 @@
 ### Requirements:
  - PyQt5
  - pyperclip
- - functools
 
 ## Features:
  - NG+ Scaling
