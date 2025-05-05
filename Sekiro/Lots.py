@@ -14,19 +14,6 @@ ItemLotTypesRef = {
     1073741824: "Goods"
 }
 
-ItemLot_Time_Offset = {
-    False:
-        {1: 1,
-        2: 11,
-        3: 21,
-        4: 31},
-    True:
-        {1: 11,
-         2: 21,
-         3: 31,
-         4: 41}
-}
-
 ItemRef = {
     1000: "Spirit Emblem",
     1001: "Red Spirit Emblem",

@@ -1,210 +1,14 @@
 #GUI Reqs
 from PyQt5 import QtGui, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QDialogButtonBox
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QDialogButtonBox, QMessageBox
 #Sekiro Data and functions
-from res import Multipliers
-from res import EnemyRef
-from res import EnemyBaseStats
-from res import Lots
-from res import Utils
+from Sekiro import Ref
+from Sekiro import Enemy
+from Sekiro import Utils
 #Other
-import copy
 from os import path
 from functools import partial
-import pyperclip
-
-class Functions():
-    def __init__(self, uiInstance):
-        super().__init__()
-        self.UI = uiInstance
-    
-    @staticmethod
-    def resolveInnerEnemy(enemy):
-        if enemy in [1, 2, 3]:
-            return EnemyRef.InnerEnemyRef[enemy], enemy  # mapped enemy, original inner id
-        return enemy, None
-
-    def getStats(self, enemy, NG, CL, DB, Time, Mode, AP, attack=5000010):
-        if Mode == 0 and enemy in [1, 2, 3]:
-            Mode = 1 # inner fights cant have a "Normal" mode, so default to Reflection
-
-        enemy, changeEnemyForInner = Functions.resolveInnerEnemy(enemy)
-
-        try:
-            enemyRef = EnemyRef.EnemyRef[enemy]  # Get multipliers
-            enemyAttackRate = 1 # start with a damage multiplier of 1
-
-        except:
-            self.UI.showError("Please select a valid enemy")
-            return
-        
-        enemyStat = copy.deepcopy(EnemyBaseStats.EnemyStats[enemy]) # get all stats
- 
-        if enemy == 71001000: # if enemy is genichiro, add his other phases (separate by default)
-            enemyStat[0] = [enemyStat[0], enemyStat[0], copy.deepcopy(EnemyBaseStats.EnemyStats[71100000])[0]]
-            enemyStat[1] = [enemyStat[1], enemyStat[1], copy.deepcopy(EnemyBaseStats.EnemyStats[71100000])[1]]
-
-        else:
-            if enemy in Multipliers.Phase_HP_Multipliers.keys(): # if enemy is among named and listed minibosses/bosses
-                enemyStat[0] = Utils.mult(enemyStat[0], Multipliers.Phase_HP_Multipliers[enemy]) # multiply different phases hp
-
-            if enemy in Multipliers.Phase_Posture_Multipliers.keys(): # if enemy is among named and listed minibosses/bosses
-                enemyStat[1] = Utils.mult(enemyStat[1], Multipliers.Phase_Posture_Multipliers[enemy]) # multiply different phases posture
-
-        if Mode == 0: # normal
-            try:
-                timeOffset = Multipliers.Time_Offset[DB][Time]  # find offset for time + demon bell 
-                enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.Clearcount_HP[CL][NG])  # scale ng
-                enemyAttackRate *= Multipliers.Clearcount_Dmg[CL][NG]  # scale ng for attack
-
-                if CL and NG == 0:
-                    timeOffset += 700  # account for new game CL scaling
-                if NG > 0:
-                    enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.NGCycle_HP[enemyRef[0] + timeOffset])  # correct for ng+ scaling
-                    enemyAttackRate *= Multipliers.NGCycle_Attack[enemyRef[0] + timeOffset]  # correct for ng+ scaling (attack multiplier)
-                if CL and enemyRef[2]: # if enemy has charmless type scaling
-                    enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.Charmless_Muliplier_By_Type[enemyRef[2]])  # increase stats based off of enemy type
-                    
-                enemyStat = Utils.multiplyRecursive(enemyStat, Multipliers.AreaScale_HP[enemyRef[1] + timeOffset])  # multiply area scaling
-                enemyAttackRate *= Multipliers.AreaScale_Attack[enemyRef[1] + timeOffset]  # multiply area scaling (attack multiplier)
-
-            except:
-                # Selected Game Time is invalid for this enemy
-                return
-
-        else:
-            AP = 14 # set ap to 14 since it's fixed in reflections and gauntlets
-            if changeEnemyForInner: 
-                enemy = changeEnemyForInner # change override reference for inner fights after calculating with base enemy
-
-            if Mode == 1:  # reflection
-                if enemy in EnemyRef.ReflectionOverride.keys(): # if enemy is listed as an exception or if it is an inner fight
-                    override = EnemyRef.ReflectionOverride[enemy][(CL, DB)] # get scaling IDs from said exceptions
-                else:
-                    override = EnemyRef.ReflectionOverride[0][(CL, DB)] # use default
-
-            elif Mode == 2:  # mortal journey
-                if enemy in EnemyRef.MortalJourneyOverride.keys(): # if enemy is listed as an exception or if it is an inner fight
-                    override = EnemyRef.MortalJourneyOverride[enemy][(CL, DB)] # get scaling IDs from said exceptions
-                else:
-                    override = EnemyRef.MortalJourneyOverride[0][(CL, DB)] # use default
-            #Multiplying Scaling
-            enemyStat = Utils.mult(Multipliers.AreaScale_HP[override[0]], enemyStat) 
-            enemyStat = Utils.mult(Multipliers.NGCycle_HP[override[1]], enemyStat) 
-            enemyStat = Utils.mult(Multipliers.Charmless_Muliplier_By_Type[enemyRef[2]], enemyStat) 
-
-        enemyStat = Utils.floatConv(enemyStat)
-        output = []
-        try:
-            output.append(', '.join([str(i) for i in enemyStat[0]])) # separate different phases
-        except:
-            output.append(enemyStat[0])
-
-        try:
-            output.append(', '.join([str(i) for i in enemyStat[1]])) # separate different phases
-        except:
-            output.append(enemyStat[1])
-
-        output.append(enemyStat[2])
-        attacksNeeded = Utils.findAttacksNeeded(enemyStat[0], Utils.getPlayerDmg(AP=AP, attack=attack))
-
-        return output, AP, round(enemyAttackRate, 2), attacksNeeded
-
-    def getDropLists(self, enemy, DB, Time):
-        RdropList = []
-        NdropList = []
-        IdropList = []
-
-        ninsatuDrops = EnemyBaseStats.Enemy_NinsatuLot_Drops[enemy]
-        if ninsatuDrops[0] is not None:
-            NdropList = [Lots.Resource_Item_Lots[i] for i in ninsatuDrops if i]
-
-        resourceDrops = list(EnemyBaseStats.Enemy_ResourceLot_Drops[enemy])
-        if resourceDrops[0] is not None:
-            if (self.UI.soulBalloon or self.UI.pilgrimageBalloon) and resourceDrops[1] in Lots.Resource_Item_Lots:
-                resourceDrops.append(resourceDrops[1]+1) # add the next resourceitemlot which contains drops for isAddLottery, triggered on stateinfo 345
-            RdropList = [Lots.Resource_Item_Lots[i] for i in resourceDrops if i]
-
-        itemDrops = copy.deepcopy(EnemyBaseStats.Enemy_ItemLot_Drops[enemy])
-        if itemDrops[0] is not None: # if non mandatory itemlot drop exists
-            newLot = itemDrops[0] + Lots.ItemLot_Time_Offset[DB][Time] # add extra itemlot for time of day (separate from default, which is always on)
-            if newLot in Lots.Item_Lots:
-                itemDrops.append(newLot) # only add if demon bell lots exist
-            else:
-                return # dont add drops if time is unsupported
-        IdropList = [Lots.Item_Lots[i] for i in itemDrops if i]
-
-        return NdropList, RdropList, IdropList
-
-    def getExpSen(self, enemy, NG, CL):
-        enemyRef = EnemyRef.EnemyRef[enemy] # Get multipliers
-
-        if enemy in EnemyBaseStats.Boss_Exp_Rates.keys():
-            baseExp = EnemyBaseStats.Boss_Exp_Rates[enemy] # fetch base drop rate for exp
-        else:
-            baseExp = EnemyBaseStats.Enemy_Exp_Rates[enemy] # fetch base drop rate for exp
-        baseExp *= Multipliers.Clearcount_SenXP_Droprate[NG][1] # scale ng+ for exp
-        baseExp *= Multipliers.Charmless_SenXP_Multiplier[CL] # scale for charmless for exp
-
-        baseSen = EnemyBaseStats.Enemy_Sen_Rates[enemy] # fetch base drop rate for sen
-        baseSen *= Multipliers.Clearcount_SenXP_Droprate[NG][0] # scale ng cycle for sen
-        baseSen *= Multipliers.Charmless_SenXP_Multiplier[CL] # scale for charmless for sen
-
-        if NG > 0:
-            baseExp *= Multipliers.NGCycle_Exp_Droprate[enemyRef[0]] # scale ng+ for exp
-            baseSen *= Multipliers.NGCycle_Sen_Droprate[enemyRef[0]] # scale ng+ for sen
-
-        if self.UI.wealthBalloon:
-            baseSen *= 1.5 # account for Mibu Balloon of Wealth
-
-        if self.UI.pilgrimageBalloon:
-            baseSen *= 1.5 # account for Mibu Pilgrimage Balloon
-
-        if self.UI.mostVirtuousDeed:
-            baseSen *= 1.25 
-
-        elif self.UI.virtuousDeed:
-            baseSen *= 1.125 # is ignored if Most Virtuous Deed is active too since it replaces the buff
-
-        return baseSen, baseExp
-    
-    def addStats(self, output, attackPower, attackRate, attacksNeeded):
-        self.UI.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
-        self.UI.StatsListWidget.addItem(f"HP - {output[0]}")
-        self.UI.StatsListWidget.addItem(f"Posture - {output[1]}")
-        self.UI.StatsListWidget.addItem(f"Posture Regen - {output[2]}")
-        self.UI.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
-        self.UI.StatsListWidget.addItem(f"Damage Multiplier - x{attackRate}")
-        self.UI.StatsListWidget.addItem(f"Max hits to kill at AP{attackPower} - {attacksNeeded}")
-        self.UI.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
-
-    def addRates(self, opts, sen, exp, Ndrops, Rdrops, Idrops):
-        self.UI.DropsListWidget.clear()
-        self.UI.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
-        self.UI.DropsListWidget.addItem(f"Sen - {sen}")
-        self.UI.DropsListWidget.addItem(f"EXP - {exp}")
-        self.UI.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
-
-        for lot in Ndrops:
-            for item in lot:
-                if item[2] != 0:
-                    self.UI.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} on deathblow")
-
-        for lot in Rdrops:
-            for item in lot:
-                if item[2] != 0:
-                    chance = Utils.parseRChance(item[1], item[0], **opts)
-                    self.UI.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} - {chance}% chance")  
-
-        for lot in Idrops:
-            for item in lot:
-                if item[2] != 0:                  
-                    chance = Utils.parseIChance(item[1], **opts)
-                    self.UI.DropsListWidget.addItem(f"{item[2]} {Lots.ItemRef[item[0]]} - {chance}% chance")
-        
-        self.UI.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
+import math
 
 class ExtrasWindow(QDialog):
     def __init__(self, parent=None):
@@ -257,7 +61,7 @@ class ExtrasWindow(QDialog):
 class Window(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        self.Functions = Functions(self)
+        self.Functions = Utils.WindowFunctions(self)
         self.setupUi(self)
         self.createMenus()
         self.updateSorting("Alphabetical (A-Z)")
@@ -282,12 +86,12 @@ class Window(QtWidgets.QMainWindow):
             action.triggered.connect(func)
             return action
 
-        copyMenu.addAction(createAction("Stats", partial(self.copyTxt, "Stats")))
-        copyMenu.addAction(createAction("Drops", partial(self.copyTxt, "Drops")))
-        copyMenu.addAction(createAction("All", partial(self.copyTxt, "All")))  
-        exportMenu.addAction(createAction("Stats", partial(self.exportTxt, "Stats", "txt")))
-        exportMenu.addAction(createAction("Drops", partial(self.exportTxt, "Drops", "txt")))
-        exportMenu.addAction(createAction("All", partial(self.exportTxt, "All", "txt")))  
+        copyMenu.addAction(createAction("Stats", partial(self.Functions.copyTxt, "Stats")))
+        copyMenu.addAction(createAction("Drops", partial(self.Functions.copyTxt, "Drops")))
+        copyMenu.addAction(createAction("All", partial(self.Functions.copyTxt, "All")))  
+        exportMenu.addAction(createAction("Stats", partial(self.Functions.exportTxt, "Stats", "txt")))
+        exportMenu.addAction(createAction("Drops", partial(self.Functions.exportTxt, "Drops", "txt")))
+        exportMenu.addAction(createAction("All", partial(self.Functions.exportTxt, "All", "txt")))  
         sortingMenu.addAction(createAction("Progression", partial(self.updateSorting, 'Progression')))
         sortingMenu.addAction(createAction("Alphabetical (A-Z)", partial(self.updateSorting, 'Alphabetical (A-Z)')))
         sortingMenu.addAction(createAction("Alphabetical (Z-A)", partial(self.updateSorting, 'Alphabetical (Z-A)')))
@@ -317,53 +121,12 @@ class Window(QtWidgets.QMainWindow):
             self.initDropdown()
 
         elif mode == "Progression":
-            self.enemiesList = EnemyRef.EnemyNameRef.keys()
+            self.enemiesList = Ref.EnemyNameRef.keys()
             self.initDropdown()
 
         elif mode == "ID":
-            self.enemiesList = sorted(EnemyRef.EnemyNameRef.keys(), key=lambda k: EnemyRef.EnemyNameRef[k])
+            self.enemiesList = sorted(Ref.EnemyNameRef.keys(), key=lambda k: Ref.EnemyNameRef[k])
             self.initDropdown()
-
-    def getTxt(self, mode):
-        stats_output = []
-        drops_output = []
-        if mode in ["Stats", "All"]:
-            stats_output.append("[Stats]")
-            for i in range(self.StatsListWidget.count()):
-                stat = self.StatsListWidget.item(i).text()
-                if '--' not in stat:
-                    stats_output.append(stat)
-            stats_output.append("\n")
-
-        if mode in ["Drops", "All"]:
-            drops_output.append("[Drops]")
-            for i in range(self.DropsListWidget.count()):
-                drop = self.DropsListWidget.item(i).text()
-                if '--' not in drop:
-                    drops_output.append(drop)
-            drops_output.append("\n")
-
-        return stats_output + drops_output
-
-    def exportTxt(self, mode, filetype):
-        all_data = self.getTxt(mode)
-
-        options = QtWidgets.QFileDialog.Options()
-        filename, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self,
-            f"Export Both as {filetype.upper()}",
-            f"export.{filetype}",
-            f"{filetype.upper()} Files (*.{filetype})",
-            options=options)
-
-        if filename:
-            if filetype == "txt":
-                with open(filename, "w") as f:
-                    f.write("\n".join(all_data))
-
-    def copyTxt(self, mode):
-        all_data = self.getTxt(mode)
-        pyperclip.copy('\n'.join(all_data))
 
     def getOpts(self):
        return {
@@ -393,12 +156,12 @@ class Window(QtWidgets.QMainWindow):
         enemy = self.enemyIdLineEdit.text()
         if not enemy: # if override field is empty
             try:
-                enemy = EnemyRef.EnemyNameRef[self.EnemyComboBox.currentText()] # fetch from dropdown
+                enemy = Ref.EnemyNameRef[self.EnemyComboBox.currentText()] # fetch from dropdown
             except:
                 return False
         try:
             enemy = int(enemy)
-            if enemy not in EnemyBaseStats.EnemyStats:
+            if enemy not in Enemy.EnemyStats:
                 raise Exception
         except:
             self.showError("Please select a valid enemy")
@@ -429,7 +192,7 @@ class Window(QtWidgets.QMainWindow):
             return
 
         opts = self.getOpts()
-        self.Functions.addRates(opts, Utils.ceil(Sen), Utils.ceil(Exp), NdropList, RdropList, IdropList)  
+        self.Functions.addRates(opts, math.ceil(Sen), math.ceil(Exp), NdropList, RdropList, IdropList)  
         
     def update(self):
         enemy = self.parseEnemy()
@@ -451,7 +214,7 @@ class Window(QtWidgets.QMainWindow):
         self.parseStats(enemy, ng, cl, db, time, mode, ap)
     
     def setupUi(self, Form):
-        self.enemiesList = EnemyRef.EnemyNameRef.keys() # get list of enemy names
+        self.enemiesList = Ref.EnemyNameRef.keys() # get list of enemy names
         Form.setObjectName("Form")
         Form.setFixedSize(441, 389)
         self.timeComboBox = QtWidgets.QComboBox(Form)
@@ -629,7 +392,7 @@ class Window(QtWidgets.QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "res/calc.ico"))) # remove 'res/' and move ico to root when freezing
+    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "calc.ico"))) # remove 'res/' and move ico to root when freezing
     ui = Window()
     ui.show()
     sys.exit(app.exec_())

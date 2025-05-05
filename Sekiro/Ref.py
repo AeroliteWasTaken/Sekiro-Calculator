@@ -1347,6 +1347,19 @@ InnerEnemyRef = {
     2: 50601010,
     3: 54000000}
 
+ItemLot_Time_Offset = {
+    False:
+        {1: 1,
+        2: 11,
+        3: 21,
+        4: 31},
+    True:
+        {1: 11,
+         2: 21,
+         3: 31,
+         4: 41}
+}
+
 ReflectionOverride = {
 0: { # default
     (False, False): [7950, 7954], # default 
