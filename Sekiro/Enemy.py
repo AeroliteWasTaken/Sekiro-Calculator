@@ -1280,7 +1280,6 @@ EnemyStats = { # {NPC ID}: [{HP}, {Posture}, {Posture Regen}, {Super Armor}, {Su
 99999999: [20, 50, 20, 0, 0.4]
 }
 
-
 EnemyScaling = { # {NPC ID}: [{NG+ Scaling ID}, {Area Scaling ID}, {Charmless Scaling ID}]
 0: [None, None, None],
 1: [None, None, None],

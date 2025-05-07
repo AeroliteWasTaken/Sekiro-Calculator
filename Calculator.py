@@ -215,19 +215,19 @@ class Window(QtWidgets.QMainWindow):
         for lot in Ndrops:
             for item in lot:
                 if item[2] != 0:
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceName[item[0]]} on deathblow")
+                    self.DropsListWidget.addItem(f"{item[2]} {Reference.ResourceName[item[0]]} on deathblow")
 
         for lot in Rdrops:
             for item in lot:
                 if item[2] != 0:
                     chance = self.Functions.parseRChance(item[1], item[0], **opts)
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceName[item[0]]} - {chance}% chance")  
+                    self.DropsListWidget.addItem(f"{item[2]} {Reference.ResourceName[item[0]]} - {chance}% chance")  
 
         for lot in Idrops:
             for item in lot:
                 if item[2] != 0:                  
                     chance = self.Functions.parseIChance(item[1], **opts)
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ItemName[item[0]]} - {chance}% chance")
+                    self.DropsListWidget.addItem(f"{item[2]} {Reference.ItemName[item[0]]} - {chance}% chance")
         
         self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
