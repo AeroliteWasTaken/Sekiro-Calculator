@@ -2,7 +2,7 @@
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QDialogButtonBox, QMessageBox
 #Sekiro Data and functions
-from Sekiro import Ref
+from Sekiro import Reference
 from Sekiro import Enemy
 from Sekiro import Utils
 from Sekiro import Lots
@@ -123,11 +123,11 @@ class Window(QtWidgets.QMainWindow):
             self.initDropdown()
 
         elif mode == "Progression":
-            self.enemiesList = Ref.EnemyNameRef.keys()
+            self.enemiesList = Reference.EnemyName.keys()
             self.initDropdown()
 
         elif mode == "ID":
-            self.enemiesList = sorted(Ref.EnemyNameRef.keys(), key=lambda k: Ref.EnemyNameRef[k])
+            self.enemiesList = sorted(Reference.EnemyName.keys(), key=lambda k: Reference.EnemyName[k])
             self.initDropdown()
 
     def getTxt(self, mode):
@@ -215,19 +215,19 @@ class Window(QtWidgets.QMainWindow):
         for lot in Ndrops:
             for item in lot:
                 if item[2] != 0:
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} on deathblow")
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceName[item[0]]} on deathblow")
 
         for lot in Rdrops:
             for item in lot:
                 if item[2] != 0:
                     chance = self.Functions.parseRChance(item[1], item[0], **opts)
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} - {chance}% chance")  
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceName[item[0]]} - {chance}% chance")  
 
         for lot in Idrops:
             for item in lot:
                 if item[2] != 0:                  
                     chance = self.Functions.parseIChance(item[1], **opts)
-                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ItemRef[item[0]]} - {chance}% chance")
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ItemName[item[0]]} - {chance}% chance")
         
         self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
@@ -235,7 +235,7 @@ class Window(QtWidgets.QMainWindow):
         enemy = self.enemyIdLineEdit.text()
         if not enemy: # if override field is empty
             try:
-                enemy = Ref.EnemyNameRef[self.EnemyComboBox.currentText()] # fetch from dropdown
+                enemy = Reference.EnemyName[self.EnemyComboBox.currentText()] # fetch from dropdown
             except:
                 return False
         try:
@@ -302,7 +302,7 @@ class Window(QtWidgets.QMainWindow):
         self.parseStats(enemy, ng, cl, db, time, mode, ap)
     
     def setupUi(self, Form):
-        self.enemiesList = Ref.EnemyNameRef.keys() # get list of enemy names
+        self.enemiesList = Reference.EnemyName.keys() # get list of enemy names
         Form.setObjectName("Form")
         Form.setFixedSize(441, 389)
         self.timeComboBox = QtWidgets.QComboBox(Form)

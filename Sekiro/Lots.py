@@ -1,4 +1,4 @@
-ResourceRef = {
+ResourceName = {
     0: "Nothing",
     1: "Spirit Emblem(s)",
     2: "Unused",
@@ -7,14 +7,14 @@ ResourceRef = {
     5: "Resurrection Fragment(s)"
 }
 
-ItemLotTypesRef = {
+ItemLotTypes = {
     -1: 0,
     0: "Weapon",
     268435456: "Armor",
     1073741824: "Goods"
 }
 
-ItemRef = {
+ItemName = {
     1000: "Spirit Emblem",
     1001: "Red Spirit Emblem",
     1100: "Regenerative Power",

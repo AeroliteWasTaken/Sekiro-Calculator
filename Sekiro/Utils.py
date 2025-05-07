@@ -1,7 +1,7 @@
 try:
-    from Sekiro import Player, Multipliers, Enemy, Lots, Ref
+    from Sekiro import Player, Multipliers, Enemy, Lots, Reference
 except ModuleNotFoundError:
-    import Player, Multipliers, Enemy, Lots, Ref
+    import Player, Multipliers, Enemy, Lots, Reference
 import copy
 from math import floor, ceil
 
@@ -36,19 +36,19 @@ class CalcFunctions():
     @staticmethod
     def resolveInnerEnemy(enemy):
         if enemy in [1, 2, 3]:
-            return Ref.InnerEnemyRef[enemy], enemy  # mapped enemy, original inner id
+            return Reference.InnerEnemyRef[enemy], enemy  # mapped enemy, original inner id
         return enemy, None
     
 class SekiroFunctions():
     @staticmethod
-    def getStats(enemy, NG, CL, DB, Time, Mode, AP, attack=5000010):
+    def getStats(enemy, NG=0, CL=False, DB=False, Time=1, Mode=0, AP=1, attack=5000010):
         if Mode == 0 and enemy in [1, 2, 3]:
             Mode = 1 # inner fights cant have a "Normal" mode, so default to Reflection
 
         enemy, changeEnemyForInner = CalcFunctions.resolveInnerEnemy(enemy)
 
         try:
-            enemyRef = Ref.EnemyRef[enemy]  # Get multipliers
+            enemyRef = Enemy.EnemyScaling[enemy]  # Get multipliers
             enemyAttackRate = 1 # start with a damage multiplier of 1
 
         except:
@@ -94,16 +94,16 @@ class SekiroFunctions():
                 enemy = changeEnemyForInner # change override reference for inner fights after calculating with base enemy
 
             if Mode == 1:  # reflection
-                if enemy in Ref.ReflectionOverride.keys(): # if enemy is listed as an exception or if it is an inner fight
-                    override = Ref.ReflectionOverride[enemy][(CL, DB)] # get scaling IDs from said exceptions
+                if enemy in Reference.ReflectionOverride.keys(): # if enemy is listed as an exception or if it is an inner fight
+                    override = Reference.ReflectionOverride[enemy][(CL, DB)] # get scaling IDs from said exceptions
                 else:
-                    override = Ref.ReflectionOverride[0][(CL, DB)] # use default
+                    override = Reference.ReflectionOverride[0][(CL, DB)] # use default
 
             elif Mode == 2:  # mortal journey
-                if enemy in Ref.MortalJourneyOverride.keys(): # if enemy is listed as an exception or if it is an inner fight
-                    override = Ref.MortalJourneyOverride[enemy][(CL, DB)] # get scaling IDs from said exceptions
+                if enemy in Reference.MortalJourneyOverride.keys(): # if enemy is listed as an exception or if it is an inner fight
+                    override = Reference.MortalJourneyOverride[enemy][(CL, DB)] # get scaling IDs from said exceptions
                 else:
-                    override = Ref.MortalJourneyOverride[0][(CL, DB)] # use default
+                    override = Reference.MortalJourneyOverride[0][(CL, DB)] # use default
             #Multiplying Scaling
             enemyStat = CalcFunctions.mult(Multipliers.AreaScale_HP[override[0]], enemyStat) 
             enemyStat = CalcFunctions.mult(Multipliers.NGCycle_HP[override[1]], enemyStat) 
@@ -127,7 +127,7 @@ class SekiroFunctions():
         return output, AP, round(enemyAttackRate, 2), attacksNeeded
 
     @staticmethod
-    def getDropLists(enemy, DB, Time, soulBalloon, pilgrimageBalloon):
+    def getDropLists(enemy, DB=False, Time=1, soulBalloon=False, pilgrimageBalloon=False):
         RdropList = []
         NdropList = []
         IdropList = []
@@ -144,7 +144,7 @@ class SekiroFunctions():
 
         itemDrops = copy.deepcopy(Enemy.Enemy_ItemLot_Drops[enemy])
         if itemDrops[0] is not None: # if non mandatory itemlot drop exists
-            newLot = itemDrops[0] + Ref.ItemLot_Time_Offset[DB][Time] # add extra itemlot for time of day (separate from default, which is always on)
+            newLot = itemDrops[0] + Reference.ItemLot_Time_Offset[DB][Time] # add extra itemlot for time of day (separate from default, which is always on)
             if newLot in Lots.Item_Lots:
                 itemDrops.append(newLot) # only add if demon bell lots exist
             else:
@@ -154,8 +154,8 @@ class SekiroFunctions():
         return NdropList, RdropList, IdropList
 
     @staticmethod
-    def getExpSen(enemy, NG, CL, wealthBalloon, pilgrimageBalloon, virtuousDeed, mostVirtuousDeed):
-        enemyRef = Ref.EnemyRef[enemy] # Get multipliers
+    def getExpSen(enemy, NG=False, CL=False, wealthBalloon=False, pilgrimageBalloon=False, virtuousDeed=False, mostVirtuousDeed=False):
+        enemyRef = Enemy.EnemyScaling[enemy] # Get multipliers
 
         if enemy in Enemy.Boss_Exp_Rates.keys():
             baseExp = Enemy.Boss_Exp_Rates[enemy] # fetch base drop rate for exp
