@@ -5,10 +5,12 @@ from PyQt5.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QDialogButtonBox, Q
 from Sekiro import Ref
 from Sekiro import Enemy
 from Sekiro import Utils
+from Sekiro import Lots
 #Other
 from os import path
 from functools import partial
 import math
+import pyperclip
 
 class ExtrasWindow(QDialog):
     def __init__(self, parent=None):
@@ -57,11 +59,11 @@ class ExtrasWindow(QDialog):
             "VirtuousDeed": self.virtuousdeed.isChecked(),
             "MostVirtuousDeed": self.mostvirtuousdeed.isChecked(),
         }
-
+    
 class Window(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        self.Functions = Utils.WindowFunctions(self)
+        self.Functions = Utils.SekiroFunctions()
         self.setupUi(self)
         self.createMenus()
         self.updateSorting("Alphabetical (A-Z)")
@@ -86,12 +88,12 @@ class Window(QtWidgets.QMainWindow):
             action.triggered.connect(func)
             return action
 
-        copyMenu.addAction(createAction("Stats", partial(self.Functions.copyTxt, "Stats")))
-        copyMenu.addAction(createAction("Drops", partial(self.Functions.copyTxt, "Drops")))
-        copyMenu.addAction(createAction("All", partial(self.Functions.copyTxt, "All")))  
-        exportMenu.addAction(createAction("Stats", partial(self.Functions.exportTxt, "Stats", "txt")))
-        exportMenu.addAction(createAction("Drops", partial(self.Functions.exportTxt, "Drops", "txt")))
-        exportMenu.addAction(createAction("All", partial(self.Functions.exportTxt, "All", "txt")))  
+        copyMenu.addAction(createAction("Stats", partial(self.copyTxt, "Stats")))
+        copyMenu.addAction(createAction("Drops", partial(self.copyTxt, "Drops")))
+        copyMenu.addAction(createAction("All", partial(self.copyTxt, "All")))  
+        exportMenu.addAction(createAction("Stats", partial(self.exportTxt, "Stats", "txt")))
+        exportMenu.addAction(createAction("Drops", partial(self.exportTxt, "Drops", "txt")))
+        exportMenu.addAction(createAction("All", partial(self.exportTxt, "All", "txt")))  
         sortingMenu.addAction(createAction("Progression", partial(self.updateSorting, 'Progression')))
         sortingMenu.addAction(createAction("Alphabetical (A-Z)", partial(self.updateSorting, 'Alphabetical (A-Z)')))
         sortingMenu.addAction(createAction("Alphabetical (Z-A)", partial(self.updateSorting, 'Alphabetical (Z-A)')))
@@ -128,6 +130,47 @@ class Window(QtWidgets.QMainWindow):
             self.enemiesList = sorted(Ref.EnemyNameRef.keys(), key=lambda k: Ref.EnemyNameRef[k])
             self.initDropdown()
 
+    def getTxt(self, mode):
+        stats_output = []
+        drops_output = []
+        if mode in ["Stats", "All"]:
+            stats_output.append("[Stats]")
+            for i in range(self.StatsListWidget.count()):
+                stat = self.StatsListWidget.item(i).text()
+                if '--' not in stat:
+                    stats_output.append(stat)
+            stats_output.append("\n")
+
+        if mode in ["Drops", "All"]:
+            drops_output.append("[Drops]")
+            for i in range(self.DropsListWidget.count()):
+                drop = self.DropsListWidget.item(i).text()
+                if '--' not in drop:
+                    drops_output.append(drop)
+            drops_output.append("\n")
+
+        return stats_output + drops_output
+
+    def exportTxt(self, mode, filetype):
+        all_data = self.getTxt(mode)
+
+        options = QtWidgets.QFileDialog.Options()
+        filename, _ = QtWidgets.QFileDialog.getSaveFileName(
+            self,
+            f"Export Both as {filetype.upper()}",
+            f"export.{filetype}",
+            f"{filetype.upper()} Files (*.{filetype})",
+            options=options)
+
+        if filename:
+            if filetype == "txt":
+                with open(filename, "w") as f:
+                    f.write("\n".join(all_data))
+
+    def copyTxt(self, mode):
+        all_data = self.getTxt(mode)
+        pyperclip.copy('\n'.join(all_data))
+
     def getOpts(self):
        return {
             'possessionBalloon': self.possessionBalloon,
@@ -151,7 +194,43 @@ class Window(QtWidgets.QMainWindow):
             self.update()
         else:
             return # cancel is pressed
- 
+
+    def addStats(self, output, attackPower, attackRate, attacksNeeded):
+        self.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
+        self.StatsListWidget.addItem(f"HP - {output[0]}")
+        self.StatsListWidget.addItem(f"Posture - {output[1]}")
+        self.StatsListWidget.addItem(f"Posture Regen - {output[2]}")
+        self.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
+        self.StatsListWidget.addItem(f"Damage Multiplier - x{attackRate}")
+        self.StatsListWidget.addItem(f"Max hits to kill at AP{attackPower} - {attacksNeeded}")
+        self.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
+
+    def addRates(self, opts, sen, exp, Ndrops, Rdrops, Idrops):
+        self.DropsListWidget.clear()
+        self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
+        self.DropsListWidget.addItem(f"Sen - {sen}")
+        self.DropsListWidget.addItem(f"EXP - {exp}")
+        self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
+
+        for lot in Ndrops:
+            for item in lot:
+                if item[2] != 0:
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} on deathblow")
+
+        for lot in Rdrops:
+            for item in lot:
+                if item[2] != 0:
+                    chance = self.Functions.parseRChance(item[1], item[0], **opts)
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} - {chance}% chance")  
+
+        for lot in Idrops:
+            for item in lot:
+                if item[2] != 0:                  
+                    chance = self.Functions.parseIChance(item[1], **opts)
+                    self.DropsListWidget.addItem(f"{item[2]} {Lots.ItemRef[item[0]]} - {chance}% chance")
+        
+        self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
+
     def parseEnemy(self):
         enemy = self.enemyIdLineEdit.text()
         if not enemy: # if override field is empty
@@ -172,17 +251,26 @@ class Window(QtWidgets.QMainWindow):
         result = self.Functions.getStats(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap)
 
         if result is not None:
+            if result == 'EnemyNotFound':
+                self.showError("Please select a valid enemy")
+                return
             output, attackPower, attackRate, attacksNeeded = result
         else:
             self.StatsListWidget.addItem("Selected time is not used by this enemy for stats.")
             self.StatsListWidget.addItem("Please try using Default, or Night if Demon Bell is active.")
             return
         
-        self.Functions.addStats(output, attackPower, attackRate, attacksNeeded)
+        self.addStats(output, attackPower, attackRate, attacksNeeded)
 
     def parseDrops(self, enemy, NG, CL, DB, Time):
-        Sen, Exp = self.Functions.getExpSen(enemy=enemy, NG=NG, CL=CL)
-        result = self.Functions.getDropLists(enemy=enemy, DB=DB, Time=Time)
+        Sen, Exp = self.Functions.getExpSen(enemy=enemy, NG=NG, CL=CL, 
+                                            wealthBalloon=self.wealthBalloon, 
+                                            pilgrimageBalloon=self.pilgrimageBalloon, 
+                                            virtuousDeed=self.virtuousDeed, 
+                                            mostVirtuousDeed=self.mostVirtuousDeed)
+        result = self.Functions.getDropLists(enemy=enemy, DB=DB, Time=Time, 
+                                             pilgrimageBalloon=self.pilgrimageBalloon, 
+                                             soulBalloon=self.soulBalloon)
 
         if result is not None:
             NdropList, RdropList, IdropList = result
@@ -192,7 +280,7 @@ class Window(QtWidgets.QMainWindow):
             return
 
         opts = self.getOpts()
-        self.Functions.addRates(opts, math.ceil(Sen), math.ceil(Exp), NdropList, RdropList, IdropList)  
+        self.addRates(opts, math.ceil(Sen), math.ceil(Exp), NdropList, RdropList, IdropList)  
         
     def update(self):
         enemy = self.parseEnemy()
@@ -392,7 +480,7 @@ class Window(QtWidgets.QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "res/calc.ico"))) # remove 'res/' and move ico to root when freezing
+    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "Sekiro/calc.ico"))) # remove 'Sekiro/' and move ico to root when freezing
     ui = Window()
     ui.show()
     sys.exit(app.exec_())

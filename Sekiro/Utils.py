@@ -3,9 +3,7 @@ try:
 except ModuleNotFoundError:
     import Player, Multipliers, Enemy, Lots, Ref
 import copy
-import pyperclip
 from math import floor, ceil
-from PyQt5 import QtWidgets
 
 class CalcFunctions():
     @staticmethod
@@ -41,11 +39,9 @@ class CalcFunctions():
             return Ref.InnerEnemyRef[enemy], enemy  # mapped enemy, original inner id
         return enemy, None
     
-class WindowFunctions():
-    def __init__(self, uiInstance):
-        self.UI = uiInstance
-
-    def getStats(self, enemy, NG, CL, DB, Time, Mode, AP, attack=5000010):
+class SekiroFunctions():
+    @staticmethod
+    def getStats(enemy, NG, CL, DB, Time, Mode, AP, attack=5000010):
         if Mode == 0 and enemy in [1, 2, 3]:
             Mode = 1 # inner fights cant have a "Normal" mode, so default to Reflection
 
@@ -56,8 +52,7 @@ class WindowFunctions():
             enemyAttackRate = 1 # start with a damage multiplier of 1
 
         except:
-            self.UI.showError("Please select a valid enemy")
-            return
+            return 'EnemyNotFound'
         
         enemyStat = copy.deepcopy(Enemy.EnemyStats[enemy]) # get all stats
 
@@ -127,11 +122,12 @@ class WindowFunctions():
             output.append(enemyStat[1])
 
         output.append(enemyStat[2])
-        attacksNeeded = WindowFunctions.findAttacksNeeded(enemyStat[0], WindowFunctions.getPlayerDmg(AP=AP, attack=attack))
+        attacksNeeded = SekiroFunctions.findAttacksNeeded(enemyStat[0], SekiroFunctions.getPlayerDmg(AP=AP, attack=attack))
 
         return output, AP, round(enemyAttackRate, 2), attacksNeeded
 
-    def getDropLists(self, enemy, DB, Time):
+    @staticmethod
+    def getDropLists(enemy, DB, Time, soulBalloon, pilgrimageBalloon):
         RdropList = []
         NdropList = []
         IdropList = []
@@ -142,7 +138,7 @@ class WindowFunctions():
 
         resourceDrops = list(Enemy.Enemy_ResourceLot_Drops[enemy])
         if resourceDrops[0] is not None:
-            if (self.UI.soulBalloon or self.UI.pilgrimageBalloon) and resourceDrops[1] in Lots.Resource_Item_Lots:
+            if (soulBalloon or pilgrimageBalloon) and resourceDrops[1] in Lots.Resource_Item_Lots:
                 resourceDrops.append(resourceDrops[1]+1) # add the next resourceitemlot which contains drops for isAddLottery, triggered on stateinfo 345
             RdropList = [Lots.Resource_Item_Lots[i] for i in resourceDrops if i]
 
@@ -157,7 +153,8 @@ class WindowFunctions():
 
         return NdropList, RdropList, IdropList
 
-    def getExpSen(self, enemy, NG, CL):
+    @staticmethod
+    def getExpSen(enemy, NG, CL, wealthBalloon, pilgrimageBalloon, virtuousDeed, mostVirtuousDeed):
         enemyRef = Ref.EnemyRef[enemy] # Get multipliers
 
         if enemy in Enemy.Boss_Exp_Rates.keys():
@@ -175,56 +172,21 @@ class WindowFunctions():
             baseExp *= Multipliers.NGCycle_Exp_Droprate[enemyRef[0]] # scale ng+ for exp
             baseSen *= Multipliers.NGCycle_Sen_Droprate[enemyRef[0]] # scale ng+ for sen
 
-        if self.UI.wealthBalloon:
+        if wealthBalloon:
             baseSen *= 1.5 # account for Mibu Balloon of Wealth
 
-        if self.UI.pilgrimageBalloon:
+        if pilgrimageBalloon:
             baseSen *= 1.5 # account for Mibu Pilgrimage Balloon
 
-        if self.UI.mostVirtuousDeed:
+        if mostVirtuousDeed:
             baseSen *= 1.25 
 
-        elif self.UI.virtuousDeed:
+        elif virtuousDeed:
             baseSen *= 1.125 # is ignored if Most Virtuous Deed is active too since it replaces the buff
 
         return baseSen, baseExp
 
-    def addStats(self, output, attackPower, attackRate, attacksNeeded):
-        self.UI.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
-        self.UI.StatsListWidget.addItem(f"HP - {output[0]}")
-        self.UI.StatsListWidget.addItem(f"Posture - {output[1]}")
-        self.UI.StatsListWidget.addItem(f"Posture Regen - {output[2]}")
-        self.UI.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
-        self.UI.StatsListWidget.addItem(f"Damage Multiplier - x{attackRate}")
-        self.UI.StatsListWidget.addItem(f"Max hits to kill at AP{attackPower} - {attacksNeeded}")
-        self.UI.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
-
-    def addRates(self, opts, sen, exp, Ndrops, Rdrops, Idrops):
-        self.UI.DropsListWidget.clear()
-        self.UI.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
-        self.UI.DropsListWidget.addItem(f"Sen - {sen}")
-        self.UI.DropsListWidget.addItem(f"EXP - {exp}")
-        self.UI.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
-
-        for lot in Ndrops:
-            for item in lot:
-                if item[2] != 0:
-                    self.UI.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} on deathblow")
-
-        for lot in Rdrops:
-            for item in lot:
-                if item[2] != 0:
-                    chance = WindowFunctions.parseRChance(item[1], item[0], **opts)
-                    self.UI.DropsListWidget.addItem(f"{item[2]} {Lots.ResourceRef[item[0]]} - {chance}% chance")  
-
-        for lot in Idrops:
-            for item in lot:
-                if item[2] != 0:                  
-                    chance = WindowFunctions.parseIChance(item[1], **opts)
-                    self.UI.DropsListWidget.addItem(f"{item[2]} {Lots.ItemRef[item[0]]} - {chance}% chance")
-        
-        self.UI.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
-
+    @staticmethod
     def getPlayerDmg(AP=1, attack=5000010):
         if attack in [900, 901, 903]: # jump kick
             baseDmg = 10
@@ -240,6 +202,7 @@ class WindowFunctions():
 
         return ceil(baseDmg)
 
+    @staticmethod
     def findAttacksNeeded(hp, dmg):
         out = []
         if isinstance(hp, list):
@@ -248,6 +211,7 @@ class WindowFunctions():
             return ', '.join(out)
         return str(ceil(hp/dmg))
 
+    @staticmethod
     def parseIChance(weight, **args):
         buffs = Multipliers.Item_Discovery_Buffs
         buff = 1
@@ -264,6 +228,7 @@ class WindowFunctions():
         chance = round(100 * (weight * buff) / ((weight * buff) + (1000 - weight)))
         return 100 if chance > 100 else chance
 
+    @staticmethod
     def parseRChance(chance, resource, **args):
         buff = 1
 
@@ -276,6 +241,7 @@ class WindowFunctions():
         chance = round(1000 * (chance * buff) / ((chance * buff) + (1000 - chance)))
         return 100 if chance > 100 else chance
 
+    @staticmethod
     def getEXP(n, val=0):
         for i in range(n):
             if i < 24:
@@ -285,45 +251,4 @@ class WindowFunctions():
             val += floor(add)
                 
         return int(val)
-
-    def getTxt(self, mode):
-        stats_output = []
-        drops_output = []
-        if mode in ["Stats", "All"]:
-            stats_output.append("[Stats]")
-            for i in range(self.UI.StatsListWidget.count()):
-                stat = self.UI.StatsListWidget.item(i).text()
-                if '--' not in stat:
-                    stats_output.append(stat)
-            stats_output.append("\n")
-
-        if mode in ["Drops", "All"]:
-            drops_output.append("[Drops]")
-            for i in range(self.UI.DropsListWidget.count()):
-                drop = self.UI.DropsListWidget.item(i).text()
-                if '--' not in drop:
-                    drops_output.append(drop)
-            drops_output.append("\n")
-
-        return stats_output + drops_output
-
-    def exportTxt(self, mode, filetype):
-        all_data = WindowFunctions.getTxt(self, mode=mode)
-
-        options = QtWidgets.QFileDialog.Options()
-        filename, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self.UI,
-            f"Export Both as {filetype.upper()}",
-            f"export.{filetype}",
-            f"{filetype.upper()} Files (*.{filetype})",
-            options=options)
-
-        if filename:
-            if filetype == "txt":
-                with open(filename, "w") as f:
-                    f.write("\n".join(all_data))
-
-    def copyTxt(self, mode):
-        all_data = WindowFunctions.getTxt(self, mode=mode)
-        pyperclip.copy('\n'.join(all_data))
 
