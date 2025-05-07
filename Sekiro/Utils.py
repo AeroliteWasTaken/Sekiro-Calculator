@@ -242,7 +242,8 @@ class SekiroFunctions():
         return 100 if chance > 100 else chance
 
     @staticmethod
-    def getEXP(n, val=0):
+    def calculateEXP(n):
+        val = 0
         for i in range(n):
             if i < 24:
                 add = 0.1*(i+70)**2+10
