@@ -36,7 +36,7 @@ class CalcFunctions():
     @staticmethod
     def resolveInnerEnemy(enemy):
         if enemy in [1, 2, 3]:
-            return Reference.InnerEnemyRef[enemy], enemy  # mapped enemy, original inner id
+            return Reference.InnerEnemy[enemy], enemy  # mapped enemy, original inner id
         return enemy, None
     
 class SekiroFunctions():
