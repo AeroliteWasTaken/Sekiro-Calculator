@@ -1,2 +1,3 @@
-\App
-\Sekiro.egg-info
+App/
+Sekiro.egg-info/
+.gitignore
