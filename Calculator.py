@@ -195,14 +195,14 @@ class Window(QtWidgets.QMainWindow):
         else:
             return # cancel is pressed
 
-    def addStats(self, output, attackPower, attackRate, attacksNeeded):
+    def addStats(self, hp, posture, regen, ap, attackRate, attacksNeeded):
         self.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
-        self.StatsListWidget.addItem(f"HP - {output[0]}")
-        self.StatsListWidget.addItem(f"Posture - {output[1]}")
-        self.StatsListWidget.addItem(f"Posture Regen - {output[2]}")
+        self.StatsListWidget.addItem(f"HP - {hp}")
+        self.StatsListWidget.addItem(f"Posture - {posture}")
+        self.StatsListWidget.addItem(f"Posture Regen - {regen}")
         self.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
         self.StatsListWidget.addItem(f"Damage Multiplier - x{attackRate}")
-        self.StatsListWidget.addItem(f"Max hits to kill at AP{attackPower} - {attacksNeeded}")
+        self.StatsListWidget.addItem(f"Max hits to kill at AP{ap} - {attacksNeeded}")
         self.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
     def addRates(self, opts, sen, exp, Ndrops, Rdrops, Idrops):
@@ -254,13 +254,13 @@ class Window(QtWidgets.QMainWindow):
             if result == 'EnemyNotFound':
                 self.showError("Please select a valid enemy")
                 return
-            output, attackPower, attackRate, attacksNeeded = result
+            hp, posture, regen, attackRate, attacksNeeded = result.values()
         else:
             self.StatsListWidget.addItem("Selected time is not used by this enemy for stats.")
             self.StatsListWidget.addItem("Please try using Default, or Night if Demon Bell is active.")
             return
         
-        self.addStats(output, attackPower, attackRate, attacksNeeded)
+        self.addStats(hp, posture, regen, ap, attackRate, attacksNeeded)
 
     def parseDrops(self, enemy, NG, CL, DB, Time):
         Sen, Exp = self.Functions.getExpSen(enemy=enemy, NG=NG, CL=CL, 
@@ -480,7 +480,7 @@ class Window(QtWidgets.QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "Sekiro/calc.ico"))) # remove 'Sekiro/' and move ico to root when freezing
+    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "calc.ico"))) # remove 'Sekiro/' and move ico to root when freezing
     ui = Window()
     ui.show()
     sys.exit(app.exec_())

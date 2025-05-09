@@ -122,9 +122,15 @@ class SekiroFunctions():
             output.append(enemyStat[1])
 
         output.append(enemyStat[2])
-        attacksNeeded = SekiroFunctions.findAttacksNeeded(enemyStat[0], SekiroFunctions.getPlayerDmg(AP=AP, attack=attack))
+        attacksNeeded = SekiroFunctions.findAttacksNeeded(enemyStat[0], SekiroFunctions.parseDamage(AP=AP, attack=attack))
 
-        return output, AP, round(enemyAttackRate, 2), attacksNeeded
+        return {
+            "HP": output[0],
+            "Posture": output[1],
+            "Posture Regen": output[2],
+            "Damage Multiplier": round(enemyAttackRate, 2),
+            f"Max hits to kill at AP{AP}": attacksNeeded}
+
 
     @staticmethod
     def getDropLists(enemy, DB=False, Time=1, soulBalloon=False, pilgrimageBalloon=False):
@@ -187,20 +193,53 @@ class SekiroFunctions():
         return baseSen, baseExp
 
     @staticmethod
-    def getPlayerDmg(AP=1, attack=5000010):
-        if attack in [900, 901, 903]: # jump kick
-            baseDmg = 10
-        elif attack == 3520: # throwing oil
-            return 1
-        else:
-            baseDmg = 40 # base for most attacks and CAs
-        baseDmg *= Player.Player_Attack_Power.get(AP, 1) # multiply by AP
-        atkCorrect = Player.Player_Attacks[attack][2] # get atkPhysCorrection
+    def parseDamage(attack=5000010, AP=1, mode="Player", dmgType='atkPhys'):
+        if mode == "Player":
+            baseDmg = Player.Player_Attacks[attack][dmgType]
+            atkCorrect = Player.Player_Attacks[attack][f'{dmgType}Correction'] # get multiplier
+            if baseDmg == 0 and atkCorrect > 0: 
+                baseDmg = 40 # base for most player attacks and CA's
 
-        if atkCorrect > 0:
-            baseDmg *= Player.Player_Attacks[attack][2]/100 # multiply if possible
+            if dmgType == 'atkStam':
+                baseDmg *= 2
+
+            baseDmg *= Player.Player_Attack_Power.get(AP, 1) # multiply by AP
+            
+            if atkCorrect > 0:
+                baseDmg *= atkCorrect/100 # multiply if possible
+        
+        elif mode == "Enemy":
+            baseDmg = Enemy.Enemy_Attacks[attack][dmgType]
+            atkCorrect = Enemy.Enemy_Attacks[attack][f'{dmgType}Correction'] # get multiplier
+
+            if atkCorrect > 0:
+                baseDmg *= atkCorrect/100 # multiply if possible
 
         return ceil(baseDmg)
+    
+    @staticmethod
+    def getDamage(attack=5000010, AP=1, mode="Player"):
+        output = {}
+        dmgTypes = {
+            'Physical': 'atkPhys',
+            'Posture': 'atkStam',
+            'Magic': 'atkMag',
+            'Fire': 'atkFire',
+            'Lightning': 'atkThun',
+            'Dark': 'atkDark'}
+        
+        if mode == "Player":
+            output['Attack Type'] = Reference.Attack_Attribute[Player.Player_Attacks[attack]['atkAttribute']]
+            output['Effect Type'] = Reference.Special_Attribute[Player.Player_Attacks[attack]['spAttribute']]
+        elif mode == 'Enemy':
+            output['Attack Type'] = Reference.Attack_Attribute[Enemy.Enemy_Attacks[attack]['atkAttribute']]
+            output['Effect Type'] = Reference.Special_Attribute[Enemy.Enemy_Attacks[attack]['spAttribute']]
+
+        for key, val in dmgTypes.items():
+            dmg = SekiroFunctions.parseDamage(attack=attack, AP=AP, mode=mode, dmgType=val)
+            output[key] = dmg
+
+        return output
 
     @staticmethod
     def findAttacksNeeded(hp, dmg):

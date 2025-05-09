@@ -487,3 +487,27 @@ MortalJourneyOverride = {
     (False, True): [7989, 7997], # db
     (True, True): [7987, 7995]}, # cldb
 }
+
+Attack_Attribute = {
+    1: "Slash",
+    2: "Light Hit",
+    3: "Thrust",
+    4: "Neutral",
+    5: "Deathblow",
+    6: "Heavy Hit",
+    7: "Aerial",
+    8: "Anti-Air",
+    9: "Light Shot",
+    10: "Attribute A",
+    11: "Attribute B",
+    12: "Attribute C"
+}
+
+Special_Attribute = {
+    1: "Normal",
+    2: "Fire",
+    3: "Magic",
+    4: "Poison",
+    6: "Lightning (Grounded)",
+    10: "Lightning (In Air)"
+}
