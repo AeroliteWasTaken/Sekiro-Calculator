@@ -275,8 +275,8 @@ class Window(QtWidgets.QMainWindow):
                                              soulBalloon=self.soulBalloon)
 
         if result is None: 
-            self.StatsListWidget.addItem("Selected time does not update this enemy's drops.")
-            self.StatsListWidget.addItem("Stats could still be affected by this time cycle.")
+            self.DropsListWidget.addItem("Selected time does not update this enemy's drops.")
+            self.DropsListWidget.addItem("Stats could still be affected by this time cycle.")
             self.DropsListWidget.addItem("Please try using Default or Night instead.")
             return
         
