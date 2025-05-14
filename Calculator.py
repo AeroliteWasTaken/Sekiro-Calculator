@@ -244,21 +244,23 @@ class Window(QtWidgets.QMainWindow):
                 raise Exception
         except:
             self.showError("Please select a valid enemy")
+            self.enemyIdLineEdit.clear()
             return False
         return enemy
 
     def parseStats(self, enemy, ng, cl, db, time, mode, ap):
         result = self.Functions.getStats(enemy=enemy, NG=ng, CL=cl, DB=db, Time=time, Mode=mode, AP=ap)
 
-        if result is not None:
-            if result == 'EnemyNotFound':
-                self.showError("Please select a valid enemy")
-                return
-            hp, posture, regen, attackRate, attacksNeeded = result.values()
-        else:
-            self.StatsListWidget.addItem("Selected time is not used by this enemy for stats.")
+        if result is None:
+            self.StatsListWidget.addItem("Selected time does not update this enemy's stats.")
+            self.StatsListWidget.addItem("Drops could still be affected by this time cycle.")
             self.StatsListWidget.addItem("Please try using Default, or Night if Demon Bell is active.")
             return
+        
+        if result == 'EnemyNotFound':
+                self.showError("Please select a valid enemy")
+                return
+        hp, posture, regen, attackRate, attacksNeeded = result.values()
         
         self.addStats(hp, posture, regen, ap, attackRate, attacksNeeded)
 
@@ -272,13 +274,13 @@ class Window(QtWidgets.QMainWindow):
                                              pilgrimageBalloon=self.pilgrimageBalloon, 
                                              soulBalloon=self.soulBalloon)
 
-        if result is not None:
-            NdropList, RdropList, IdropList = result
-        else: 
-            self.DropsListWidget.addItem("Selected time is not used by this enemy for drops.")
+        if result is None: 
+            self.StatsListWidget.addItem("Selected time does not update this enemy's drops.")
+            self.StatsListWidget.addItem("Stats could still be affected by this time cycle.")
             self.DropsListWidget.addItem("Please try using Default or Night instead.")
             return
-
+        
+        NdropList, RdropList, IdropList = result
         opts = self.getOpts()
         self.addRates(opts, math.ceil(Sen), math.ceil(Exp), NdropList, RdropList, IdropList)  
         

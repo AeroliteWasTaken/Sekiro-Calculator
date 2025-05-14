@@ -131,7 +131,6 @@ class SekiroFunctions():
             "Damage Multiplier": round(enemyAttackRate, 2),
             f"Max hits to kill at AP{AP}": attacksNeeded}
 
-
     @staticmethod
     def getDropLists(enemy, DB=False, Time=1, soulBalloon=False, pilgrimageBalloon=False):
         RdropList = []
