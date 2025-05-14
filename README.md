@@ -31,6 +31,14 @@
  - Sen numbers might be off by a small margin due to weird behaviour with ClearCountCorrectParams
  - All of the stuff in Extra Options is pretty experimental, please DM me on discord (worstsniper11) if you find any issues.
 
+## How to get NpcParamIds:
+1. Download [UXM](https://www.nexusmods.com/eldenring/mods/1651?tab=files) and [Smithbox](https://github.com/vawser/Smithbox/releases)
+2. Unpack the game with UXM by inputting the executable path
+3. Open Smithbox and make a new project
+4. Go to Map Editor, right click the map that the enemy you want is in, and click load
+5. Find the enemy and click on it (you move by holding right click over the viewport)
+6. On the right, click properties and scroll down to find NPC Param ID, copy this and paste it into the field within the calculator
+
 # Credits:
  - Holm - Helped a LOT with testing and comparing data, thanks!
  - Savio - For the original idea, inspiration, and moral support. Also did the majority of the testing for the GUI :)
