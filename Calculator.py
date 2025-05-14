@@ -482,7 +482,7 @@ class Window(QtWidgets.QMainWindow):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "calc.ico"))) # remove 'Sekiro/' and move ico to root when freezing
+    app.setWindowIcon(QtGui.QIcon(path.join(path.dirname(path.abspath(__file__)), "calc.ico")))
     ui = Window()
     ui.show()
     sys.exit(app.exec_())
