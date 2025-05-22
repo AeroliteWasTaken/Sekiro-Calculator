@@ -167,7 +167,7 @@ class SekiroFunctions():
         else:
             baseExp = Enemy.ExpRates[enemy] # fetch base drop rate for exp
         baseExp *= Multipliers.ClearcountDroprate[NG][1] # scale ng+ for exp
-        baseExp *= Multipliers.CharmlessSenEXP[CL] # scale for charmless for exp
+        baseExp *= Multipliers.CharmlessSenExp[CL] # scale for charmless for exp
 
         baseSen = Enemy.SenRates[enemy] # fetch base drop rate for sen
         baseSen *= Multipliers.ClearcountDroprate[NG][0] # scale ng cycle for sen
@@ -194,8 +194,8 @@ class SekiroFunctions():
     @staticmethod
     def parseDamage(attack=5000010, AP=1, mode="Player", dmgType='atkPhys'):
         if mode == "Player":
-            baseDmg = Player.PlayerAttacks[attack][dmgType]
-            atkCorrect = Player.PlayerAttacks[attack][f'{dmgType}Correction'] # get multiplier
+            baseDmg = Player.Attacks[attack][dmgType]
+            atkCorrect = Player.Attacks[attack][f'{dmgType}Correction'] # get multiplier
             if baseDmg == 0 and atkCorrect > 0: 
                 baseDmg = 40 # base for most player attacks and CA's
 
@@ -228,8 +228,8 @@ class SekiroFunctions():
             'Dark': 'atkDark'}
         
         if mode == "Player":
-            output['Attack Type'] = Reference.AttackAttribute[Player.PlayerAttacks[attack]['atkAttribute']]
-            output['Effect Type'] = Reference.SpecialAttribute[Player.PlayerAttacks[attack]['spAttribute']]
+            output['Attack Type'] = Reference.AttackAttribute[Player.Attacks[attack]['atkAttribute']]
+            output['Effect Type'] = Reference.SpecialAttribute[Player.Attacks[attack]['spAttribute']]
         elif mode == 'Enemy':
             output['Attack Type'] = Reference.AttackAttribute[Enemy.Attacks[attack]['atkAttribute']]
             output['Effect Type'] = Reference.SpecialAttribute[Enemy.Attacks[attack]['spAttribute']]
