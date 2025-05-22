@@ -1,15 +1,15 @@
-Charmless_Poison_Resistance_Scaling = {False: 1.1, True: 1.35} # for enemy poison resistance when charmless
+Charmless_Poison_Resistance = {False: 1.1, True: 1.35} # for enemy poison resistance when charmless
 
-Charmless_SenXP_Multiplier = {False: 1, True: 1.2} # for xp and sen drop multipliers when charmless
+CharmlessSenExp = {False: 1, True: 1.2} # for xp and sen drop multipliers when charmless
 
-Charmless_Muliplier_By_Type = { # for enemy stat bonuses when charmless
+CharmlessByType = { # for enemy stat bonuses when charmless
                             -1: 1,
                             7900: 1.5, # small
                             7901: 1.2, # strong
                             7902: 1.125, # miniboss
                             7903: 1} # boss
 
-Phase_HP_Multipliers = {
+PhaseChangeHP = {
     51000000: [1, 1.1], # ape
     50000000: [1, 0.75, 1.0625], # tmonk
     50601010: [1, 0.89], # owl father
@@ -17,12 +17,12 @@ Phase_HP_Multipliers = {
     54000000: [1, 1.27, 1.27] # ssi 
 }
 
-Phase_Posture_Multipliers = {
+PhaseChangePosture = {
     51000000: [1, 1.1], # ape 
     50000000: [1, 0.8, 1]  # tmonk
 }
 
-Time_Offset = { # offsets area scaling based on time and whether demon bell is active or not
+TimeOffset = { # offsets area scaling based on time and whether demon bell is active or not
         False: 
                 {1: 0, # dawn/default
                 2: 1, # noon
@@ -35,7 +35,7 @@ Time_Offset = { # offsets area scaling based on time and whether demon bell is a
                 4: 4} # night/end game             
 }
 
-Clearcount_HP = { # for hp, posture, posture regen scaling
+ClearcountHP = { # for hp, posture, posture regen scaling
                         False: { # charmed
                                 0: 1, # ng
                                 1: 1, # ng+1
@@ -56,7 +56,7 @@ Clearcount_HP = { # for hp, posture, posture regen scaling
                                 7: 1.9} # ng+7
 }
 
-Clearcount_Dmg = { # for physical and attribute damage scaling
+ClearcountDMG = { # for physical and attribute damage scaling
                         False: { # charmed
                                 0: 1, # ng
                                 1: 1, # ng+1
@@ -77,7 +77,7 @@ Clearcount_Dmg = { # for physical and attribute damage scaling
                                 7: 1.6} # ng+7
 }
 
-Clearcount_SenXP_Droprate = { # for sen and xp multipliers in ng+ cycles (respectively)
+ClearcountDroprate = { # for sen and xp multipliers in ng+ cycles (respectively)
                             0: [1, 1],
                             1: [1, 1],
                             2: [1.1, 1.5],
@@ -87,7 +87,7 @@ Clearcount_SenXP_Droprate = { # for sen and xp multipliers in ng+ cycles (respec
                             6: [1.25, 3.5],
                             7: [1.275, 4.5]}
 
-Super_Armor_Dmg = { # for SA dmg across NG cycles
+SuperArmorDMG = { # for Super Armor dmg across NG cycles
                         False: { # charmed
                                 0: None, # ng
                                 1: 1, # ng+1
@@ -108,7 +108,7 @@ Super_Armor_Dmg = { # for SA dmg across NG cycles
                                 7: 0.6} # ng+7
 }
 
-NGCycle_Sen_Droprate = { # for sen droprate in ng+ cycles
+NGCycleSen = { # for sen droprate in ng+ cycles
         7500: 0.0,
         7510: 5.0,
         7511: 5.0,
@@ -214,7 +214,7 @@ NGCycle_Sen_Droprate = { # for sen droprate in ng+ cycles
         7999: 0.0
 }
 
-NGCycle_Exp_Droprate = { # for exp droprate in ng+ cycles
+NGCycleExp = { # for exp droprate in ng+ cycles
         7500: 0.0,
         7510: 15.0,
         7511: 15.0,
@@ -320,7 +320,7 @@ NGCycle_Exp_Droprate = { # for exp droprate in ng+ cycles
         7999: 0.0
 }
 
-NGCycle_HP = { # for enemy HP multipliers in ng+ cycles
+NGCycleHP = { # for enemy HP multipliers in ng+ cycles
         7500: 4.35,
         7510: 4.35,
         7511: 3.5,
@@ -426,7 +426,7 @@ NGCycle_HP = { # for enemy HP multipliers in ng+ cycles
         7999: 1.5
 }
 
-NGCycle_Attack = { # for enemy attack multipliers in ng+ cycles
+NGCycleAttack = { # for enemy attack multipliers in ng+ cycles
         7500: 3.35,
         7510: 3.35,
         7511: 2.75,
@@ -532,7 +532,7 @@ NGCycle_Attack = { # for enemy attack multipliers in ng+ cycles
         7999: 1.165
 }
 
-AreaScale_HP = {  # for enemy HP multipliers in game areas
+AreaScaleHP = {  # for enemy HP multipliers in game areas
         7000: 1.0,
         7010: 1.0,
         7011: 1.25,
@@ -680,7 +680,7 @@ AreaScale_HP = {  # for enemy HP multipliers in game areas
         7998: 2.75
 }
 
-AreaScale_Attack = {  # for enemy attack multipliers in game areas
+AreaScaleAttack = {  # for enemy attack multipliers in game areas
         7000: 1.0,
         7010: 1.0,
         7011: 1.25,
@@ -828,7 +828,7 @@ AreaScale_Attack = {  # for enemy attack multipliers in game areas
         7998: 3.0
 }
 
-Item_Discovery_Buffs = {
+ItemDiscovery = {
         'possessionBalloon': 0.5,
         'pilgrimageBalloon': 0.5,
         'virtuousDeed': 0.5,

@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QDialogButtonBox, Q
 from Sekiro import Reference
 from Sekiro import Enemy
 from Sekiro import Utils
-from Sekiro import Lots
 #Other
 from os import path
 from functools import partial
@@ -240,7 +239,7 @@ class Window(QtWidgets.QMainWindow):
                 return False
         try:
             enemy = int(enemy)
-            if enemy not in Enemy.EnemyStats:
+            if enemy not in Enemy.Stats:
                 raise Exception
         except:
             self.showError("Please select a valid enemy")

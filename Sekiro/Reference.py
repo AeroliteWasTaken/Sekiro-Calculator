@@ -374,7 +374,7 @@ InnerEnemy = {
     2: 50601010,
     3: 54000000}
 
-ItemLot_Time_Offset = {
+ItemLotTimeOffset = {
     False:
         {1: 1,
         2: 11,
@@ -488,7 +488,7 @@ MortalJourneyOverride = {
     (True, True): [7987, 7995]}, # cldb
 }
 
-Attack_Attribute = {
+AttackAttribute = {
     1: "Slash",
     2: "Light Hit",
     3: "Thrust",
@@ -503,7 +503,7 @@ Attack_Attribute = {
     12: "Attribute C"
 }
 
-Special_Attribute = {
+SpecialAttribute = {
     1: "Normal",
     2: "Fire",
     3: "Magic",

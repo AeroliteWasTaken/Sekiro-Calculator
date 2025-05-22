@@ -1,4 +1,4 @@
-Player_Attack_Power = { # attack multipliers for each AP level
+AttackPower = { # attack multipliers for each AP level
 0: 1.0,
 1: 1.0,
 2: 1.25,
@@ -101,7 +101,7 @@ Player_Attack_Power = { # attack multipliers for each AP level
 99: 7.23
 }
 
-Player_Vitality = { # {Vitality}: [{HP}, {Posture}, {Posture regen per second}]
+Vitality = { # {Vitality}: [{HP}, {Posture}, {Posture regen per second}]
 10: [320, 120, 30],
 11: [400, 150, 37],
 12: [480, 180, 45],
@@ -116,7 +116,7 @@ Player_Vitality = { # {Vitality}: [{HP}, {Posture}, {Posture regen per second}]
 }
 
 # for BehaviourParam_Pc category 1 - Kusabimaru and combat arts
-Player_Sword_Attacks_Ref = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
+SwordAttacks = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
 105000000: ["Right-handed sword_reservoir 1", 0, 5000000],
 105000001: ["Right-handed sword_reservoir 2", 0, 5000001],
 105000006: ["Right hand sword_reservoir 2_reverse foot", 0, 5000006],
@@ -349,7 +349,7 @@ Player_Sword_Attacks_Ref = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam
 }
 
 # for BehaviourParam_Pc category 2 - Prosthetics
-Player_Prosthetic_Attacks_Ref = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
+ProstheticAttacks = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
 107000100: ["Shuriken_Reservoir 1/3 throw", 1, 700000],
 107000110: ["Shuriken_2nd throw", 1, 700010],
 107000150: ["Shuriken_1 / 3rd throw", 1, 700050],
@@ -539,7 +539,7 @@ Player_Prosthetic_Attacks_Ref = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - Atk
 }
 
 # for BehaviourParam_Pc category 5 - Throws and deathblows
-Player_Throws = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}] 
+Throws = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}] 
 4: ["Object destruction attack for automatic patrol", 1, 4],
 6: ["Object destruction attack for automatic patrol_for debugging function verification", 1, 6],
 10: ["PC_common_ egg attack", 0, 10],
@@ -582,7 +582,7 @@ Player_Throws = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bulle
 }
 
 # for BehaviourParam_Pc category 9 - Bullets attached to combat arts
-Player_CA_Bullets_Ref = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
+Bullets = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
 900: ["Kick", 0, 900],
 901: ["Kick_in the air", 0, 901],
 903: ["Kick_dash", 0, 903],
@@ -665,7 +665,7 @@ Player_CA_Bullets_Ref = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1
 107402100: ["Transformation LV3_ activation impact", 1, 740200]
 }
 
-Player_Attacks = {
+Attacks = {
 0: {"Name": "Dummy bullet ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 1: {"Name": "Dummy bullets_see per map_normal ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 4: {"Name": "For destroying automatic patrol objects ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},

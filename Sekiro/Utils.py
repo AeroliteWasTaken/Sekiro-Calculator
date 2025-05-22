@@ -48,41 +48,41 @@ class SekiroFunctions():
         enemy, changeEnemyForInner = CalcFunctions.resolveInnerEnemy(enemy)
 
         try:
-            enemyRef = Enemy.EnemyScaling[enemy]  # Get multipliers
+            enemyRef = Enemy.Scaling[enemy]  # Get multipliers
             enemyAttackRate = 1 # start with a damage multiplier of 1
 
         except:
             return 'EnemyNotFound'
         
-        enemyStat = copy.deepcopy(Enemy.EnemyStats[enemy]) # get all stats
+        enemyStat = copy.deepcopy(Enemy.Stats[enemy]) # get all stats
 
         if enemy == 71001000: # if enemy is genichiro, add his other phases (separate by default)
-            enemyStat[0] = [enemyStat[0], enemyStat[0], copy.deepcopy(Enemy.EnemyStats[71100000])[0]]
-            enemyStat[1] = [enemyStat[1], enemyStat[1], copy.deepcopy(Enemy.EnemyStats[71100000])[1]]
+            enemyStat[0] = [enemyStat[0], enemyStat[0], copy.deepcopy(Enemy.Stats[71100000])[0]]
+            enemyStat[1] = [enemyStat[1], enemyStat[1], copy.deepcopy(Enemy.Stats[71100000])[1]]
 
         else:
-            if enemy in Multipliers.Phase_HP_Multipliers.keys(): # if enemy is among named and listed minibosses/bosses
-                enemyStat[0] = CalcFunctions.mult(enemyStat[0], Multipliers.Phase_HP_Multipliers[enemy]) # multiply different phases hp
+            if enemy in Multipliers.PhaseChangeHP.keys(): # if enemy is among named and listed minibosses/bosses
+                enemyStat[0] = CalcFunctions.mult(enemyStat[0], Multipliers.PhaseChangeHP[enemy]) # multiply different phases hp
 
-            if enemy in Multipliers.Phase_Posture_Multipliers.keys(): # if enemy is among named and listed minibosses/bosses
-                enemyStat[1] = CalcFunctions.mult(enemyStat[1], Multipliers.Phase_Posture_Multipliers[enemy]) # multiply different phases posture
+            if enemy in Multipliers.PhaseChangePosture.keys(): # if enemy is among named and listed minibosses/bosses
+                enemyStat[1] = CalcFunctions.mult(enemyStat[1], Multipliers.PhaseChangePosture[enemy]) # multiply different phases posture
 
         if Mode == 0: # normal
             try:
-                timeOffset = Multipliers.Time_Offset[DB][Time]  # find offset for time + demon bell 
-                enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.Clearcount_HP[CL][NG])  # scale ng
-                enemyAttackRate *= Multipliers.Clearcount_Dmg[CL][NG]  # scale ng for attack
+                timeOffset = Multipliers.TimeOffset[DB][Time]  # find offset for time + demon bell 
+                enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.ClearcountHP[CL][NG])  # scale ng
+                enemyAttackRate *= Multipliers.ClearcountDMG[CL][NG]  # scale ng for attack
 
                 if CL and NG == 0:
                     timeOffset += 700  # account for new game CL scaling
                 if NG > 0:
-                    enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.NGCycle_HP[enemyRef[0] + timeOffset])  # correct for ng+ scaling
-                    enemyAttackRate *= Multipliers.NGCycle_Attack[enemyRef[0] + timeOffset]  # correct for ng+ scaling (attack multiplier)
+                    enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.NGCycleHP[enemyRef[0] + timeOffset])  # correct for ng+ scaling
+                    enemyAttackRate *= Multipliers.NGCycleAttack[enemyRef[0] + timeOffset]  # correct for ng+ scaling (attack multiplier)
                 if CL and enemyRef[2]: # if enemy has charmless type scaling
-                    enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.Charmless_Muliplier_By_Type[enemyRef[2]])  # increase stats based off of enemy type
+                    enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.CharmlessByType[enemyRef[2]])  # increase stats based off of enemy type
                     
-                enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.AreaScale_HP[enemyRef[1] + timeOffset])  # multiply area scaling
-                enemyAttackRate *= Multipliers.AreaScale_Attack[enemyRef[1] + timeOffset]  # multiply area scaling (attack multiplier)
+                enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.AreaScaleHP[enemyRef[1] + timeOffset])  # multiply area scaling
+                enemyAttackRate *= Multipliers.AreaScaleAttack[enemyRef[1] + timeOffset]  # multiply area scaling (attack multiplier)
 
             except:
                 # Selected Game Time is invalid for this enemy
@@ -105,9 +105,9 @@ class SekiroFunctions():
                 else:
                     override = Reference.MortalJourneyOverride[0][(CL, DB)] # use default
             #Multiplying Scaling
-            enemyStat = CalcFunctions.mult(Multipliers.AreaScale_HP[override[0]], enemyStat) 
-            enemyStat = CalcFunctions.mult(Multipliers.NGCycle_HP[override[1]], enemyStat) 
-            enemyStat = CalcFunctions.mult(Multipliers.Charmless_Muliplier_By_Type[enemyRef[2]], enemyStat) 
+            enemyStat = CalcFunctions.mult(Multipliers.AreaScaleHP[override[0]], enemyStat) 
+            enemyStat = CalcFunctions.mult(Multipliers.NGCycleHP[override[1]], enemyStat) 
+            enemyStat = CalcFunctions.mult(Multipliers.CharmlessByType[enemyRef[2]], enemyStat) 
 
         enemyStat = CalcFunctions.floatConv(enemyStat)
         output = []
@@ -137,45 +137,45 @@ class SekiroFunctions():
         NdropList = []
         IdropList = []
 
-        ninsatuDrops = Enemy.Enemy_NinsatuLot_Drops[enemy]
+        ninsatuDrops = Enemy.NinsatuDrops[enemy]
         if ninsatuDrops[0] is not None:
-            NdropList = [Lots.Resource_Item_Lots[i] for i in ninsatuDrops if i]
+            NdropList = [Lots.Resources[i] for i in ninsatuDrops if i]
 
-        resourceDrops = list(Enemy.Enemy_ResourceLot_Drops[enemy])
+        resourceDrops = list(Enemy.ResourceDrops[enemy])
         if resourceDrops[0] is not None:
-            if (soulBalloon or pilgrimageBalloon) and resourceDrops[1] in Lots.Resource_Item_Lots:
+            if (soulBalloon or pilgrimageBalloon) and resourceDrops[1] in Lots.Resources:
                 resourceDrops.append(resourceDrops[1]+1) # add the next resourceitemlot which contains drops for isAddLottery, triggered on stateinfo 345
-            RdropList = [Lots.Resource_Item_Lots[i] for i in resourceDrops if i]
+            RdropList = [Lots.Resources[i] for i in resourceDrops if i]
 
-        itemDrops = copy.deepcopy(Enemy.Enemy_ItemLot_Drops[enemy])
+        itemDrops = copy.deepcopy(Enemy.ItemDrops[enemy])
         if itemDrops[0] is not None: # if non mandatory itemlot drop exists
-            newLot = itemDrops[0] + Reference.ItemLot_Time_Offset[DB][Time] # add extra itemlot for time of day (separate from default, which is always on)
-            if newLot in Lots.Item_Lots:
+            newLot = itemDrops[0] + Reference.ItemLotTimeOffset[DB][Time] # add extra itemlot for time of day (separate from default, which is always on)
+            if newLot in Lots.Items:
                 itemDrops.append(newLot) # only add if demon bell lots exist
             else:
                 return # dont add drops if time is unsupported
-        IdropList = [Lots.Item_Lots[i] for i in itemDrops if i]
+        IdropList = [Lots.Items[i] for i in itemDrops if i]
 
         return NdropList, RdropList, IdropList
 
     @staticmethod
     def getExpSen(enemy, NG=False, CL=False, wealthBalloon=False, pilgrimageBalloon=False, virtuousDeed=False, mostVirtuousDeed=False):
-        enemyRef = Enemy.EnemyScaling[enemy] # Get multipliers
+        enemyRef = Enemy.Scaling[enemy] # Get multipliers
 
-        if enemy in Enemy.Boss_Exp_Rates.keys():
-            baseExp = Enemy.Boss_Exp_Rates[enemy] # fetch base drop rate for exp
+        if enemy in Enemy.BossExpRates.keys():
+            baseExp = Enemy.BossExpRates[enemy] # fetch base drop rate for exp
         else:
-            baseExp = Enemy.Enemy_Exp_Rates[enemy] # fetch base drop rate for exp
-        baseExp *= Multipliers.Clearcount_SenXP_Droprate[NG][1] # scale ng+ for exp
-        baseExp *= Multipliers.Charmless_SenXP_Multiplier[CL] # scale for charmless for exp
+            baseExp = Enemy.ExpRates[enemy] # fetch base drop rate for exp
+        baseExp *= Multipliers.ClearcountDroprate[NG][1] # scale ng+ for exp
+        baseExp *= Multipliers.CharmlessSenEXP[CL] # scale for charmless for exp
 
-        baseSen = Enemy.Enemy_Sen_Rates[enemy] # fetch base drop rate for sen
-        baseSen *= Multipliers.Clearcount_SenXP_Droprate[NG][0] # scale ng cycle for sen
-        baseSen *= Multipliers.Charmless_SenXP_Multiplier[CL] # scale for charmless for sen
+        baseSen = Enemy.SenRates[enemy] # fetch base drop rate for sen
+        baseSen *= Multipliers.ClearcountDroprate[NG][0] # scale ng cycle for sen
+        baseSen *= Multipliers.CharmlessSenExp[CL] # scale for charmless for sen
 
         if NG > 0:
-            baseExp *= Multipliers.NGCycle_Exp_Droprate[enemyRef[0]] # scale ng+ for exp
-            baseSen *= Multipliers.NGCycle_Sen_Droprate[enemyRef[0]] # scale ng+ for sen
+            baseExp *= Multipliers.NGCycleExp[enemyRef[0]] # scale ng+ for exp
+            baseSen *= Multipliers.NGCycleSen[enemyRef[0]] # scale ng+ for sen
 
         if wealthBalloon:
             baseSen *= 1.5 # account for Mibu Balloon of Wealth
@@ -194,22 +194,22 @@ class SekiroFunctions():
     @staticmethod
     def parseDamage(attack=5000010, AP=1, mode="Player", dmgType='atkPhys'):
         if mode == "Player":
-            baseDmg = Player.Player_Attacks[attack][dmgType]
-            atkCorrect = Player.Player_Attacks[attack][f'{dmgType}Correction'] # get multiplier
+            baseDmg = Player.PlayerAttacks[attack][dmgType]
+            atkCorrect = Player.PlayerAttacks[attack][f'{dmgType}Correction'] # get multiplier
             if baseDmg == 0 and atkCorrect > 0: 
                 baseDmg = 40 # base for most player attacks and CA's
 
             if dmgType == 'atkStam':
                 baseDmg *= 2
 
-            baseDmg *= Player.Player_Attack_Power.get(AP, 1) # multiply by AP
+            baseDmg *= Player.AttackPower.get(AP, 1) # multiply by AP
             
             if atkCorrect > 0:
                 baseDmg *= atkCorrect/100 # multiply if possible
         
         elif mode == "Enemy":
-            baseDmg = Enemy.Enemy_Attacks[attack][dmgType]
-            atkCorrect = Enemy.Enemy_Attacks[attack][f'{dmgType}Correction'] # get multiplier
+            baseDmg = Enemy.Attacks[attack][dmgType]
+            atkCorrect = Enemy.Attacks[attack][f'{dmgType}Correction'] # get multiplier
 
             if atkCorrect > 0:
                 baseDmg *= atkCorrect/100 # multiply if possible
@@ -228,11 +228,11 @@ class SekiroFunctions():
             'Dark': 'atkDark'}
         
         if mode == "Player":
-            output['Attack Type'] = Reference.Attack_Attribute[Player.Player_Attacks[attack]['atkAttribute']]
-            output['Effect Type'] = Reference.Special_Attribute[Player.Player_Attacks[attack]['spAttribute']]
+            output['Attack Type'] = Reference.AttackAttribute[Player.PlayerAttacks[attack]['atkAttribute']]
+            output['Effect Type'] = Reference.SpecialAttribute[Player.PlayerAttacks[attack]['spAttribute']]
         elif mode == 'Enemy':
-            output['Attack Type'] = Reference.Attack_Attribute[Enemy.Enemy_Attacks[attack]['atkAttribute']]
-            output['Effect Type'] = Reference.Special_Attribute[Enemy.Enemy_Attacks[attack]['spAttribute']]
+            output['Attack Type'] = Reference.AttackAttribute[Enemy.Attacks[attack]['atkAttribute']]
+            output['Effect Type'] = Reference.SpecialAttribute[Enemy.Attacks[attack]['spAttribute']]
 
         for key, val in dmgTypes.items():
             dmg = SekiroFunctions.parseDamage(attack=attack, AP=AP, mode=mode, dmgType=val)
@@ -251,7 +251,7 @@ class SekiroFunctions():
 
     @staticmethod
     def parseIChance(weight, **args):
-        buffs = Multipliers.Item_Discovery_Buffs
+        buffs = Multipliers.ItemDiscovery
         buff = 1
 
         for key in ['possessionBalloon', 'pilgrimageBalloon']:
