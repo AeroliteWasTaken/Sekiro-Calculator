@@ -225,7 +225,7 @@ class SekiroFunctions():
             'Magic': 'atkMag',
             'Fire': 'atkFire',
             'Lightning': 'atkThun',
-            'Dark': 'atkDark'}
+            'Piercing (Dark)': 'atkDark'}
         
         if mode == "Player":
             output['Attack Type'] = Reference.AttackAttribute[Player.Attacks[attack]['atkAttribute']]
