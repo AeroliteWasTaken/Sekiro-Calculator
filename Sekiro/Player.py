@@ -116,7 +116,7 @@ Vitality = { # {Vitality}: [{HP}, {Posture}, {Posture regen per second}]
 }
 
 # for BehaviourParam_Pc category 1 - Kusabimaru and combat arts
-SwordAttacks = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
+SwordAttacks = { # {BehaviourParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
 105000000: ["Right-handed sword_reservoir 1", 0, 5000000],
 105000001: ["Right-handed sword_reservoir 2", 0, 5000001],
 105000006: ["Right hand sword_reservoir 2_reverse foot", 0, 5000006],
@@ -349,7 +349,7 @@ SwordAttacks = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet
 }
 
 # for BehaviourParam_Pc category 2 - Prosthetics
-ProstheticAttacks = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
+ProstheticAttacks = { # {BehaviourParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
 107000100: ["Shuriken_Reservoir 1/3 throw", 1, 700000],
 107000110: ["Shuriken_2nd throw", 1, 700010],
 107000150: ["Shuriken_1 / 3rd throw", 1, 700050],
@@ -539,7 +539,7 @@ ProstheticAttacks = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - B
 }
 
 # for BehaviourParam_Pc category 5 - Throws and deathblows
-Throws = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}] 
+Throws = { # {BehaviourParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}] 
 4: ["Object destruction attack for automatic patrol", 1, 4],
 6: ["Object destruction attack for automatic patrol_for debugging function verification", 1, 6],
 10: ["PC_common_ egg attack", 0, 10],
@@ -582,7 +582,7 @@ Throws = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {I
 }
 
 # for BehaviourParam_Pc category 9 - Bullets attached to combat arts
-Bullets = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
+Bullets = { # {BehaviourParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {ID in said param}]
 900: ["Kick", 0, 900],
 901: ["Kick_in the air", 0, 901],
 903: ["Kick_dash", 0, 903],
@@ -664,7 +664,7 @@ Bullets = { # {AtkParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bullet)}, {
 105030262: ["School technique_new technique 3_SFX_petals", 1, 503062],
 107402100: ["Transformation LV3_ activation impact", 1, 740200]
 }
-
+ 
 Attacks = {
 0: {"Name": "Dummy bullet ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 1: {"Name": "Dummy bullets_see per map_normal ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},

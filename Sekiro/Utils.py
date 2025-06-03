@@ -122,7 +122,7 @@ class SekiroFunctions():
             output.append(enemyStat[1])
 
         output.append(enemyStat[2])
-        attacksNeeded = SekiroFunctions.findAttacksNeeded(enemyStat[0], SekiroFunctions.parseDamage(AP=AP, attack=attack))
+        attacksNeeded = SekiroFunctions.findAttacksNeeded(enemyStat[0], SekiroFunctions.getDamage(AP=AP, attack=attack))
 
         return {
             "HP": output[0],
@@ -192,7 +192,7 @@ class SekiroFunctions():
         return baseSen, baseExp
 
     @staticmethod
-    def parseDamage(attack=5000010, AP=1, mode="Player", dmgType='atkPhys'):
+    def getDamage(attack=5000010, AP=1, mode="Player", dmgType='atkPhys'):
         if mode == "Player":
             baseDmg = Player.Attacks[attack][dmgType]
             atkCorrect = Player.Attacks[attack][f'{dmgType}Correction'] # get multiplier
@@ -217,7 +217,7 @@ class SekiroFunctions():
         return ceil(baseDmg)
     
     @staticmethod
-    def getDamage(attack=5000010, AP=1, mode="Player"):
+    def parseDamage(attack=5000010, AP=1, mode="Player"):
         output = {}
         dmgTypes = {
             'Physical': 'atkPhys',
@@ -235,7 +235,7 @@ class SekiroFunctions():
             output['Effect Type'] = Reference.SpecialAttribute[Enemy.Attacks[attack]['spAttribute']]
 
         for key, val in dmgTypes.items():
-            dmg = SekiroFunctions.parseDamage(attack=attack, AP=AP, mode=mode, dmgType=val)
+            dmg = SekiroFunctions.getDamage(attack=attack, AP=AP, mode=mode, dmgType=val)
             output[key] = dmg
 
         return output

@@ -509,5 +509,6 @@ SpecialAttribute = {
     3: "Magic",
     4: "Poison",
     6: "Lightning (Grounded)",
-    10: "Lightning (In Air)"
+    10: "Lightning (In Air)",
+    255: "None" # shown as "Not Enumerated" in game
 }
