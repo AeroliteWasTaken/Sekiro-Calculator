@@ -39,7 +39,7 @@ EnemyName = {
     'Headless - Gokan': 13501000,
     'Snake Eyes Shirafuji': 11910000,
     'Headless - Gachiin': 13502000,
-    'Tokujiro ': 10703000,
+    'Tokujiro': 10703000,
     'Mist Noble': 13001000,
     "O'Rin of the Water": 70000000,
     'Snake Eyes Shirahagi': 11911000,

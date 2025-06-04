@@ -132,6 +132,38 @@ class SekiroFunctions():
             f"Max hits to kill at AP{AP}": attacksNeeded}
 
     @staticmethod
+    def getDrops(enemy, DB=False, Time=1, soulBalloon=False, pilgrimageBalloon=False, possessionBalloon=False, spiritBalloon=False, virtuousDeed=False, mostVirtuousDeed=False):
+        Ndrops, Rdrops, Idrops = SekiroFunctions.getDropLists(enemy, DB, Time, soulBalloon, pilgrimageBalloon)
+        opts = {
+            'possessionBalloon': possessionBalloon,
+            'spiritBalloon': spiritBalloon,
+            'soulBalloon': soulBalloon,
+            'pilgrimageBalloon': pilgrimageBalloon,
+            'virtuousDeed': virtuousDeed,
+            'mostVirtuousDeed': mostVirtuousDeed}
+        
+        output = []
+
+        for lot in Ndrops:
+            for item in lot:
+                if item[2] != 0:
+                    output.append({"count": item[2], "name": Reference.ResourceName[item[0]], "chance": "on deathblow"})
+
+        for lot in Rdrops:
+            for item in lot:
+                if item[2] != 0:
+                    chance = SekiroFunctions.parseRChance(item[1], item[0], **opts)
+                    output.append({"count": item[2], "name": Reference.ResourceName[item[0]], "chance": f"- {chance}% chance"})
+
+        for lot in Idrops:
+            for item in lot:
+                if item[2] != 0:                  
+                    chance = SekiroFunctions.parseIChance(item[1], **opts)
+                    output.append({"count": item[2], "name": Reference.ItemName[item[0]], "chance": f"- {chance}% chance"})
+        
+        return output
+
+    @staticmethod
     def getDropLists(enemy, DB=False, Time=1, soulBalloon=False, pilgrimageBalloon=False):
         RdropList = []
         NdropList = []
@@ -189,7 +221,7 @@ class SekiroFunctions():
         elif virtuousDeed:
             baseSen *= 1.125 # is ignored if Most Virtuous Deed is active too since it replaces the buff
 
-        return baseSen, baseExp
+        return {"Sen": baseSen, "EXP": baseExp}
 
     @staticmethod
     def getDamage(attack=5000010, AP=1, mode="Player", dmgType='atkPhys'):

@@ -268,7 +268,7 @@ class Window(QtWidgets.QMainWindow):
                                             wealthBalloon=self.wealthBalloon, 
                                             pilgrimageBalloon=self.pilgrimageBalloon, 
                                             virtuousDeed=self.virtuousDeed, 
-                                            mostVirtuousDeed=self.mostVirtuousDeed)
+                                            mostVirtuousDeed=self.mostVirtuousDeed).values()
         result = self.Functions.getDropLists(enemy=enemy, DB=DB, Time=Time, 
                                              pilgrimageBalloon=self.pilgrimageBalloon, 
                                              soulBalloon=self.soulBalloon)
