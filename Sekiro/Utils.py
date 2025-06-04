@@ -185,7 +185,7 @@ class SekiroFunctions():
             if newLot in Lots.Items:
                 itemDrops.append(newLot) # only add if demon bell lots exist
             else:
-                return # dont add drops if time is unsupported
+                pass # dont add drops if time is unsupported
         IdropList = [Lots.Items[i] for i in itemDrops if i]
 
         return NdropList, RdropList, IdropList
@@ -221,7 +221,10 @@ class SekiroFunctions():
         elif virtuousDeed:
             baseSen *= 1.125 # is ignored if Most Virtuous Deed is active too since it replaces the buff
 
-        return {"Sen": baseSen, "EXP": baseExp}
+        if baseExp == int(baseExp):
+            baseExp += 0.0001 # make it so ceil() can actually increase it by 1 in cases where you end up with .0
+
+        return {"Sen": ceil(baseSen), "EXP": ceil(baseExp)}
 
     @staticmethod
     def getDamage(attack=5000010, AP=1, mode="Player", dmgType='atkPhys'):

@@ -1280,7 +1280,7 @@ Stats = { # {NPC ID}: [{HP}, {Posture}, {Posture Regen}, {Super Armor}, {Super A
 99999999: [20, 50, 20, 0, 0.4]
 }
 
-Scaling = { # {NPC ID}: [{NG+ Scaling ID}, {Area Scaling ID}, {Charmless Scaling ID}]
+Scaling = { # {NPC ID}: [{NG+ Scaling ID}, {Area Scaling ID}, {Enemy Type for Charmless}]
 0: [None, None, None],
 1: [None, None, None],
 10: [None, None, None],
