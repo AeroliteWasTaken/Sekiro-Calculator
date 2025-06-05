@@ -36,8 +36,8 @@ print("")
 """Drop Check"""
 print("Hirata Enemy Drops:")
 enemy = 15500210 # basic hirata enemy
-sen, exp = Utils.SekiroFunctions.getExpSen(enemy, NG=7, CL=True, mostVirtuousDeed=True).values() # NG+7 charmless with most virtuous deed
-drops = Utils.SekiroFunctions.getDrops(enemy, DB=True, Time=2, mostVirtuousDeed=True) # noon with demon bell and most virtuous deed unlocked
+sen, exp = Utils.SekiroFunctions.getExpSen(enemy, NG=7, CL=True, mostVirtuousDeed=True).values()
+drops = Utils.SekiroFunctions.getDrops(enemy, DB=True, Time=2, mostVirtuousDeed=True) # noon with demon bell
 print(f'EXP - {exp}\nSen - {sen}')
 for item in drops:
     print(item["count"], item["name"], item["chance"])
