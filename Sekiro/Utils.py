@@ -314,15 +314,26 @@ class SekiroFunctions():
         chance = round(1000 * (chance * buff) / ((chance * buff) + (1000 - chance)))
         return 100 if chance > 100 else chance
 
+    """Calculate EXP required to get a skill point at a given level."""
     @staticmethod
-    def calculateEXP(n):
-        val = 0
-        for i in range(n):
-            if i < 24:
-                add = 0.1*(i+70)**2+10
-            else:
-                add = 0.1*(i+70)**2+10+0.02*(i+70)**2*(i-24)
-            val += floor(add)
+    def calculateEXP(lvl):
+        a = 0.1
+        b = 10
+        c = 0.02
+        d = 94
+
+        if lvl+69 < d**2:
+            val = a*(lvl+69)**2+b
+        else:
+            val = a*(lvl+69)+b*(lvl+69)*2+c*(lvl+69)*2*(lvl+69)*2
                 
-        return int(val)
+        return int(floor(val))
+    
+    """Return total EXP required to get to this level."""
+    @staticmethod
+    def totalEXP(lvl):
+        val = 0
+        for i in range(1, lvl+1):
+            val += SekiroFunctions.calculateEXP(i)
+        return val
 
