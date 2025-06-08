@@ -76,6 +76,165 @@ ItemTypes = {
     1073741824: "Goods"
 }
 
+InnerEnemy = {
+    1: 71001000,
+    2: 50601010,
+    3: 54000000}
+
+TimeOffset = { # offsets area scaling based on time and whether demon bell is active or not
+    False: { # demon bell is not active
+        1: 0, "Morning": 0, # synonymous with "Default"
+        2: 1, "Noon": 1,
+        3: 2, "Evening": 2,
+        4: 3, "Night": 3 # endgame
+    },
+    True: { # demon bell is active
+        1: 1, "Morning": 1, # synonymous with "Default"
+        2: 2, "Noon": 2,
+        3: 3, "Evening": 3,
+        4: 4, "Night": 4 # endgame
+    }
+}
+
+ItemLotTimeOffset = {
+    False:
+        {1: 1,
+        2: 11,
+        3: 21,
+        4: 31},
+    True:
+        {1: 11,
+         2: 21,
+         3: 31,
+         4: 41}
+}
+
+ReflectionOverride = {
+0: { # default
+    (False, False): [7950, 7954], # default 
+    (True, False): [7952, 7992], # cl
+    (False, True): [7953, 7993], # db 
+    (True, True): [7951, 7955]}, # cldb 
+
+1: { # inner geni
+    (False, False): [7962, 7966], # default 
+    (True, False): [7964, 7968], # cl 
+    (False, True): [7965, 7969], # db 
+    (True, True): [7963, 7967]}, # cldb 
+
+2: { # inner father
+    (False, False): [7950, 7954], # default 
+    (True, False): [7952, 7956], # cl 
+    (False, True): [7953, 7957], # db 
+    (True, True): [7951, 7955]}, # cldb 
+
+3: { # inner isshin
+    (False, False): [7950, 7954], # default 
+    (True, False): [7952, 7956], # cl 
+    (False, True): [7953, 7957], # db 
+    (True, True): [7951, 7955]}, # cldb 
+
+51000000: { # guardian ape
+    (False, False): [7930, 7934], # default 
+    (True, False): [7932, 7936], # cl 
+    (False, True): [7933, 7937], # db 
+    (True, True): [7931, 7935]}, # cldb 
+
+74000010: { #emma
+    (False, False): [7986, 7990], # default 
+    (True, False): [7988, 7992], # cl
+    (False, True): [7989, 7993], # db
+    (True, True): [7987, 7991]}, # cldb
+
+54300000: { #IA
+    (False, False): [7986, 7990], # default 
+    (True, False): [7988, 7992], # cl
+    (False, True): [7989, 7993], # db 
+    (True, True): [7987, 7991]}, # cldb
+
+71101000: { #Geni WOT (Final Boss)
+    (False, False): [7986, 7990], # default 
+    (True, False): [7988, 7992], # cl
+    (False, True): [7989, 7993], # db
+    (True, True): [7987, 7991]}, # cldb
+
+}
+
+MortalJourneyOverride = {
+0: { # default
+    (False, False): [7950, 7958], # default
+    (True, False): [7952, 7958], # cl
+    (False, True): [7986, 7959], # db 
+    (True, True): [7951, 7959]}, # cldb
+
+1: { # inner geni
+    (False, False): [7962, 7970], # default 
+    (True, False): [7964, 7972], # cl 
+    (False, True): [7965, 7973], # db 
+    (True, True): [7963, 7971]}, # cldb 
+
+2: { # inner father
+    (False, False): [7950, 7958], # default 
+    (True, False): [7952, 7960], # cl 
+    (False, True): [7953, 7961], # db 
+    (True, True): [7951, 7959]}, # cldb 
+
+3: { # inner isshin
+    (False, False): [7950, 7958], # default 
+    (True, False): [7952, 7960], # cl 
+    (False, True): [7953, 7961], # db 
+    (True, True): [7951, 7959]}, # cldb 
+
+51000000: { # guardian ape
+    (False, False): [7930, 7938], # default 
+    (True, False): [7932, 7940], # cl 
+    (False, True): [7933, 7941], # db 
+    (True, True): [7931, 7939]}, # cldb 
+
+74000010: { #emma
+    (False, False): [7986, 7994], # default 
+    (True, False): [7988, 7996], # cl
+    (False, True): [7989, 7997], # db
+    (True, True): [7987, 7995]}, # cldb
+
+54300000: { #IA
+    (False, False): [7986, 7994], # default 
+    (True, False): [7988, 7996], # cl
+    (False, True): [7989, 7997], # db 
+    (True, True): [7987, 7995]}, # cldb
+
+71101000: { #Geni WOT (Final Boss)
+    (False, False): [7986, 7994], # default 
+    (True, False): [7988, 7996], # cl
+    (False, True): [7989, 7997], # db
+    (True, True): [7987, 7995]}, # cldb
+}
+
+AttackAttribute = {
+    1: "Slash",
+    2: "Light Hit",
+    3: "Thrust",
+    4: "Neutral",
+    5: "Deathblow",
+    6: "Heavy Hit",
+    7: "Aerial",
+    8: "Anti-Air",
+    9: "Light Shot",
+    10: "Attribute A",
+    11: "Attribute B",
+    12: "Attribute C"
+}
+
+SpecialAttribute = {
+    1: "Normal",
+    2: "Fire",
+    3: "Magic",
+    4: "Poison",
+    6: "Lightning (Grounded)",
+    10: "Lightning (In Air)",
+    255: "None" # shown as "Not Enumerated" in game
+}
+
 ItemName = {
     1000: "Spirit Emblem",
     1001: "Red Spirit Emblem",
@@ -367,148 +526,4 @@ ItemName = {
     90020: "DamageCheck20",
     90030: "AISoundCheck00",
     90031: "AISoundCheck01"
-}
-
-InnerEnemy = {
-    1: 71001000,
-    2: 50601010,
-    3: 54000000}
-
-ItemLotTimeOffset = {
-    False:
-        {1: 1,
-        2: 11,
-        3: 21,
-        4: 31},
-    True:
-        {1: 11,
-         2: 21,
-         3: 31,
-         4: 41}
-}
-
-ReflectionOverride = {
-0: { # default
-    (False, False): [7950, 7954], # default 
-    (True, False): [7952, 7992], # cl
-    (False, True): [7953, 7993], # db 
-    (True, True): [7951, 7955]}, # cldb 
-
-1: { # inner geni
-    (False, False): [7962, 7966], # default 
-    (True, False): [7964, 7968], # cl 
-    (False, True): [7965, 7969], # db 
-    (True, True): [7963, 7967]}, # cldb 
-
-2: { # inner father
-    (False, False): [7950, 7954], # default 
-    (True, False): [7952, 7956], # cl 
-    (False, True): [7953, 7957], # db 
-    (True, True): [7951, 7955]}, # cldb 
-
-3: { # inner isshin
-    (False, False): [7950, 7954], # default 
-    (True, False): [7952, 7956], # cl 
-    (False, True): [7953, 7957], # db 
-    (True, True): [7951, 7955]}, # cldb 
-
-51000000: { # guardian ape
-    (False, False): [7930, 7934], # default 
-    (True, False): [7932, 7936], # cl 
-    (False, True): [7933, 7937], # db 
-    (True, True): [7931, 7935]}, # cldb 
-
-74000010: { #emma
-    (False, False): [7986, 7990], # default 
-    (True, False): [7988, 7992], # cl
-    (False, True): [7989, 7993], # db
-    (True, True): [7987, 7991]}, # cldb
-
-54300000: { #IA
-    (False, False): [7986, 7990], # default 
-    (True, False): [7988, 7992], # cl
-    (False, True): [7989, 7993], # db 
-    (True, True): [7987, 7991]}, # cldb
-
-71101000: { #Geni WOT (Final Boss)
-    (False, False): [7986, 7990], # default 
-    (True, False): [7988, 7992], # cl
-    (False, True): [7989, 7993], # db
-    (True, True): [7987, 7991]}, # cldb
-
-}
-
-MortalJourneyOverride = {
-0: { # default
-    (False, False): [7950, 7958], # default
-    (True, False): [7952, 7958], # cl
-    (False, True): [7986, 7959], # db 
-    (True, True): [7951, 7959]}, # cldb
-
-1: { # inner geni
-    (False, False): [7962, 7970], # default 
-    (True, False): [7964, 7972], # cl 
-    (False, True): [7965, 7973], # db 
-    (True, True): [7963, 7971]}, # cldb 
-
-2: { # inner father
-    (False, False): [7950, 7958], # default 
-    (True, False): [7952, 7960], # cl 
-    (False, True): [7953, 7961], # db 
-    (True, True): [7951, 7959]}, # cldb 
-
-3: { # inner isshin
-    (False, False): [7950, 7958], # default 
-    (True, False): [7952, 7960], # cl 
-    (False, True): [7953, 7961], # db 
-    (True, True): [7951, 7959]}, # cldb 
-
-51000000: { # guardian ape
-    (False, False): [7930, 7938], # default 
-    (True, False): [7932, 7940], # cl 
-    (False, True): [7933, 7941], # db 
-    (True, True): [7931, 7939]}, # cldb 
-
-74000010: { #emma
-    (False, False): [7986, 7994], # default 
-    (True, False): [7988, 7996], # cl
-    (False, True): [7989, 7997], # db
-    (True, True): [7987, 7995]}, # cldb
-
-54300000: { #IA
-    (False, False): [7986, 7994], # default 
-    (True, False): [7988, 7996], # cl
-    (False, True): [7989, 7997], # db 
-    (True, True): [7987, 7995]}, # cldb
-
-71101000: { #Geni WOT (Final Boss)
-    (False, False): [7986, 7994], # default 
-    (True, False): [7988, 7996], # cl
-    (False, True): [7989, 7997], # db
-    (True, True): [7987, 7995]}, # cldb
-}
-
-AttackAttribute = {
-    1: "Slash",
-    2: "Light Hit",
-    3: "Thrust",
-    4: "Neutral",
-    5: "Deathblow",
-    6: "Heavy Hit",
-    7: "Aerial",
-    8: "Anti-Air",
-    9: "Light Shot",
-    10: "Attribute A",
-    11: "Attribute B",
-    12: "Attribute C"
-}
-
-SpecialAttribute = {
-    1: "Normal",
-    2: "Fire",
-    3: "Magic",
-    4: "Poison",
-    6: "Lightning (Grounded)",
-    10: "Lightning (In Air)",
-    255: "None" # shown as "Not Enumerated" in game
 }

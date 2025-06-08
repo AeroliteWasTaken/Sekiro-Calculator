@@ -40,7 +40,7 @@ sen, exp = Utils.SekiroFunctions.getExpSen(enemy, NG=7, CL=True, mostVirtuousDee
 drops = Utils.SekiroFunctions.getDrops(enemy, DB=True, Time=2, mostVirtuousDeed=True) # noon with demon bell
 print(f'EXP - {exp}\nSen - {sen}')
 for item in drops:
-    print(item["count"], item["name"], item["chance"])
+    print(item["Count"], item["Name"], item["Chance"])
 """Outputs:
     EXP - 1837
     Sen - 220

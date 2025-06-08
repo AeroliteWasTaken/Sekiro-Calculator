@@ -1,3 +1,7 @@
+"""This module contains most of the processing and calculation functions for the calculator.
+    CalcFunctions is mostly for math calculations, while SekiroFunctions is for processing data.
+    The docstrings below were written with Qodo-Gen cuz I'm lazy as fuck"""
+
 try:
     from Sekiro import Player, Multipliers, Enemy, Lots, Reference
 except ModuleNotFoundError:
@@ -40,6 +44,29 @@ class CalcFunctions():
         return enemy, None
     
 class SekiroFunctions():
+    """
+    Calculate and return the stats for a specified enemy.
+
+    This static method computes the health, posture, posture regeneration, and damage multiplier
+    for an enemy based on various game modes and conditions such as New Game Plus (NG+), Charmless
+    mode, and Demon Bell activation. It adjusts the stats using multipliers for different phases,
+    areas, and enemy types. The method also calculates the maximum number of hits needed to defeat
+    the enemy at a given attack power.
+
+    Args:
+        enemy (int): The ID of the enemy to calculate stats for.
+        NG (int, optional): The New Game cycle number. Defaults to 0.
+        CL (bool, optional): Whether Charmless mode is active. Defaults to False.
+        DB (bool, optional): Whether the Demon Bell is active. Defaults to False.
+        Time (int, optional): The time of day affecting scaling. Defaults to 1. (Morning)
+        Mode (int, optional): The game mode, where 0 is Normal, 1 is Reflection, and 2 is Mortal Journey. Defaults to 0.
+        AP (int, optional): The attack power level. Defaults to 1.
+        attack (int, optional): The attack identifier. Defaults to 5000010.
+
+    Returns:
+        dict: A dictionary containing the calculated stats, including HP, Posture, Posture Regen,
+              Damage Multiplier, and Max hits to kill at the specified attack power.
+    """
     @staticmethod
     def getStats(enemy, NG=0, CL=False, DB=False, Time=1, Mode=0, AP=1, attack=5000010):
         if Mode == 0 and enemy in [1, 2, 3]:
@@ -69,7 +96,7 @@ class SekiroFunctions():
 
         if Mode == 0: # normal
             try:
-                timeOffset = Multipliers.TimeOffset[DB][Time]  # find offset for time + demon bell 
+                timeOffset = Reference.TimeOffset[DB][Time]  # find offset for time + demon bell 
                 enemyStat = CalcFunctions.multiplyRecursive(enemyStat, Multipliers.ClearcountHP[CL][NG])  # scale ng
                 enemyAttackRate *= Multipliers.ClearcountDMG[CL][NG]  # scale ng for attack
 
@@ -131,9 +158,39 @@ class SekiroFunctions():
             "Damage Multiplier": round(enemyAttackRate, 2),
             f"Max hits to kill at AP{AP}": attacksNeeded}
 
+    """
+    Retrieve item drops for a specified enemy, considering various effects and conditions.
+
+    This static method calculates and returns a list of item drops for an enemy,
+    taking into account specific effects such as 'possessionBalloon' and 'virtuousDeed'.
+    It adjusts the drop chances based on these effects and the time of day.
+
+    Args:
+        enemy: The NpcParamId for the enemy whose drops are to be retrieved.
+        dropLists (list, optional): For if you have predefined drop lists for the enemy.
+            Uses getDropLists() if parameter is None
+        DB (bool, optional): Indicates if the demon bell is active. Defaults to False.
+        Time (int, optional): The time of day affecting item drops. Defaults to 1.
+        effects (dict, optional): A dictionary of effects that may influence drop rates. Defaults to None.
+
+    Returns:
+        list: A list of dictionaries, each containing the count, name, and chance of an item drop.
+    """
     @staticmethod
-    def getDrops(enemy, DB=False, Time=1, soulBalloon=False, pilgrimageBalloon=False, possessionBalloon=False, spiritBalloon=False, virtuousDeed=False, mostVirtuousDeed=False):
-        Ndrops, Rdrops, Idrops = SekiroFunctions.getDropLists(enemy, DB, Time, soulBalloon, pilgrimageBalloon)
+    def getDrops(enemy, dropLists: list = None, DB=False, Time=1, effects: dict = None):
+        effects = effects or {}
+        possessionBalloon = effects.get('possessionBalloon', False)
+        spiritBalloon = effects.get('spiritBalloon', False)
+        soulBalloon = effects.get('soulBalloon', False)
+        pilgrimageBalloon = effects.get('pilgrimageBalloon', False)
+        virtuousDeed = effects.get('virtuousDeed', False)
+        mostVirtuousDeed = effects.get('mostVirtuousDeed', False)
+
+        if dropLists:
+            Ndrops, Rdrops, Idrops = dropLists # make sure the order is correct
+        else:
+            Ndrops, Rdrops, Idrops = SekiroFunctions.getDropLists(enemy, DB, Time, soulBalloon, pilgrimageBalloon)
+
         opts = {
             'possessionBalloon': possessionBalloon,
             'spiritBalloon': spiritBalloon,
@@ -147,24 +204,45 @@ class SekiroFunctions():
         for lot in Ndrops:
             for item in lot:
                 if item[2] != 0:
-                    output.append({"count": item[2], "name": Reference.ResourceName[item[0]], "chance": "on deathblow"})
+                    output.append({"Count": item[2], "Name": Reference.ResourceName[item[0]], "Chance": "on deathblow"})
 
         for lot in Rdrops:
             for item in lot:
                 if item[2] != 0:
                     chance = SekiroFunctions.parseRChance(item[1], item[0], **opts)
-                    output.append({"count": item[2], "name": Reference.ResourceName[item[0]], "chance": f"- {chance}% chance"})
+                    output.append({"Count": item[2], "Name": Reference.ResourceName[item[0]], "Chance": f"{chance}% chance"})
 
         for lot in Idrops:
             for item in lot:
                 if item[2] != 0:                  
                     chance = SekiroFunctions.parseIChance(item[1], **opts)
-                    output.append({"count": item[2], "name": Reference.ItemName[item[0]], "chance": f"- {chance}% chance"})
+                    output.append({"Count": item[2], "Name": Reference.ItemName[item[0]], "Chance": f"{chance}% chance"})
         
         return output
 
+    """
+    Retrieve drop lists for a specified enemy, considering various effects and conditions.
+
+    This method calculates and returns three types of drop lists: Ninsatu, Resource, and Item drops.
+    It takes into account specific effects such as 'soulBalloon' and 'pilgrimageBalloon', and adjusts
+    the drop lists based on the time of day and whether the demon bell is active.
+
+    Args:
+        enemy: The NpcParamId for the enemy whose drop lists are to be retrieved.
+        DB (bool, optional): Indicates if the demon bell is active. Defaults to False.
+        Time (int, optional): The time of day affecting item drops. Defaults to 1.
+        effects (dict, optional): A dictionary of effects that may influence drop rates. Defaults to None.
+
+    Returns:
+        tuple: A tuple containing three lists - NdropList, RdropList, and IdropList, representing
+                Ninsatu, Resource, and Item drops respectively.
+    """
     @staticmethod
-    def getDropLists(enemy, DB=False, Time=1, soulBalloon=False, pilgrimageBalloon=False):
+    def getDropLists(enemy, DB=False, Time=1, effects: dict = None):
+        effects = effects or {}
+        soulBalloon = effects.get('soulBalloon', False)
+        pilgrimageBalloon = effects.get('pilgrimageBalloon', False)
+
         RdropList = []
         NdropList = []
         IdropList = []
@@ -190,23 +268,34 @@ class SekiroFunctions():
 
         return NdropList, RdropList, IdropList
 
-    @staticmethod
-    def getExpSen(enemy, NG=False, CL=False, wealthBalloon=False, pilgrimageBalloon=False, virtuousDeed=False, mostVirtuousDeed=False):
-        enemyRef = Enemy.Scaling[enemy] # Get multipliers
+    """
+    Calculate the amount of Sen dropped by an enemy based on various factors.
 
-        if enemy in Enemy.BossExpRates.keys():
-            baseExp = Enemy.BossExpRates[enemy] # fetch base drop rate for exp
-        else:
-            baseExp = Enemy.ExpRates[enemy] # fetch base drop rate for exp
-        baseExp *= Multipliers.ClearcountDroprate[NG][1] # scale ng+ for exp
-        baseExp *= Multipliers.CharmlessSenExp[CL] # scale for charmless for exp
+    Args:
+        enemy (int): The NpcParamId for the enemy.
+        NG (int, optional): The New Game cycle number. Defaults to 0 aka NG.
+        CL (bool, optional): Whether the Charmless mode is active. Defaults to False.
+        effects (dict, optional): A dictionary of active effects that can influence Sen drop rates.
+            Possible keys include 'wealthBalloon', 'pilgrimageBalloon', 'virtuousDeed', and 'mostVirtuousDeed'.
+
+    Returns:
+        int: The calculated amount of Sen dropped by the enemy.
+    """
+    @staticmethod
+    def getSen(enemy, NG=0, CL=False, effects: dict = None):
+        effects = effects or {}
+        wealthBalloon = effects.get('wealthBalloon', False)
+        pilgrimageBalloon = effects.get('pilgrimageBalloon', False)
+        virtuousDeed = effects.get('virtuousDeed', False)
+        mostVirtuousDeed = effects.get('mostVirtuousDeed', False)
+
+        enemyRef = Enemy.Scaling[enemy] # Get multipliers
 
         baseSen = Enemy.SenRates[enemy] # fetch base drop rate for sen
         baseSen *= Multipliers.ClearcountDroprate[NG][0] # scale ng cycle for sen
         baseSen *= Multipliers.CharmlessSenExp[CL] # scale for charmless for sen
 
         if NG > 0:
-            baseExp *= Multipliers.NGCycleExp[enemyRef[0]] # scale ng+ for exp
             baseSen *= Multipliers.NGCycleSen[enemyRef[0]] # scale ng+ for sen
 
         if wealthBalloon:
@@ -221,11 +310,54 @@ class SekiroFunctions():
         elif virtuousDeed:
             baseSen *= 1.125 # is ignored if Most Virtuous Deed is active too since it replaces the buff
 
+        return ceil(baseSen)
+    
+    """
+    Calculate the experience points (EXP) gained from defeating an enemy.
+
+    This method computes the EXP based on the enemy type, New Game Plus (NG+) cycle,
+    and whether the player is in Charmless mode. It uses various multipliers from
+    the Enemy and Multipliers modules to adjust the base EXP.
+
+    Args:
+        enemy (int): The NpcParamId for the enemy.
+        NG (int, optional): The New Game Plus cycle number. Defaults to 0 or NG.
+        CL (bool, optional): Indicates if the player is in Charmless mode. Defaults to False.
+
+    Returns:
+        int: The calculated EXP, rounded up to the nearest integer.
+    """
+    @staticmethod
+    def getExp(enemy, NG=0, CL=False):
+        enemyRef = Enemy.Scaling[enemy] # Get multipliers
+
+        if enemy in Enemy.BossExpRates.keys():
+            baseExp = Enemy.BossExpRates[enemy] # fetch base drop rate for exp
+        else:
+            baseExp = Enemy.ExpRates[enemy] # fetch base drop rate for exp
+        baseExp *= Multipliers.ClearcountDroprate[NG][1] # scale ng+ for exp
+        baseExp *= Multipliers.CharmlessSenExp[CL] # scale for charmless for exp
+
+        if NG > 0:
+            baseExp *= Multipliers.NGCycleExp[enemyRef[0]] # scale ng+ for exp
+
         if baseExp == int(baseExp):
             baseExp += 0.0001 # make it so ceil() can actually increase it by 1 in cases where you end up with .0
 
-        return {"Sen": ceil(baseSen), "EXP": ceil(baseExp)}
+        return ceil(baseExp)
 
+    """
+    Calculate the damage based on the attack type, attack power, and mode.
+
+    Parameters:
+    attack (int): The attack identifier, default is 5000010. (Base R1)
+    AP (int): The attack power level, default is 1.
+    mode (str): The mode of the attack, either "Player" or "Enemy", default is "Player".
+    dmgType (str): The type of damage to calculate, default is 'atkPhys'.
+
+    Returns:
+    int: The calculated damage, rounded up to the nearest integer.
+    """
     @staticmethod
     def getDamage(attack=5000010, AP=1, mode="Player", dmgType='atkPhys'):
         if mode == "Player":
@@ -250,7 +382,22 @@ class SekiroFunctions():
                 baseDmg *= atkCorrect/100 # multiply if possible
 
         return ceil(baseDmg)
-    
+ 
+    """
+    Parses and calculates damage details for a given attack using getDamage().
+
+    This static method retrieves and computes the damage attributes for a specified attack
+    based on the attack type and effect type. It supports both player and enemy modes.
+
+    Args:
+        attack (int): The attack ID to parse. Defaults to 5000010.
+        AP (int): Attack Power used in damage calculation. Defaults to 1.
+        mode (str): The mode of the attack, either "Player" or "Enemy". Defaults to "Player".
+
+    Returns:
+        dict: A dictionary containing the attack type, effect type, and damage values for
+        different damage types including Physical, Posture, Magic, Fire, Lightning, and Piercing (Dark).
+    """
     @staticmethod
     def parseDamage(attack=5000010, AP=1, mode="Player"):
         output = {}
@@ -275,6 +422,22 @@ class SekiroFunctions():
 
         return output
 
+    """
+    Calculate the number of attacks needed to deplete the given HP.
+
+    This static method computes how many attacks are required to reduce
+    the specified HP to zero, given a certain damage per attack. This is
+    NOT an accurate measure of fight length/difficulty. If the HP is
+    provided as a list, it returns a comma-separated string of results for each HP value.
+
+    Parameters:
+        hp (int or list of int): The health points to be depleted.
+        dmg (int): The damage dealt per attack.
+
+    Returns:
+        str: The number of attacks needed as a string, or a comma-separated
+        string if multiple HP values are provided.
+    """
     @staticmethod
     def findAttacksNeeded(hp, dmg):
         out = []
@@ -284,6 +447,21 @@ class SekiroFunctions():
             return ', '.join(out)
         return str(ceil(hp/dmg))
 
+    """
+    Calculate the item discovery chance based on given weight and active buffs.
+
+    This static method computes the probability of item drops by applying
+    various buffs from the ItemDiscovery multipliers. It considers specific
+    buffs such as 'possessionBalloon', 'pilgrimageBalloon', 'virtuousDeed',
+    and 'mostVirtuousDeed', adjusting the base weight accordingly.
+
+    Parameters:
+        weight (float): The base weight for item discovery calculation.
+        **args: Arbitrary keyword arguments representing active buffs.
+
+    Returns:
+        int: The calculated item discovery chance, capped at 100.
+    """
     @staticmethod
     def parseIChance(weight, **args):
         buffs = Multipliers.ItemDiscovery
@@ -301,6 +479,23 @@ class SekiroFunctions():
         chance = round(100 * (weight * buff) / ((weight * buff) + (1000 - weight)))
         return 100 if chance > 100 else chance
 
+    """
+    Calculate the adjusted chance based on resource type and additional modifiers.
+
+    This static method adjusts a given chance value by applying specific buffs
+    if certain conditions are met, particularly when the resource type is spirit emblems.
+    The final chance is rounded and capped at 100.
+
+    Args:
+        chance (float): The initial chance value to be adjusted.
+        resource (int): The type of resource, where 1 indicates spirit emblems.
+        **args: Additional keyword arguments that may include:
+            - 'spiritBalloon' (bool): If True, applies a 50% buff.
+            - 'pilgrimageBalloon' (bool): If True, applies a 50% buff.
+
+    Returns:
+        int: The adjusted chance value, capped at 100.
+    """
     @staticmethod
     def parseRChance(chance, resource, **args):
         buff = 1
@@ -314,7 +509,18 @@ class SekiroFunctions():
         chance = round(1000 * (chance * buff) / ((chance * buff) + (1000 - chance)))
         return 100 if chance > 100 else chance
 
-    """Calculate EXP required to get a skill point at a given level."""
+    """
+    Calculate the experience points (EXP) required to acquire a skill point at a specified level.
+
+    The calculation uses a quadratic formula for levels below a certain threshold and a more complex 
+    formula for higher levels. The result is floored to the nearest integer.
+
+    Args:
+        lvl (int): The current level of the player.
+
+    Returns:
+        int: The required EXP to gain the next skill point at the current level.
+    """
     @staticmethod
     def calculateEXP(lvl):
         a = 0.1
@@ -329,7 +535,17 @@ class SekiroFunctions():
                 
         return int(floor(val))
     
-    """Return total EXP required to get to this level."""
+    """
+    Calculate the total experience points (EXP) required to reach a specified level.
+
+    This method iteratively sums the EXP required for each level up to the given level.
+
+    Args:
+        lvl (int): The target level to calculate total EXP for.
+
+    Returns:
+        int: The total EXP required to reach the specified level from level zero.
+    """
     @staticmethod
     def totalEXP(lvl):
         val = 0

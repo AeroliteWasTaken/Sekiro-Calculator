@@ -22,19 +22,6 @@ PhaseChangePosture = {
     50000000: [1, 0.8, 1]  # tmonk
 }
 
-TimeOffset = { # offsets area scaling based on time and whether demon bell is active or not
-        False: 
-                {1: 0, # dawn/default
-                2: 1, # noon
-                3: 2, # evening
-                4: 3}, # night/end game
-        True: 
-                {1: 1, # dawn/default
-                2: 2, # noon
-                3: 3, # evening
-                4: 4} # night/end game             
-}
-
 ClearcountHP = { # for hp, posture, posture regen scaling
                         False: { # charmed
                                 0: 1, # ng

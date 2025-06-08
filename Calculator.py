@@ -8,7 +8,6 @@ from Sekiro import Utils
 #Other
 from os import path
 from functools import partial
-import math
 import pyperclip
 
 class ExtrasWindow(QDialog):
@@ -204,29 +203,24 @@ class Window(QtWidgets.QMainWindow):
         self.StatsListWidget.addItem(f"Max hits to kill at AP{ap} - {attacksNeeded}")
         self.StatsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
-    def addRates(self, opts, sen, exp, Ndrops, Rdrops, Idrops):
+    def addRates(self, enemy, NG, CL, DB, Time, opts, Ndrops, Rdrops, Idrops):
+        Sen = self.Functions.getSen(enemy=enemy, NG=NG, CL=CL, effects={
+                                            "wealthBalloon": self.wealthBalloon, 
+                                            "pilgrimageBalloon": self.pilgrimageBalloon, 
+                                            "virtuousDeed": self.virtuousDeed, 
+                                            "mostVirtuousDeed": self.mostVirtuousDeed})
+        Exp = self.Functions.getExp(enemy=enemy, NG=NG, CL=CL)
+                
         self.DropsListWidget.clear()
         self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
-        self.DropsListWidget.addItem(f"Sen - {sen}")
-        self.DropsListWidget.addItem(f"EXP - {exp}")
+        self.DropsListWidget.addItem(f"Sen - {Sen}")
+        self.DropsListWidget.addItem(f"EXP - {Exp}")
         self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
-        for lot in Ndrops:
-            for item in lot:
-                if item[2] != 0:
-                    self.DropsListWidget.addItem(f"{item[2]} {Reference.ResourceName[item[0]]} on deathblow")
+        drops = self.Functions.getDrops(enemy, dropLists=[Ndrops, Rdrops, Idrops], DB=DB, Time=Time, effects=opts)
 
-        for lot in Rdrops:
-            for item in lot:
-                if item[2] != 0:
-                    chance = self.Functions.parseRChance(item[1], item[0], **opts)
-                    self.DropsListWidget.addItem(f"{item[2]} {Reference.ResourceName[item[0]]} - {chance}% chance")  
-
-        for lot in Idrops:
-            for item in lot:
-                if item[2] != 0:                  
-                    chance = self.Functions.parseIChance(item[1], **opts)
-                    self.DropsListWidget.addItem(f"{item[2]} {Reference.ItemName[item[0]]} - {chance}% chance")
+        for drop in drops:
+            self.DropsListWidget.addItem(f"{drop['Count']} {drop['Name']} - {drop['Chance']}")
         
         self.DropsListWidget.addItem(f"-----------------------------------------------------------------------------")
 
@@ -264,15 +258,8 @@ class Window(QtWidgets.QMainWindow):
         self.addStats(hp, posture, regen, ap, attackRate, attacksNeeded)
 
     def parseDrops(self, enemy, NG, CL, DB, Time):
-        Sen, Exp = self.Functions.getExpSen(enemy=enemy, NG=NG, CL=CL, 
-                                            wealthBalloon=self.wealthBalloon, 
-                                            pilgrimageBalloon=self.pilgrimageBalloon, 
-                                            virtuousDeed=self.virtuousDeed, 
-                                            mostVirtuousDeed=self.mostVirtuousDeed).values()
-        result = self.Functions.getDropLists(enemy=enemy, DB=DB, Time=Time, 
-                                             pilgrimageBalloon=self.pilgrimageBalloon, 
-                                             soulBalloon=self.soulBalloon)
-
+        result = self.Functions.getDropLists(enemy=enemy, DB=DB, Time=Time, effects={"pilgrimageBalloon": self.pilgrimageBalloon, 
+                                                                                     "soulBalloon": self.soulBalloon})
         if result is None: 
             self.DropsListWidget.addItem("Selected time does not update this enemy's drops.")
             self.DropsListWidget.addItem("Stats could still be affected by this time cycle.")
@@ -281,7 +268,7 @@ class Window(QtWidgets.QMainWindow):
         
         NdropList, RdropList, IdropList = result
         opts = self.getOpts()
-        self.addRates(opts, math.ceil(Sen), math.ceil(Exp), NdropList, RdropList, IdropList)  
+        self.addRates(enemy, NG, CL, DB, Time, opts, NdropList, RdropList, IdropList)  
         
     def update(self):
         enemy = self.parseEnemy()
