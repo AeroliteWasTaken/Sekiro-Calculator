@@ -1112,9 +1112,9 @@ Attacks = {
 }
 
 FlameVentBaseDamage = {
-    
+    # todo
 }
 
 UmbrellaBaseDamage = {
-    
+    # todo
 }
