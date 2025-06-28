@@ -522,16 +522,13 @@ class SekiroFunctions():
         int: The required EXP to gain the next skill point at the current level.
     """
     @staticmethod
-    def calculateEXP(lvl):
-        a = 0.1
-        b = 10
-        c = 0.02
-        d = 94
+    def calculateEXP(level):
+        x = level + 69
 
-        if lvl+69 < d**2:
-            val = a*(lvl+69)**2+b
+        if x < 8836: # boundary is 94^2
+            val = 0.1*x**2+10
         else:
-            val = a*(lvl+69)+b*(lvl+69)*2+c*(lvl+69)*2*(lvl+69)*2
+            val = 0.1*x+10*x**2+0.02*x**4
                 
         return int(floor(val))
     
