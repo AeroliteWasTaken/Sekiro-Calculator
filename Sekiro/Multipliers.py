@@ -1,4 +1,19 @@
-Charmless_Poison_Resistance = {False: 1.1, True: 1.35} # for enemy poison resistance when charmless
+CharmlessPoisonResistance = {False: 1.1, True: 1.35} # for enemy poison resistance when charmless
+
+CharmlessEffectMultiplier = { # player status effect buildup multipliers for charmless
+        False:
+                {"Poison": 1,
+                "Terror": 1,
+                "Burn": 1,
+                "Enfeeble": 1,
+                "Lightning": 1},
+        True:
+                {"Poison": 1.5,
+                "Terror": 1.2,
+                "Burn": 1.5,
+                "Enfeeble": 1.2,
+                "Lightning": 1}
+}
 
 CharmlessSenExp = {False: 1, True: 1.2} # for xp and sen drop multipliers when charmless
 

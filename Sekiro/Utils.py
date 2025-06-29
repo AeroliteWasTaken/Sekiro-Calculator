@@ -405,8 +405,8 @@ class SekiroFunctions():
             'Physical': 'atkPhys',
             'Posture': 'atkStam',
             'Magic': 'atkMag',
-            'Fire': 'atkFire',
-            'Lightning': 'atkThun',
+            'Fire': 'atkFire', # +50% when charmless, not included in calculation since the values multiplies how much the player receives rather than how much the enemy deals
+            'Lightning': 'atkThun', # not affected by charmless
             'Piercing (Dark)': 'atkDark'}
         
         if mode == "Player":
