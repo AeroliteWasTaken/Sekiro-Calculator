@@ -42,7 +42,7 @@ class CalcFunctions():
         if enemy in [1, 2, 3]:
             return Reference.InnerEnemy[enemy], enemy  # mapped enemy, original inner id
         return enemy, None
-    
+
 class SekiroFunctions():
     """
     Calculate and return the stats for a specified enemy.
