@@ -7690,7 +7690,7 @@ ResourceDrops = { # ResourceItemLots that are rolled by killing this enemy
 99999999: [None, None]
 }
 
-NinsatuDrops = {
+NinsatuDrops = { # ResourceItemLots rolled when performing a deathblow on this enemy
 0: [None, None],
 1: [None, None],
 10: [None, None],
@@ -8972,7 +8972,7 @@ NinsatuDrops = {
 99999999: [None, None]
 }
 
-BossExpRates = {
+BossExpRates = { # Base exp dropped by memory bosses
     50900000: 1500, # lb p1
     50900001: 1500, # lb p2
     50601010: 10000, # owl father
@@ -8993,7 +8993,7 @@ BossExpRates = {
     50000000: 8000 # tmonk
 }
 
-Attacks = {
+Attacks = { # enemy attack data
 0: {"Name": "[System] Dummy bullets ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 1: {"Name": "[System] Dummy bullets (does not hit characters- hits maps) ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 2: {"Name": "[System] Dummy bullets (hits characters- does not hit maps) ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},

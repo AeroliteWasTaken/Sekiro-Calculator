@@ -24,7 +24,7 @@ CharmlessByType = { # for enemy stat bonuses when charmless
                             7902: 1.125, # miniboss
                             7903: 1} # boss
 
-PhaseChangeHP = {
+PhaseChangeHP = { # hp multipliers for different phases when applicable
     51000000: [1, 1.1], # ape
     50000000: [1, 0.75, 1.0625], # tmonk
     50601010: [1, 0.89], # owl father
@@ -32,7 +32,7 @@ PhaseChangeHP = {
     54000000: [1, 1.27, 1.27] # ssi 
 }
 
-PhaseChangePosture = {
+PhaseChangePosture = { # posture multipliers for different phases when applicable
     51000000: [1, 1.1], # ape 
     50000000: [1, 0.8, 1]  # tmonk
 }
@@ -830,7 +830,7 @@ AreaScaleAttack = {  # for enemy attack multipliers in game areas
         7998: 3.0
 }
 
-ItemDiscovery = {
+ItemDiscovery = { # item discovery buffs for weights
         'possessionBalloon': 0.5,
         'pilgrimageBalloon': 0.5,
         'virtuousDeed': 0.5,

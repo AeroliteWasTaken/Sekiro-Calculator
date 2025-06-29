@@ -665,7 +665,7 @@ Bullets = { # {BehaviourParam_Pc ID}: [{Name}, {RefType (0 - AtkParam, 1 - Bulle
 107402100: ["Transformation LV3_ activation impact", 1, 740200]
 }
  
-Attacks = {
+Attacks = { # player attack data
 0: {"Name": "Dummy bullet ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 1: {"Name": "Dummy bullets_see per map_normal ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 4: {"Name": "For destroying automatic patrol objects ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
@@ -1109,12 +1109,4 @@ Attacks = {
 50300010: {"Name": "Test Shinobi 2 Grab ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 50400000: {"Name": "Test Shinobi 1 Grab ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
 50400010: {"Name": "Test Shinobi 2 Grab ", "atkAttribute": 4, "spAttribute": 1, "atkPhys": 0, "atkPhysCorrection": 0, "repelLostStamDamage": 0, "repelLostStamDamage_Attacker": 0, "atkStam": 0, "atkStamCorrection": 0, "atkMag": 0, "atkMagCorrection": 0, "atkFire": 0, "atkFireCorrection": 0, "atkThun": 0, "atkThunCorrection": 0, "atkDark": 0, "atkDarkCorrection": 0},
-}
-
-FlameVentBaseDamage = {
-    # todo
-}
-
-UmbrellaBaseDamage = {
-    # todo
 }

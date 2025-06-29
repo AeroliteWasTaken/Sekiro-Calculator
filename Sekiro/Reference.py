@@ -1,4 +1,4 @@
-EnemyID = {
+EnemyID = { # In game names mapped to NpcParamIds
     'Tutorial Genichiro': 71000000,
     'Lady Butterfly': 50900000,
     'Gyoubu': 50800000,
@@ -60,7 +60,7 @@ EnemyID = {
     'Headless - Yashariku Phantom': 13401001
 }
 
-ResourceName = {
+ResourceName = { # Resource drop names
     0: "Nothing",
     1: "Spirit Emblem(s)",
     2: "Unused",
@@ -69,14 +69,14 @@ ResourceName = {
     5: "Resurrection Fragment(s)"
 }
 
-ItemTypes = {
+ItemTypes = { # item types used in itemlots
     -1: 0,
     0: "Weapon",
     268435456: "Armor",
     1073741824: "Goods"
 }
 
-InnerEnemy = {
+InnerEnemy = { # maps custom inner enemy IDs to their original
     1: 71001000,
     2: 50601010,
     3: 54000000}
@@ -96,20 +96,20 @@ TimeOffset = { # offsets area scaling based on time and whether demon bell is ac
     }
 }
 
-ItemLotTimeOffset = {
-    False:
+ItemLotTimeOffset = { # offsets for additional itemlots based on time and demon bell status
+    False: # demon bell is not active
         {1: 1,
         2: 11,
         3: 21,
         4: 31},
-    True:
+    True: # demon bell is active
         {1: 11,
          2: 21,
          3: 31,
          4: 41}
 }
 
-ReflectionOverride = {
+ReflectionOverride = { # override scaling numbers for reflection of strength and other gauntlets. Default to 0 if enemy doesn't have an exception
 0: { # default
     (False, False): [7950, 7954], # default 
     (True, False): [7952, 7992], # cl
@@ -160,7 +160,7 @@ ReflectionOverride = {
 
 }
 
-MortalJourneyOverride = {
+MortalJourneyOverride = { # override scaling numbers for mortal journey. Default to 0 if enemy doesn't have an exception
 0: { # default
     (False, False): [7950, 7958], # default
     (True, False): [7952, 7958], # cl
@@ -210,7 +210,7 @@ MortalJourneyOverride = {
     (True, True): [7987, 7995]}, # cldb
 }
 
-AttackAttribute = {
+AttackAttribute = { # attributes for attack types
     1: "Slash",
     2: "Light Hit",
     3: "Thrust",
@@ -225,7 +225,7 @@ AttackAttribute = {
     12: "Attribute C"
 }
 
-SpecialAttribute = {
+SpecialAttribute = { # special effect types for attacks
     1: "Normal",
     2: "Fire",
     3: "Magic",
@@ -235,7 +235,7 @@ SpecialAttribute = {
     255: "None" # shown as "Not Enumerated" in game
 }
 
-ItemName = {
+ItemName = { # EquipParamGoods reference
     1000: "Spirit Emblem",
     1001: "Red Spirit Emblem",
     1100: "Regenerative Power",
