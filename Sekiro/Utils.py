@@ -261,7 +261,7 @@ class SekiroFunctions():
         if itemDrops[0] is not None: # if non mandatory itemlot drop exists
             newLot = itemDrops[0] + Reference.ItemLotTimeOffset[DB][Time] # add extra itemlot for time of day (separate from default, which is always on)
             if newLot in Lots.Items:
-                itemDrops.append(newLot) # only add if demon bell lots exist
+                itemDrops.append(newLot) # only add if time lots exist
             else:
                 pass # dont add drops if time is unsupported
         IdropList = [Lots.Items[i] for i in itemDrops if i]
