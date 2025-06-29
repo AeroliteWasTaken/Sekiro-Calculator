@@ -19,7 +19,7 @@ print("")
 
 """Stats Check"""
 print("Chained Ogre Stats:")
-enemy = Reference.EnemyName["Chained Ogre"]
+enemy = Reference.EnemyID["Chained Ogre"]
 stats = Utils.SekiroFunctions.getStats(enemy, NG=7, CL=True) # charmless NG+7 ogre
 for key, val in stats.items():
     print(f"{key} - {val}")

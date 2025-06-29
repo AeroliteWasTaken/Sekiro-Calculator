@@ -1,4 +1,4 @@
-EnemyName = {
+EnemyID = {
     'Tutorial Genichiro': 71000000,
     'Lady Butterfly': 50900000,
     'Gyoubu': 50800000,

@@ -121,11 +121,11 @@ class Window(QtWidgets.QMainWindow):
             self.initDropdown()
 
         elif mode == "Progression":
-            self.enemiesList = Reference.EnemyName.keys()
+            self.enemiesList = Reference.EnemyID.keys()
             self.initDropdown()
 
         elif mode == "ID":
-            self.enemiesList = sorted(Reference.EnemyName.keys(), key=lambda k: Reference.EnemyName[k])
+            self.enemiesList = sorted(Reference.EnemyID.keys(), key=lambda k: Reference.EnemyID[k])
             self.initDropdown()
 
     def getTxt(self, mode):
@@ -228,7 +228,7 @@ class Window(QtWidgets.QMainWindow):
         enemy = self.enemyIdLineEdit.text()
         if not enemy: # if override field is empty
             try:
-                enemy = Reference.EnemyName[self.EnemyComboBox.currentText()] # fetch from dropdown
+                enemy = Reference.EnemyID[self.EnemyComboBox.currentText()] # fetch from dropdown
             except:
                 return False
         try:
@@ -290,7 +290,7 @@ class Window(QtWidgets.QMainWindow):
         self.parseStats(enemy, ng, cl, db, time, mode, ap)
     
     def setupUi(self, Form):
-        self.enemiesList = Reference.EnemyName.keys() # get list of enemy names
+        self.enemiesList = Reference.EnemyID.keys() # get list of enemy names
         Form.setObjectName("Form")
         Form.setFixedSize(441, 389)
         self.timeComboBox = QtWidgets.QComboBox(Form)
