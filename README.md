@@ -5,9 +5,9 @@
  - pyperclip 
 
 ## Data within \Sekiro:
- - Enemy.py - Contains info such as stats and scaling ids
- - Lots.py - Contains data for resource and itemlots for handling drops
- - Multipliers.py - A bunch of difference multipliers used in calculation
+ - Enemy.py - Contains info such as stats and scaling IDs
+ - Lots.py - Data for resource and itemlots for handling drops
+ - Multipliers.py - A bunch of different multipliers used in calculation
  - Player.py - Player stats, mostly unused currently apart from attack power values
  - Reference.py - Commonly used info and references, mostly ID to name dictionaries
  - Utils.py - All functions used in the calculation process
