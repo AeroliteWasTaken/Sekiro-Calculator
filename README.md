@@ -1,4 +1,5 @@
-# A simple GUI application for getting basic statistics on Sekiro enemies. This repository also contains all of the data that was mined and used during the creation of this project. 
+# A simple GUI application for getting basic statistics on Sekiro enemies.
+## This repository also contains all of the data that was mined and used during the creation of this project. 
 ### Requirements:
  - PyQt5
  - pyperclip 
