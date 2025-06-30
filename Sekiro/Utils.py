@@ -189,7 +189,7 @@ class SekiroFunctions():
         if dropLists:
             Ndrops, Rdrops, Idrops = dropLists # make sure the order is correct
         else:
-            Ndrops, Rdrops, Idrops = SekiroFunctions.getDropLists(enemy, DB, Time, soulBalloon, pilgrimageBalloon)
+            Ndrops, Rdrops, Idrops = SekiroFunctions.getDropLists(enemy, DB, Time, {"soulBalloon": soulBalloon, "pilgrimageBalloon": pilgrimageBalloon})
 
         opts = {
             'possessionBalloon': possessionBalloon,
@@ -202,17 +202,26 @@ class SekiroFunctions():
         output = []
 
         for lot in Ndrops:
+            if isinstance(lot, str):
+                print(lot)
+                continue
             for item in lot:
                 if item[2] != 0:
                     output.append({"Count": item[2], "Name": Reference.ResourceName[item[0]], "Chance": "on deathblow"})
 
         for lot in Rdrops:
+            if isinstance(lot, str):
+                print(lot)
+                continue
             for item in lot:
                 if item[2] != 0:
                     chance = SekiroFunctions.parseRChance(item[1], item[0], **opts)
                     output.append({"Count": item[2], "Name": Reference.ResourceName[item[0]], "Chance": f"{chance}% chance"})
 
         for lot in Idrops:
+            if isinstance(lot, str):
+                print(lot)
+                continue
             for item in lot:
                 if item[2] != 0:                  
                     chance = SekiroFunctions.parseIChance(item[1], **opts)
@@ -255,7 +264,6 @@ class SekiroFunctions():
         if resourceDrops[0] is not None:
             if (soulBalloon or pilgrimageBalloon) and resourceDrops[1] in Lots.Resources:
                 resourceDrops.append(resourceDrops[1]+1) # add the next resourceitemlot which contains drops for isAddLottery, triggered on stateinfo 345
-            RdropList = [Lots.Resources[i] for i in resourceDrops if i]
 
         itemDrops = copy.deepcopy(Enemy.ItemDrops[enemy])
         if itemDrops[0] is not None: # if non mandatory itemlot drop exists
@@ -264,7 +272,32 @@ class SekiroFunctions():
                 itemDrops.append(newLot) # only add if time lots exist
             else:
                 pass # dont add drops if time is unsupported
-        IdropList = [Lots.Items[i] for i in itemDrops if i]
+
+        NdropList: list
+        RdropList: list
+        IdropList: list
+        if ninsatuDrops[0] is not None:
+            for item in ninsatuDrops:
+                if item:
+                    try:
+                        NdropList.append(Lots.Resources[item])
+                    except KeyError:
+                        NdropList.append(f"[KeyError] ResourceLot {item} does not exist")
+        
+        if resourceDrops[0] is not None:
+            for item in resourceDrops:
+                if item:
+                    try:
+                        RdropList.append(Lots.Resources[item])
+                    except KeyError:
+                        RdropList.append(f"[KeyError] ResourceLot {item} does not exist")
+
+        for item in itemDrops:
+            if item:
+                try:
+                    IdropList.append(Lots.Items[item])
+                except KeyError:
+                    IdropList.append(f"[KeyError] ItemLot {item} does not exist")
 
         return NdropList, RdropList, IdropList
 
