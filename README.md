@@ -1,17 +1,15 @@
-# A simple GUI application for getting basic statistics on Sekiro enemies.
+# A simple GUI application for getting basic statistics on Sekiro enemies. This repository also contains all of the data that was mined and used during the creation of this project. 
 ### Requirements:
  - PyQt5
  - pyperclip 
 
-## Features:
- - NG+ Scaling
- - Area/Time Scaling
- - Charmless and Demon Bell Scalings
- - Attack Power Multipliers
- - Multiple extra options for calculations
- - Sort enemy list
- - Copy output to clipboard
- - Export output to .txt
+## Data within \Sekiro:
+ - Enemy.py - Contains info such as stats and scaling ids
+ - Lots.py - Contains data for resource and itemlots for handling drops
+ - Multipliers.py - A bunch of difference multipliers used in calculation
+ - Player.py - Player stats, mostly unused currently apart from attack power values
+ - Reference.py - Commonly used info and references, mostly ID to name dictionaries
+ - Utils.py - All functions used in the calculation process
 
 ## Displayed Data:
  - HP - The enemy's health pool. For multiple phases with different values, they are separated by a comma.
