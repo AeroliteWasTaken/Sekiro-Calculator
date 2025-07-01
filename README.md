@@ -27,7 +27,7 @@
 ## Notes:
  - You can input NpcParamIds to view statistics for basic enemies that aren't listed by using the Entity ID field.
  - Some areas in the game only use Morning (in this case acting as "Default"), and Bell Evening (Night + Demon Bell). If the enemy is fought at a different time, it will use the stats from Default. This usually applies to Endgame enemies.
- - Sen and EXP numbers may be off by 1 due to Fromsoft being REALLY FUCKING BAD AT ROUNDING. (e.g. 25.9 being rounded down to 25 and 27.1 being rounded up to 29 (????))
+ - Sen and EXP numbers may sometimes be off by 1 due to Fromsoft being REALLY FUCKING BAD AT ROUNDING. (e.g. 25.9 being rounded down to 25 and 27.1 being rounded up to 29 (????))
  - All of the stuff in Extra Options is pretty experimental, please DM me on discord (worstsniper11) if you find any issues.
 
 ## How to get NpcParamIds:
