@@ -17,7 +17,7 @@
  - Posture - The enemy's starting posture value.
  - Damage Multiplier - The value used to multiply each attack's damage.
  - Posture Regen - This value changes a lot depending on events and animations during fights. Dont rely on it. (Check StaminaControlParam)
- - Average hits to kill - A very loose estimate of how many attacks it would take to deplete the enemy's health, just to help you get an idea of their HP. This feature can help you get a pretty accurate ratio to compare different enemies, but shouldnt be used as an actual gauge for fight length.
+ - Average hits to kill - A very loose estimate of how many attacks it would take to deplete the enemy's health, just to help you get an idea of their HP. This feature can help you get a pretty accurate ratio to compare different enemies, but shouldn't be used as an actual gauge for fight length.
  - Sen - Amount of Sen dropped by the enemy.
  - EXP - Experience points dropped by the enemy.
  - Drops on deathblow - Used for giving resurrection fragments after getting a deathblow on a enemy.
