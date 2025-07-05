@@ -231,14 +231,13 @@ class Window(QtWidgets.QMainWindow):
                 enemy = Reference.EnemyID[self.EnemyComboBox.currentText()] # fetch from dropdown
             except:
                 return False
-        try:
-            enemy = int(enemy)
-            if enemy not in Enemy.Stats:
-                raise Exception
-        except:
+            
+        enemy = int(enemy)
+        if enemy not in Enemy.Stats and enemy not in [1, 2, 3]: # if enemy doesnt exist (isnt in stats or inners)
             self.showError("Please select a valid enemy")
             self.enemyIdLineEdit.clear()
             return False
+        
         return enemy
 
     def parseStats(self, enemy, ng, cl, db, time, mode, ap):
