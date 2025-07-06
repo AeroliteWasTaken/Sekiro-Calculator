@@ -207,7 +207,7 @@ class SekiroFunctions():
                 continue
             for item in lot:
                 if item[2] != 0:
-                    output.append({"Count": item[2], "Name": Reference.ResourceName[item[0]], "Chance": "on deathblow"})
+                    output.append({"Count": item[2], "Name": Reference.ResourceName[item[0]], "Chance": f"on deathblow"})
 
         for lot in Rdrops:
             if isinstance(lot, str):
@@ -216,7 +216,7 @@ class SekiroFunctions():
             for item in lot:
                 if item[2] != 0:
                     chance = SekiroFunctions.parseRChance(item[1], item[0], **opts)
-                    output.append({"Count": item[2], "Name": Reference.ResourceName[item[0]], "Chance": f"{chance}% chance"})
+                    output.append({"Count": item[2], "Name": Reference.ResourceName[item[0]], "Chance": f"{chance}%"})
 
         for lot in Idrops:
             if isinstance(lot, str):
@@ -225,7 +225,7 @@ class SekiroFunctions():
             for item in lot:
                 if item[2] != 0:                  
                     chance = SekiroFunctions.parseIChance(item[1], **opts)
-                    output.append({"Count": item[2], "Name": Reference.ItemName[item[0]], "Chance": f"{chance}% chance"})
+                    output.append({"Count": item[2], "Name": Reference.ItemName[item[0]], "Chance": f"{chance}%"})
         
         return output
 
