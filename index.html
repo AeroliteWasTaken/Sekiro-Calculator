@@ -128,10 +128,10 @@
 
   <label for="time">Time Cycle:</label>
   <select id="time" class="form-control">
-    <option value="0">Morning</option>
-    <option value="1">Afternoon</option>
-    <option value="2">Evening</option>
-    <option value="3">Night</option>
+    <option value="1">Morning</option>
+    <option value="2">Noon</option>
+    <option value="3">Evening</option>
+    <option value="4">Night</option>
   </select>
 
   <label>Modifiers:</label>
@@ -252,7 +252,7 @@
 
     return {
         enemy: document.getElementById('enemySelect').value || document.getElementById('enemyOverride').value || null,
-        ng: Math.min(Math.max(parseInt(document.getElementById('ng').value), 1), 7),
+        ng: Math.min(Math.max(parseInt(document.getElementById('ng').value), 0), 7),
         ap: Math.min(Math.max(parseInt(document.getElementById('ap').value), 1), 99),
         time: document.getElementById('time').value,
         cl: document.getElementById('charmless').checked,
