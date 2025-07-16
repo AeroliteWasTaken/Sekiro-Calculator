@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sekiro Calculator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+    }
+    label {
+      font-weight: bold;
+    }
+    .checkbox-group {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    textarea {
+      width: 100%;
+      height: 300px;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+    }
+    #extraOptions {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sekiro Enemy Calculator</h1>
+
+  <label for="enemySelect">Enemy:</label>
+  <select id="enemySelect" class="form-control">
+    <option value="">-- Select Enemy (Optional) --</option>
+    <option value="71000000">Tutorial Genichiro</option>
+    <option value="50900000">Lady Butterfly</option>
+    <option value="50800000">Gyoubu</option>
+    <option value="71001000">Genichiro Ashina</option>
+    <option value="51000000">Guardian Ape</option>
+    <option value="51000100">Headless Ape</option>
+    <option value="51000010">Brown Ape</option>
+    <option value="50001000">Corrupted Monk</option>
+    <option value="74000010">Emma</option>
+    <option value="54300000">Isshin Ashina</option>
+    <option value="50600000">Great Shinobi Owl</option>
+    <option value="50000000">True Monk</option>
+    <option value="52000000">Divine Dragon</option>
+    <option value="50601010">Owl (Father)</option>
+    <option value="70200000">Demon of Hatred</option>
+    <option value="71101000">Genichiro Way of Tomoe (Silvergrass Field)</option>
+    <option value="54000000">Isshin the Sword Saint</option>
+    <option value="1">Inner Genichiro</option>
+    <option value="2">Inner Father</option>
+    <option value="3">Inner Isshin</option>
+    <option value="10201000">Shigenori Yamauchi</option>
+    <option value="10200000">Naomori Kawarada</option>
+    <option value="50202000">Chained Ogre</option>
+    <option value="10200010">Tenzen Yamauchi</option>
+    <option value="13500000">Headless - Ako</option>
+    <option value="10500001">Shinobi Hunter Enshin</option>
+    <option value="10700000">Juzou</option>
+    <option value="13700000">Blazing Bull</option>
+    <option value="11300000">Armoured Warrior</option>
+    <option value="10400000">Long Arm Centipede Sen-Un</option>
+    <option value="14704000">Lone Shadow Longswordsman</option>
+    <option value="10202000">General Kuranosuke Matsumoto</option>
+    <option value="10210000">Seven Ashina Spears - Shikibu Toshikatsu Yamauchi</option>
+    <option value="13400000">Headless - Ungo</option>
+    <option value="14701006">Lone Shadow Masanaga the Spear-bearer</option>
+    <option value="14000200">Ashina Elite - Jinsuke Saze</option>
+    <option value="10800000">Shichimen Warrior (Dungeon)</option>
+    <option value="13501000">Headless - Gokan</option>
+    <option value="11910000">Snake Eyes Shirafuji</option>
+    <option value="13502000">Headless - Gachiin</option>
+    <option value="10703000">Tokujiro</option>
+    <option value="13001000">Mist Noble</option>
+    <option value="70000000">O'Rin of the Water</option>
+    <option value="11911000">Snake Eyes Shirahagi</option>
+    <option value="50200010">Chained Ogre (Castle)</option>
+    <option value="14701005">Lone Shadow Vilehand</option>
+    <option value="10401000">Long-arm Centipede Giraffe</option>
+    <option value="10802000">Shichimen Warrior (Ashina Depths)</option>
+    <option value="10701000">Shigekichi of the Red Guard</option>
+    <option value="50205000">Chained Ogre (Outskirts)</option>
+    <option value="13800000">Sakura Bull of the Palace</option>
+    <option value="14703002">Lone Shadow Masanaga the Spear-bearer (Hirata 2)</option>
+    <option value="10704000">Juzou (Hirata 2)</option>
+    <option value="10211000">Seven Ashina Spears - Shume Masaji Oniwa</option>
+    <option value="14004200">Ashina Elite - Ujinari Mizuo</option>
+    <option value="13100310">Okami Leader Shizu</option>
+    <option value="10801000">Shichimen Warrior (Fountainhead)</option>
+    <option value="13401000">Headless - Yashariku</option>
+    <option value="13401001">Headless - Yashariku Phantom</option>
+  </select>
+
+  <label for="enemyOverride">Enemy ID Override (NpcParamId):</label>
+  <input type="text" class="form-control" id="enemyOverride" placeholder="*Optional" />
+
+  <label for="ng">NG Cycle:</label>
+  <select id="ng" class="form-control">
+    <option value="0">NG</option>
+    <option value="1">NG+</option>
+    <option value="2">NG+2</option>
+    <option value="3">NG+3</option>
+    <option value="4">NG+4</option>
+    <option value="5">NG+5</option>
+    <option value="6">NG+6</option>
+    <option value="7">NG+7</option>
+  </select>
+
+  <label for="time">Time Cycle:</label>
+  <select id="time" class="form-control">
+    <option value="0">Morning</option>
+    <option value="1">Afternoon</option>
+    <option value="2">Evening</option>
+    <option value="3">Night</option>
+  </select>
+
+  <label>Modifiers:</label>
+  <div class="modifiers-row">
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="charmless" /> Charmless</label>
+      <label><input type="checkbox" id="demonBell" /> Demon Bell</label>
+    </div>
+    <button id="toggleExtraOptions" class="toggle-extra">Extra Options ▼</button>
+  </div>
+
+  <div id="extraOptions">
+    <label>Loot Effects:</label>
+    <div class="checkbox-group" style="flex-wrap: wrap;">
+      <label><input type="checkbox" class="lootEffect" value="wealthBalloon" /> Mibu Balloon of Wealth</label>
+      <label><input type="checkbox" class="lootEffect" value="possessionBalloon" /> Mibu Balloon of Possession</label>
+      <label><input type="checkbox" class="lootEffect" value="spiritBalloon" /> Mibu Balloon of Spirit</label>
+      <label><input type="checkbox" class="lootEffect" value="soulBalloon" /> Mibu Balloon of Soul</label>
+      <label><input type="checkbox" class="lootEffect" value="pilgrimageBalloon" /> Mibu Pilgrimage Balloon</label>
+      <label><input type="checkbox" class="lootEffect" value="virtuousDeed" /> Virtuous Deed</label>
+      <label><input type="checkbox" class="lootEffect" value="mostVirtuousDeed" /> Most Virtuous Deed</label>
+    </div>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label for="mode">Mode:</label>
+    <select id="mode" class="form-control">
+        <option value="0">Normal</option>
+        <option value="1">Reflections</option>
+        <option value="2">Mortal Journey</option>
+    </select>
+  </div>
+
+  <label for="ap">Attack Power:</label>
+  <input type="number" class="form-control" id="ap" value="1" min="1" max="99" />
+
+  <div style="margin-top: 5px;">
+    <button onclick="calculate()">Calculate</button>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label for="result">Results:</label>
+    <textarea id="results" readonly></textarea>
+  </div>
+
+<script>
+  document.getElementById('toggleExtraOptions').addEventListener('click', () => {
+    const extra = document.getElementById('extraOptions');
+    if (extra.style.display === 'none' || extra.style.display === '') {
+      extra.style.display = 'block';
+      document.getElementById('toggleExtraOptions').textContent = 'Extra Options ▲';
+    } else {
+      extra.style.display = 'none';
+      document.getElementById('toggleExtraOptions').textContent = 'Extra Options ▼';
+    }
+  });
+
+  async function calculate() {
+    const data = collectData();
+
+    const [statsResp, dropsResp] = await Promise.all([
+      fetch('https://aerolitesr.pythonanywhere.com/api/get-stats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }),
+      fetch('https://aerolitesr.pythonanywhere.com/api/get-drops', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+    ]);
+
+    const stats = await statsResp.json();
+    const drops = await dropsResp.json();
+
+    let text = '';
+
+    if (stats.error) {
+      text += `Error getting stats: ${stats.error}\n`;
+    } else {
+    const keyOrder = ['HP', 'Posture', 'Posture Regen', 'Damage Multiplier'];
+
+    text += '--- Enemy Stats ---\n';
+    keyOrder.forEach(key => {
+    if (key in stats) text += `${key}: ${stats[key]}\n`;
+    });
+
+    const apKey = Object.keys(stats).find(key => key.startsWith('Max hits to kill at AP'));
+    if (apKey) {
+    text += `${apKey}: ${stats[apKey]}\n`;
+    }
+
+    text += '\n';
+    }
+
+    if (drops.error) {
+      text += `Error getting drops: ${drops.error}\n`;
+    } else {
+      text += '--- Drops ---\n';
+      if (drops.drops && drops.drops.length > 0) {
+        text += `Sen - ${drops.sen}\nExp - ${drops.exp}\n`;
+        drops.drops.forEach(drop => {
+          text += `${drop.Count} ${drop.Name} - ${drop.Chance}\n`;
+        });
+      }
+    }
+
+    document.getElementById('results').value = text;
+  }
+
+  function collectData() {
+    // Get all checked loot effects and convert them into a key-value object
+    const effectsChecked = {};
+    document.querySelectorAll('.lootEffect:checked').forEach(cb => {
+        effectsChecked[cb.value] = true;
+    });
+
+    return {
+        enemy: document.getElementById('enemySelect').value || document.getElementById('enemyOverride').value || null,
+        ng: Math.min(Math.max(parseInt(document.getElementById('ng').value), 1), 7),
+        ap: Math.min(Math.max(parseInt(document.getElementById('ap').value), 1), 99),
+        time: document.getElementById('time').value,
+        cl: document.getElementById('charmless').checked,
+        db: document.getElementById('demonBell').checked,
+        effects: effectsChecked,
+        mode: document.getElementById('mode').value
+    };
+    }
+
+</script>
+</body>
+</html>
