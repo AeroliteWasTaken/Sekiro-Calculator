@@ -116,7 +116,7 @@ class Window(QtWidgets.QMainWindow):
             "7. Paste the ID into the field within this application and press enter<br>"))
         infomenu.addSeparator()
         infomenu.addAction("Credits", lambda: showMessageBox("Credits",
-            "<a href='https://linktr.ee/aerolitesr'>Aero</a> - Me! My discord is worstsniper11 feel free to add me if you need anything :D<br><br>"
+            "<a href='https://linktr.ee/aerolitesr'>Aero</a> - Me! :D<br><br>"
             "<a href='https://www.youtube.com/@Victor_StudentOfFloppa'>Savio</a> - For the original idea, inspiration, and moral support. Also did the majority of the testing for the GUI :)<br><br>"
             "<a href='https://linktr.ee/holm_gg'>Holm</a> - Helped a LOT with testing and comparing data, thanks!<br><br>"
             "MyMaidisKitchenAid - Explained some intricacies with params and taught me a lot about the scalings (thanks for saving me from hours of pain)<br>"))
