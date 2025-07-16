@@ -460,8 +460,9 @@ class SekiroFunctions():
 
     This static method computes how many attacks are required to reduce
     the specified HP to zero, given a certain damage per attack. This is
-    NOT an accurate measure of fight length/difficulty. If the HP is
-    provided as a list, it returns a comma-separated string of results for each HP value.
+    NOT an accurate measure of fight length/difficulty as resistances are not taken into account.
+    It is simply to help get an idea of the HP pool.If the HP is provided as a list, 
+    it returns a comma-separated string of results for each HP value and a total.
 
     Parameters:
         hp (int or list of int): The health points to be depleted.
@@ -473,11 +474,9 @@ class SekiroFunctions():
     """
     @staticmethod
     def findAttacksNeeded(hp, dmg):
-        out = []
         if isinstance(hp, list):
-            for i in hp:
-                out.append(str(ceil(i/dmg)))
-            return ', '.join(out)
+            out = [ceil(i/dmg) for i in hp]
+            return ', '.join([str(i) for i in out])+f" ({sum(out)})"
         return str(ceil(hp/dmg))
 
     """

@@ -837,3 +837,18 @@ ItemDiscovery = { # item discovery buffs for weights
         'mostVirtuousDeed': 0.75
 }
 
+SwordBuffEffects = { # damage multipliers for sword buffs. List is [{vitality damage}, {posture damage}]
+    "Yashariku": [1.25, 1.5],
+    "Ako": [1.125, 1],
+    "Divine Confetti": [1.25, 1] # actually adds 20 piercing magic damage to your base attacks, but we can treat is as a multiplier of the base 80
+}
+
+ApparitionDefense = { # Player damage is multiplied by these values when fighting select apparitions without divine confetti
+    70000000: 0.67, #Orin
+    13500000: 0.1, #Ako headless (NOTE: underwater headless arent affected)
+    13501000: 0.1, #Gokan headless
+    13502000: 0.1, #Gachiin headless
+    10800000: 0.33, #Dungeon shichimen
+    10802000: 0.33, #Depths shichimen
+    10801000: 0.33, #Fountainhead shichimen
+}

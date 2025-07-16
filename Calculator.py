@@ -81,10 +81,57 @@ class Window(QtWidgets.QMainWindow):
         exportMenu = fileMenu.addMenu("Export") 
         sortingMenu = fileMenu.addMenu("Sorting")
 
+        infomenu = menubar.addMenu("Info")
+        infomenu.addAction("Apparitions and Confetti", lambda: showMessageBox("Apparitions and Confetti",
+            f"Divine Confetti works by adding 20 magic damage to your attacks. Since your base damage is 80, this usually acts as a +25% damage buff. However, it can be much more due to some enemies being weak to magic damage.<br>"
+            "Magic damage also has a piercing effect and will go through blocks. This only applies to the additional 20 and not all of your damage.<br><br>"
+            "Some apparition type enemies have a feature that decreases all physical damage taken unless you have the divine confetti effect. (StateInfo 64)<br>"
+            "Hitting one of these enemies with a confetti buffed attack will ignore this effect.<br><br>"
+            f"Headless - 90% damage reduction (doesn't apply to underwater headless)<br>"
+            f"Shichimen - 67% damage reduction<br>"
+            f"O'rin of the Water - 33% damage reduction<br>"))
+        infomenu.addAction("Time Cycles and Demon Bell", lambda: showMessageBox("Time Cycles and Demon Bell",
+            "As you advance through the game, the time cycle progresses as follows:<br><br>"
+            f"Morning - After the tutorial<br>"
+            f"Noon - After killing one of the \"Quest Bosses\" (Genichiro, Corrupted Monk, Guardian Ape, Folding Screen Monkeys)<br>"
+            f"Evening - After killing 3 of the above bosses<br>"
+            f"Night - After visiting Fountainhead Palace for the first time<br><br>"
+            "Having the Demon Bell active will simulate incrementing the time cycle by one step, so if you are in morning, it will be treated as noon.<br>"
+            "This is used in some calculations, since enemies are buffed as the time cycle increases and some only drop certain items at specific times.<br>"
+            "Some areas only use \"Default\" and \"Kaneyoi\" (Morning and Night + Demonbell respectively). If you fight an enemy within this area at ANY time other than night with demon bell then it will use Morning.<br>"))
+        infomenu.addAction("Reflections", lambda: showMessageBox("Reflections",
+            "Boss stats are fixed within reflections and gauntlets. To compensate for this, the player's attack power is also locked to 14 so that you can't melt them at high AP levels.<br>"
+            f"Generally, reflections will feel slightly harder than normal by comparison.<br>"
+            f"Gauntlets and reflections are identical, with the exception of Mortal Journey which has slightly stronger enemies.<br>"))
+        infomenu.addAction("Entity IDs", lambda: showMessageBox("Entity IDs",
+            "All enemies have NpcParamIds, which dictate a whole lot of things like stats and itemlots.<br>"
+            f"This application already has all bosses and minibosses mapped, which is why they appear in the dropdown.<br><br>"
+            f"If you want to get data on a basic enemy that is not listed, follow these steps:<br>"
+            "1. Download <a href='https://github.com/vawser/Smithbox/releases'>Smithbox</a> and <a href='https://github.com/Nordgaren/UXM-Selective-Unpack/releases'>UXM</a><br>"
+            "2. Unpack the game files with UXM by inputting your game install path<br>"
+            "3. Open Smithbox and create a new project<br>"
+            "4. Open the Map Editor tab, load the map you want by right clicking<br>"
+            "5. Locate the enemy within the map, you can move around with WASD while holding right click on the viewport<br>"
+            "6. Click on the enemy, navigate to the \"Properties\" tab on the right and copy the NpcParamId<br>"
+            "7. Paste the ID into the field within this application and press enter<br>"))
+        infomenu.addSeparator()
+        infomenu.addAction("Credits", lambda: showMessageBox("Credits",
+            "<a href='https://next.nexusmods.com/profile/AeroliteWasTaken'>Aero</a> - Me! :D<br><br>"
+            "<a href='https://www.youtube.com/@Victor_StudentOfFloppa'>Savio</a> - For the original idea, inspiration, and moral support. Also did the majority of the testing for the GUI :)<br><br>"
+            "<a href='https://www.youtube.com/@Holm_GG'>Holm</a> - Helped a LOT with testing and comparing data, thanks!<br><br>"
+            "MyMaidisKitchenAid - Explained some intricacies with params and taught me a lot about the scalings (thanks for saving me from hours of pain)<br>"))
+
         def createAction(name, func):
             action = QtWidgets.QAction(name, self)
             action.triggered.connect(func)
             return action
+        
+        def showMessageBox(title, message):
+            msg = QMessageBox(self)
+            msg.setWindowTitle(title)
+            msg.setTextFormat(QtCore.Qt.RichText)
+            msg.setText(message)
+            msg.exec_()
 
         copyMenu.addAction(createAction("Stats", partial(self.copyTxt, "Stats")))
         copyMenu.addAction(createAction("Drops", partial(self.copyTxt, "Drops")))
@@ -422,11 +469,7 @@ class Window(QtWidgets.QMainWindow):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Sekiro Calculator"))
         self.EnemyComboBox.setToolTip(_translate("Form", "List of common bosses and minibosses"))
-        self.timeComboBox.setToolTip(_translate("Form", "Some areas only use \"default\" and night + demon bell.\n" \
-        "Morning - After tutorial\n" \
-        "Noon - After killing one of the following: Geni, Ape, Cmonk, FSMs\n" \
-        "Evening - After beating 3 of the above bosses\n" \
-        "Night - After visiting Fountainhead Palace for the first time"))
+        self.timeComboBox.setToolTip(_translate("Form", "Time Cycle. Refer to the info menu for more details."))
         self.timeComboBox.setItemText(0, _translate("Form", "Morning/Default"))
         self.timeComboBox.setItemText(1, _translate("Form", "Noon"))
         self.timeComboBox.setItemText(2, _translate("Form", "Evening"))
